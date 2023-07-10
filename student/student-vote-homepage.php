@@ -63,7 +63,7 @@
             $result = $student->select('candidate', '*', )
 
           ?>
-
+          
           <div class="candidate-container">
             <h4>President</h4>
             <div class="bg-secondary bg-gradient ">

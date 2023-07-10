@@ -22,9 +22,13 @@ if (isset($_POST['add-candidate'])) {
   if ($admin->isExisted('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'org_name' => User::returnValueGet('studentOrg'),])) {
     $candidateExist = true;
   } else {
-    $admin->insertData('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'introduce_yourself' => $introduce_yourself, 'org_name' => User::returnValueGet('studentOrg')]);
-    $admin->insertImage('candidate-image', 'candidate', 'photo_url', '../uploads/');
-    header("location: admin-election.php?addCandidateSuccess&activeStudentOrg=" . User::returnValueGet('studentOrg'));
+
+    if ($admin->insertImage('candidate-image', 'candidate', 'photo_url', '../uploads/')) {
+      $admin->insertData('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'introduce_yourself' => $introduce_yourself, 'org_name' => User::returnValueGet('studentOrg')]);
+      header("location: admin-election.php?addCandidateSuccess&activeStudentOrg=" . User::returnValueGet('studentOrg'));
+    }else {
+      $wrong_file = "jpg, jpeg and png files only";
+    }
   }
 }
 
@@ -78,6 +82,7 @@ if (isset($_POST['add-candidate'])) {
     <input class="form-control" type="text" name="last-name" required>
     <label class="form-label" for="year">Year</label>
     <input class="form-control" type="text" name="year" required>
+    <?php if(isset($wrong_file)) { Message::invalidFile();} ?>
     <label for="">Upload Image</label>
     <div class="input-group mb-1">
       <input type="file" class="form-control" name="candidate-image" required>

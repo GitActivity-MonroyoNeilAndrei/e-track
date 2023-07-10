@@ -19,7 +19,7 @@ $partylist = "";
 
 
 
-$result = $admin->select('candidate', '*', 'id', User::returnValueGet('candidateId'));
+$result = $admin->select('candidate', '*', ['id'=>User::returnValueGet('candidateId')]);
 
 while ($row = mysqli_fetch_assoc($result)) {
   $position = $row['position'];
@@ -40,7 +40,7 @@ if (isset($_POST['edit-candidate'])) {
 
 
 
-  $admin->updateData('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'org_name' => User::returnValueGet('studentOrg'), 'introduce_yourself'=>$introduce_yourself], 'id', User::returnValueGet('candidateId'));
+  $admin->updateData('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'org_name' => User::returnValueGet('studentOrg'), 'introduce_yourself'=>$introduce_yourself], ['id'=>User::returnValueGet('candidateId')]);
 
 
   if(is_uploaded_file($_FILES['candidate-image']['tmp_name'])) {

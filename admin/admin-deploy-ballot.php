@@ -11,9 +11,8 @@
     $school_year = mysqli_escape_string($admin->mysqli, $_POST['school-year']);
     $exp_date = mysqli_escape_string($admin->mysqli, $_POST['exp-date']);
 
-    $where = "org_name = '" . User::returnValueGet('orgName'). "'";
 
-    $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], $where);
+    $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], ['org_name'=>User::returnValueGet('orgName')]);
 
 
     $active_student_org = User::returnValueGet('orgName');

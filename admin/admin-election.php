@@ -97,7 +97,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </tr>
               </thead>
               <tbody>
-                <?php $result = $admin->select('candidate', '*', 'org_name', User::returnValueGet('activeStudentOrg'));
+                <?php $result = $admin->select('candidate', '*',['org_name'=>User::returnValueGet('activeStudentOrg')] );
 
                 while ($row = mysqli_fetch_assoc($result)) {
                 ?>
@@ -111,7 +111,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><?php echo $row['partylist']; ?></td>
                     <td>
                       <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>">Edit</a>
-                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>">Delete</a>
+                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>">Delete</a>
                     </td>
                   </tr>
                       <?php } ?>

@@ -17,7 +17,8 @@ class database
 
 
 
-  public function pullLastRowModified($table, $column) {
+  public function pullLastRowModified($table, $column)
+  {
     $sql = "SELECT * FROM $table WHERE id = $this->last_id";
     $result = $this->mysqli->query($sql);
 
@@ -69,27 +70,27 @@ class database
     }
   }
 
-  public function updateData($table, $para = array(), $column, $value_id)
-  {
-    $args = array();
+  // public function updateData($table, $para = array(), $column, $value_id)
+  // {
+  //   $args = array();
 
-    foreach ($para as $key => $value) {
-      $args[] = "$key = '$value'";
-    }
+  //   foreach ($para as $key => $value) {
+  //     $args[] = "$key = '$value'";
+  //   }
 
-    $sql = "UPDATE  $table SET " . implode(',', $args);
+  //   $sql = "UPDATE  $table SET " . implode(',', $args);
 
-    if(is_int($value)) {
-      $sql .= " WHERE $column = $value_id";
-    }else{
-      $sql .= " WHERE $column = '$value_id'";
+  //   if(is_int($value)) {
+  //     $sql .= " WHERE $column = $value_id";
+  //   }else{
+  //     $sql .= " WHERE $column = '$value_id'";
 
-    }
-    $update = $this->mysqli->query($sql);
-    $this->last_id = $value_id;
+  //   }
+  //   $update = $this->mysqli->query($sql);
+  //   $this->last_id = $value_id;
 
 
-  }
+  // }
 
   public function insertImage($name, $table, $column, $path)
   {
@@ -112,11 +113,14 @@ class database
         $img_upload_path = "$path" . $new_img_name;
 
         move_uploaded_file($tmp_name, $img_upload_path);
+
+        $update = "UPDATE $table SET $column = '$new_img_name' WHERE id = $this->last_id";
+        return $this->mysqli->query($update);
+      }else {
+        return false;
       }
 
-      $update = "UPDATE $table SET $column = '$new_img_name' WHERE id = $this->last_id";
-      echo $update;
-      $this->mysqli->query($update);
+      
     }
   }
 
@@ -126,7 +130,6 @@ class database
     $img_size = $_FILES["$name"]['size'];
     $tmp_name = $_FILES["$name"]['tmp_name'];
     $error = $_FILES["$name"]['error'];
-    echo "bobo ka";
 
 
 
@@ -138,11 +141,11 @@ class database
 
       if (in_array($img_ex_lc, $allowed_exs)) {
 
-        $result = $this->select($table, '*', 'id', $this->last_id);
-        echo $table. $column. "id" .  $this->last_id;
-        while($row = mysqli_fetch_assoc($result)) {
-          unlink("$path". $row["$column"]);
-        }
+        $result = $this->select($table, '*', ['id' => $this->last_id]);
+        $row = mysqli_fetch_assoc($result);
+        echo $path . $row["$column"];
+        unlink("$path" . $row["$column"]);
+        
 
         $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
 
@@ -151,31 +154,37 @@ class database
         move_uploaded_file($tmp_name, $img_upload_path);
 
         $update = "UPDATE $table SET $column = '$new_img_name' WHERE id = $this->last_id";
-        $this->mysqli->query($update);
+        return $this->mysqli->query($update);
+      }else {
+        return false;
       }
-
-
     }
   }
 
-  public function select($table, $rows = '*', $column = null, $value = null)
-  {
-    if ($column != null && $value != null) {
-      if (is_int($value)) {
-      $sql = "SELECT $rows FROM $table WHERE $column = $value";
-      } else {
-        $sql = "SELECT $rows FROM $table WHERE $column = '$value'";
-      }
-    } else {
-      $sql = "SELECT $rows FROM $table";
+  public function deleteImage ($photo_url, $path) {
+    if(isset($_GET["$photo_url"])){
+      unlink($path . $_GET["$photo_url"]);
     }
-
-    return $this->mysqli->query($sql);
   }
+
+  // public function select($table, $rows = '*', $column = null, $value = null)
+  // {
+  //   if ($column != null && $value != null) {
+  //     if (is_int($value)) {
+  //     $sql = "SELECT $rows FROM $table WHERE $column = $value";
+  //     } else {
+  //       $sql = "SELECT $rows FROM $table WHERE $column = '$value'";
+  //     }
+  //   } else {
+  //     $sql = "SELECT $rows FROM $table";
+  //   }
+
+  //   return $this->mysqli->query($sql);
+  // }
 
   public function selectDistinct($table, $row)
   {
-    $sql ="SELECT DISTINCT $row FROM $table";
+    $sql = "SELECT DISTINCT $row FROM $table";
     return $this->mysqli->query($sql);
   }
 
@@ -184,11 +193,51 @@ class database
 
     $sql = "DELETE FROM $table";
     $sql .= " WHERE $id ";
-    $result = $this->mysqli->query($sql);
+    return $this->mysqli->query($sql);
   }
 
   public function __destruct()
   {
     $this->mysqli->close();
+  }
+
+
+  public function updateData($table, $para = array(), $where = array(), $operator = 'AND')
+  {
+    $args = array();
+
+    foreach ($para as $key => $value) {
+      $args[] = "$key = '$value'";
+    }
+
+    $where_args = array();
+    foreach ($where as $key => $value) {
+      $where_args[] = "$key = '$value'";
+      $this->last_id = $value;
+    }
+
+    $sql = "UPDATE  $table SET " . implode(', ', $args);
+
+    if (!empty($where)) {
+      $sql .= " WHERE " . implode(" $operator ", $where_args);
+    }
+
+    return $this->mysqli->query($sql);
+  }
+
+  public function select($table, $rows = '*', $where = array(), $operator = 'AND')
+  {
+    $args = array();
+
+    foreach ($where as $key => $value) {
+      if (is_int($value)) {
+        $args[] = "$key = $value";
+      } else {
+        $args[] = "$key = '$value'";
+      }
+    }
+
+    $sql = "SELECT $rows FROM $table WHERE " . implode(" $operator ", $args);
+    return $this->mysqli->query($sql);
   }
 }

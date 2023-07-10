@@ -11,4 +11,6 @@
   $student_org = User::returnValueGet('studentOrg');
   header("location: admin-election.php?activeStudentOrg=$student_org&delete=success"); 
 
+  $admin->deleteImage('photoUrl', '../uploads/')
+
 ?>
