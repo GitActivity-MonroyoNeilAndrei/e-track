@@ -1,15 +1,3 @@
-<?php
-  include '../classes/database.php';
-  include '../classes/message.php';
-  include '../classes/user.php';
-  session_start();
-
-
-  User::ifNotLogin('admin-username', '../login-account/login-admin.php')
-
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,8 +8,7 @@
   <title>Admin Home Page</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
-  <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
-
+  <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
 </head>
 
 <body>
@@ -31,10 +18,10 @@
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn">Surename, First Name</button>
+        <button class="dropbtn"></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
-          <a href="../logout.php?logout=admin">Logout</a>
+          <a href="../logout.php?logout=student">Logout</a>
         </div>
       </div>
     </div>
@@ -42,8 +29,8 @@
       <div class="nav-links">
         <nav style="position: sticky; top: 4vh;">
           <ul>
-          <li onclick="window.location.href='admin-homepage.php'" class="bg-dark-gray2">Dashboard</li>
-            <li onclick="window.location.href='admin-election.php'">Election</li>
+            <li onclick="window.location.href='admin-homepage.php'">Dashboard</li>
+            <li onclick="window.location.href='admin-election.php'" class="bg-dark-gray2">Election</li>
             <li onclick="window.location.href='admin-student-organization.php'">Student Organization</li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
             <li onclick="window.location.href='admin-accomplishment-report.php'">Accomplishment Report</li>
@@ -55,23 +42,21 @@
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
-            <h5>Monitor Election</h5>
+            <h5>Deploy Ballot</h5>
           </div>
           <nav class="org-list-nav">
             <ul>
-              <li>SICSSO</li>
-              <li>ITSO</li>
-              <li>ESO</li>
-              <li>SCpES</li>
-              <li>ESO</li>
+
             </ul>
           </nav>
 
+          <div class="container-add-candidate">
+            <h5 class="text-center py-1">School Year: 2023-2024</h5>
+          </div>
 
         </div>
       </div>
     </div>
-
   </div>
 </body>
 

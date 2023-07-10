@@ -7,6 +7,13 @@ session_start();
 
 $admin = new database();
 
+if (!isset($_GET['activeStudentOrg'])) {
+  $result = $admin->selectDistinct('student_org', 'name_of_org');
+
+  $row = mysqli_fetch_assoc($result);
+  header("location: admin-election.php?activeStudentOrg=$row[name_of_org]");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +26,7 @@ $admin = new database();
   <title>Admin Home Page</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
-  <link rel="stylesheet" href="../css/style.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
 </head>
 
 <body>
@@ -69,6 +76,8 @@ $admin = new database();
           </nav>
           <?php if (isset($_REQUEST['addCandidateSuccess'])) {
             Message::candidateAdded();
+          } else if (isset($_REQUEST['editCandidateSuccess'])) {
+            Message::candidateEdited();
           } ?>
           <div class="container-add-candidate">
             <a class="add-candidate-btn" href="admin-add-candidate.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">+Add Candidate</a>
@@ -98,20 +107,18 @@ $admin = new database();
                     <td><?php echo $row['first_name']; ?></td>
                     <td><?php echo $row['last_name']; ?></td>
                     <td><?php echo $row['year']; ?></td>
-                    <td><a class="btn btn-secondary" href="../view-image.php?path=admin/uploads/&imageUrl=<?php echo $row['photo_url']; ?>">View</a></td>
+                    <td><a class="btn btn-secondary" href="../view-image.php?path=uploads/&imageUrl=<?php echo $row['photo_url']; ?>">View</a></td>
                     <td><?php echo $row['partylist']; ?></td>
                     <td>
-                      <a class="btn btn-success" href="admin-edit-candidate.php?candidateId=<?php echo $row['id']; ?>">Edit</a>
-                      <a class="btn btn-danger" href="admin-delete-candidate.php?candidateId=<?php echo $row['id']; ?>">Delete</a>
+                      <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>">Edit</a>
+                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>">Delete</a>
                     </td>
                   </tr>
-
-
-                <?php } ?>
-              </tbody>
+                      <?php } ?>
+                  </tbody>
             </table>
           </div>
-          <button class="btn btn-primary d-block mx-auto" onclick="window.location.href=''">Deploy Ballot</button>
+          <button class="btn btn-primary d-block mx-auto" onclick="window.location.href='admin-deploy-ballot.php?orgName=<?php User::printGet('activeStudentOrg') ?>'">Deploy Ballot</button>
         </div>
       </div>
     </div>

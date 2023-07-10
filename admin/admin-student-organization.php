@@ -20,7 +20,7 @@ $admin = new database();
   <title>Admin Home Page</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
-  <link rel="stylesheet" href="../css/style.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <style>
     .candidate-image {
       height: 100%;

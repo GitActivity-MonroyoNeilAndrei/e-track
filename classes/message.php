@@ -69,5 +69,11 @@ class Message
   {
     echo "<div class='alert alert-success' role='alert'> Candidate Added </div>";
   }
+
+  public static function candidateEdited()
+  {
+    echo "<div class='alert alert-success' role='alert'> Candidate Edit Successfully </div>";
+  }
+  
 }
 

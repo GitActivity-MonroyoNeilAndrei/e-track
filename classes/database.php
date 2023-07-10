@@ -6,6 +6,7 @@ class database
   private $password = '';
   private $dbname = 'etrack';
   public $last_id;
+  public $last_ballot;
   public $result = array();
   public $mysqli = '';
 
@@ -41,7 +42,7 @@ class database
 
     // gets the id of the  selected row
     while ($row = $check->fetch_assoc()) {
-      $this->last_id = $row['id'];
+      $this->last_ballot = $this->last_id = $row['id'];
     }
 
     if (!$check) {
@@ -66,6 +67,28 @@ class database
     } else {
       die('Invalid query: ' . $this->mysqli->error);
     }
+  }
+
+  public function updateData($table, $para = array(), $column, $value_id)
+  {
+    $args = array();
+
+    foreach ($para as $key => $value) {
+      $args[] = "$key = '$value'";
+    }
+
+    $sql = "UPDATE  $table SET " . implode(',', $args);
+
+    if(is_int($value)) {
+      $sql .= " WHERE $column = $value_id";
+    }else{
+      $sql .= " WHERE $column = '$value_id'";
+
+    }
+    $update = $this->mysqli->query($sql);
+    $this->last_id = $value_id;
+
+
   }
 
   public function insertImage($name, $table, $column, $path)
@@ -97,6 +120,44 @@ class database
     }
   }
 
+  public function updateImage($name, $table, $column, $path)
+  {
+    $img_name = $_FILES["$name"]['name'];
+    $img_size = $_FILES["$name"]['size'];
+    $tmp_name = $_FILES["$name"]['tmp_name'];
+    $error = $_FILES["$name"]['error'];
+    echo "bobo ka";
+
+
+
+    if ($error === 0) {
+      $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+      $img_ex_lc = strtolower($img_ex);
+
+      $allowed_exs = array('jpg', 'jpeg', 'png');
+
+      if (in_array($img_ex_lc, $allowed_exs)) {
+
+        $result = $this->select($table, '*', 'id', $this->last_id);
+        echo $table. $column. "id" .  $this->last_id;
+        while($row = mysqli_fetch_assoc($result)) {
+          unlink("$path". $row["$column"]);
+        }
+
+        $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
+
+        $img_upload_path = "$path" . $new_img_name;
+
+        move_uploaded_file($tmp_name, $img_upload_path);
+
+        $update = "UPDATE $table SET $column = '$new_img_name' WHERE id = $this->last_id";
+        $this->mysqli->query($update);
+      }
+
+
+    }
+  }
+
   public function select($table, $rows = '*', $column = null, $value = null)
   {
     if ($column != null && $value != null) {
@@ -114,12 +175,17 @@ class database
 
   public function selectDistinct($table, $row)
   {
-
     $sql ="SELECT DISTINCT $row FROM $table";
     return $this->mysqli->query($sql);
   }
 
+  public function delete($table, $id)
+  {
 
+    $sql = "DELETE FROM $table";
+    $sql .= " WHERE $id ";
+    $result = $this->mysqli->query($sql);
+  }
 
   public function __destruct()
   {

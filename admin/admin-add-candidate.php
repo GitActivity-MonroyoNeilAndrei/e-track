@@ -11,19 +11,20 @@ $candidateExist = false;
 
 User::ifGetNotIssetReturnTo('studentOrg', 'admin-election.php');
 
-if(isset($_POST['add-candidate'])) {
+if (isset($_POST['add-candidate'])) {
   $position = mysqli_escape_string($admin->mysqli, $_POST['position']);
   $first_name = mysqli_escape_string($admin->mysqli, $_POST['first-name']);
   $last_name = mysqli_escape_string($admin->mysqli, $_POST['last-name']);
   $year = mysqli_escape_string($admin->mysqli, $_POST['year']);
   $partylist = mysqli_escape_string($admin->mysqli, $_POST['partylist']);
+  $introduce_yourself = $_POST['introduce-yourself'];
 
-  if($admin->isExisted('candidate', ['position'=>$position, 'first_name'=>$first_name, 'last_name'=>$last_name, 'year'=>$year, 'partylist'=>$partylist, 'org_name'=>$org_name, 'org_name'=>User::returnValueGet('studentOrg')])) {
+  if ($admin->isExisted('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'org_name' => User::returnValueGet('studentOrg'),])) {
     $candidateExist = true;
-  }else {
-    $admin->insertData('candidate', ['position'=>$position, 'first_name'=>$first_name, 'last_name'=>$last_name, 'year'=>$year, 'partylist'=>$partylist, 'org_name'=>User::returnValueGet('studentOrg')]);
-    $admin->insertImage('candidate-image', 'candidate', 'photo_url', 'uploads/');
-    header("location: admin-election.php?addCandidateSuccess&activeStudentOrg=". User::returnValueGet('studentOrg'));
+  } else {
+    $admin->insertData('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'introduce_yourself' => $introduce_yourself, 'org_name' => User::returnValueGet('studentOrg')]);
+    $admin->insertImage('candidate-image', 'candidate', 'photo_url', '../uploads/');
+    header("location: admin-election.php?addCandidateSuccess&activeStudentOrg=" . User::returnValueGet('studentOrg'));
   }
 }
 
@@ -53,9 +54,24 @@ if(isset($_POST['add-candidate'])) {
 
   <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; " method="post" enctype="multipart/form-data">
     <h5 class="text-center">Add Candidate for <?php User::printGet('studentOrg') ?></h5>
-    <?php if($candidateExist) {Message::userAlreadyExist();} ?>
+    <?php if ($candidateExist) {
+      Message::userAlreadyExist();
+    } ?>
+
     <label class="form-label" for="position">Position</label>
-    <input class="form-control" type="text" name="position" required>
+    <select class="form-select" name="position">
+      <option selected value="President">President</option>
+      <option value="Vice President">Vice President</option>
+      <option value="Secretary">Secretary</option>
+      <option value="Treasurer">Treasurer</option>
+      <option value="Auditor">Auditor</option>
+      <option value="PIO">PIO</option>
+      <option value="Project Manager">Project Manager</option>
+      <option value="Sargeant at Arms">Sargeant at Arms</option>
+      <option value="Muse">Muse</option>
+      <option value="Escort">Escort</option>
+    </select>
+
     <label class="form-label" for="first-name">First Name</label>
     <input class="form-control" type="text" name="first-name" required>
     <label class="form-label" for="last-name">Last Name</label>
@@ -68,6 +84,10 @@ if(isset($_POST['add-candidate'])) {
     </div>
     <label class="form-label" for="partylist">Partylist</label>
     <input class="form-control" type="text" name="partylist" required>
+
+    <label class="form-label" for="introduce-yourself">Intoduce Yourself</label>
+    <textarea class="form-control" style="font-size: .85rem;" type="text" name="introduce-yourself" rows="6"> </textarea>
+
     <div class="d-flex justify-content-center align-items-center mt-3">
       <input class="btn btn-success me-3" type="submit" name="add-candidate" value="Add" required>
       <a class="btn btn-danger" href="admin-election.php?activeStudentOrg=<?php User::printGet('studentOrg') ?>">Cancel</a>
