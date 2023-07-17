@@ -35,8 +35,8 @@
 
 
     public static function returnValueSession($name_of_session) {
-      if(isset($_GET["$name_of_session"])) {
-        return $_GET["$name_of_session"];
+      if(isset($_SESSION["$name_of_session"])) {
+        return $_SESSION["$name_of_session"];
       }
     }
 

@@ -79,6 +79,12 @@ class Message
   {
     echo "<div class='alert alert-danger' role='alert'> Invalid File </div>";
   }
+
+  public static function voteSuccessfully()
+  {
+    echo "<div class='alert alert-success' role='alert'> Vote Successfully </div>";
+  }
+
   
 }
 

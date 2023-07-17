@@ -10,10 +10,13 @@
   if(isset($_POST['deploy'])) {
     $school_year = mysqli_escape_string($admin->mysqli, $_POST['school-year']);
     $exp_date = mysqli_escape_string($admin->mysqli, $_POST['exp-date']);
-
+    $can_vote = mysqli_escape_string($admin->mysqli, $_POST['can-vote']);
 
     $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], ['org_name'=>User::returnValueGet('orgName')]);
+    $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$can_vote]);
 
+
+    
 
     $active_student_org = User::returnValueGet('orgName');
     header("location: admin-election.php?activeStudentOrg=$active_student_org");
@@ -48,7 +51,10 @@
     <label class="form-label" for="school-year">School Year:</label>
     <input class="form-control" type="text" name="school-year" required>
     <label class="form-label" for="exp-date">Expiration Date:</label>
-    <input class="form-control" type="text" name="exp-date" required>
+    <input class="form-control" type="date" name="exp-date" required>
+
+    <label class="form-label" for="can-vote">Who can Vote?:</label>
+    <input class="form-control" type="text" name="can-vote" required>
     <div class="d-flex justify-content-center align-items-center mt-3">
       <input class="btn btn-success me-3" type="submit" name="deploy" value="Deploy" required>
       <a class="btn btn-danger" href="admin-election.php?activeStudentOrg=<?php User::printGet('orgName'); ?>">Cancel</a>

@@ -83,36 +83,85 @@ a {
   display: flex;
 }
 
+.nav-links {
+  /* min-width: 12rem; */
+  min-height: auto;
+  background-color: #364150;
+  color: #EEEEEE;
+}
+
+.nav-links nav ul {
+  text-decoration: none;
+  list-style: none;
+  padding: 0;
+  margin-top: 3rem;
+}
+
+.nav-links nav ul li {
+  text-align: center;
+  padding: .3rem 0;
+  margin: 0;
+}
+
+.nav-links nav ul li:hover {
+  background-color: #293545;
+  cursor: pointer;
+}
 
 .vote-section {
-  min-width: 12rem;
+  /* min-width: 12rem; */
+  position: sticky;
+  top: 0;
+}
+
+
+.vote-section-content {
+  font-size: .8em;
   border-radius: 8px;
   background-color: #5F5F5F;
   display: flex;
   flex-direction: column;
-  padding-top: 3rem;
-  position: sticky;
-  top: 0;
+  padding: 0 0 2rem;
   height: 100vh;
+  overflow-y: scroll;
 }
 
-div.vote-section h4 {
+
+
+.vote-section h4 {
+  font-size: 1.5em;
   color: white;
   text-align: center;
   font-weight: bold;
+  white-space: wrap;
 }
 
-div.vote-candidate {
+.vote-candidate {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  /* padding: 0 1rem; */
+}
+
+@media (max-width: 530px) {
+  .vote-candidate {
+    flex-direction: column;
+  }
 }
 
 
-div.vote-candidate label {
+.vote-candidate label {
+  font-size: 1.2em;
   text-align: center;
   color: white;
-  
+  flex-grow: 1;
+  white-space: nowrap;
+}
+
+@media (max-width: 530px) {
+  .vote-candidate {
+    white-space: wrap;
+  }
 }
 
 
@@ -144,6 +193,7 @@ div.vote-candidate label {
 
 
 .content {
+  flex-grow: 1;
   padding: .4rem;
   background-color: #EEEEEE;
 }

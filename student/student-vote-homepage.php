@@ -1,15 +1,35 @@
 <?php
-  include "../classes/database.php";
-  include "../classes/message.php";
-  include "../classes/user.php";
-  
-  session_start();
-  
-  $student = new database();
+include "../classes/database.php";
+include "../classes/message.php";
+include "../classes/user.php";
+
+session_start();
+
+$student = new database();
+
+if (!isset($_SESSION['student_id'])) {
+  header('location: login-student.php');
+}
+
+if (isset($_POST['submit'])) {
+
+  $positions = ['President', 'Vice_President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project_Manager', 'Sargeant_at_Arms', 'Muse', 'Escort'];
+
+  foreach ($positions as $position) {
+
+    if (isset($_POST["$position"])) {
+      $candidates = $_POST["$position"];
+
+      foreach ($candidates as $candidate) {
+        $student->incrementData('candidate', 'number_of_votes', ['id'=>"$candidate"]);
+      }
+    }
+  }
+  $result = $student->updateData('student', ['can_vote'=>''], ['student_id'=>User::returnValueSession('student_id')]);
 
 
-
-
+  header('location: student-vote.php?voteSuccessfully');
+}
 ?>
 
 
@@ -24,6 +44,7 @@
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
+  <script src="../js/script.js"></script>
 </head>
 
 <body>
@@ -42,53 +63,76 @@
     </div>
     <div class="page-content">
 
-      <div class="vote-section" style="position: sticky; top: 0; height: 100vh;">
-        <h4>President</h4>
-        <div class="vote-candidate">
-          <input class="form-check-input" type="checkbox">
-          <label for="">Neil Andrei Monroyo</label>
-        </div>
+      <div class="vote-section">
+        <form class="vote-section-content" style="position: sticky; top: 0; height: 100vh;" method="post">
+
+          <?php
+          $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+          foreach ($positions as $position) {
+          ?>
+            <div id="<?php echo $position; ?>">
+
+
+              <h4 class="mt-5"><?php echo $position; ?></h4>
+              <?php
+              $candidate = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
+              while ($row = mysqli_fetch_assoc($candidate)) {
+              ?>
+                <div class="vote-candidate ps-2">
+                  <input name="<?php echo str_replace(" ", "_", "$position"); ?>[]" class="form-check-input" type="checkbox" value="<?php echo $row['id']; ?>">
+
+                  <label for="<?php echo $position; ?>"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></label>
+                </div>
+              <?php } ?>
+            </div>
+            <script>
+              onlyTwoCheckBox("<?php echo $position ?>");
+            </script>
+          <?php } ?>
+
+          <input class="btn btn-primary mx-auto mt-4" type="submit" name="submit" value="Submit">
+        </form>
       </div>
+
 
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
-            <h5>Voting Ballot</h5>
+            <h5 class="text-start">Voting Ballot</h5>
           </div>
           <h6>Voting will expired in: july 20 2023</h6>
           <div class="container-add-candidate">
-            <h2 class="text-center py-1 fw-bold">Vote Responsible</h2>
+            <h2 class="text-center py-1 fw-bold">Vote Responsibly</h2>
           </div>
+
           <?php
-            $result = $student->select('candidate', '*', )
+
+          $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager',  'Sargeant at Arms', 'Muse', 'Escort'];
+          foreach ($positions as $position) {
 
           ?>
-          
-          <div class="candidate-container">
-            <h4>President</h4>
-            <div class="bg-secondary bg-gradient ">
-              <div class="candidate-image">
-                <img style="height: 100%; width: 100%;" src="../uploads/michael_iconic_freethrow_dunk.jpg" alt="candidate image">
-              </div>
-            </div>
-            <h4 class="mt-5">Candidate No. 1</h4>
-            <h5 class="fw-bold">Neil  Andrei Monroyo</h5>
-            <h5>Partylist</h5>
-            <p class="candidate-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, aperiam. Aperiam eius nihil optio accusantium nobis quam. Veritatis, amet animi itaque dignissimos facere harum totam mollitia nihil? Veniam, debitis aliquam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, consequuntur autem? In dolorem porro hic incidunt, dolor itaque soluta rerum officiis, ipsum molestias odit quas neque, praesentium voluptatum nihil explicabo.</p>
-          </div>
+            <h3 class="text-center fw-bold"><?php echo $position; ?></h3>
+            <!-- Candidates -->
+            <?php
+            $result = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
+            while ($row = mysqli_fetch_assoc($result)) {
+            ?>
 
-          <div class="candidate-container">
-            <div class="bg-secondary bg-gradient ">
-              <div class="candidate-image">
-                <img style="width: 100%; height: 100%;"  src="" alt="candidate image">
+              <div class="candidate-container">
+                <div class="bg-secondary bg-gradient ">
+                  <div class="candidate-image">
+                    <img style="height: 100%; width: 100%;" src="../uploads/<?php echo $row['photo_url'] ?>" alt="candidate image">
+                  </div>
+                </div>
+                <h4 class="mt-5">Candidate No. 1</h4>
+                <h5 class="fw-bold"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></h5>
+                <h5><?php echo $row['partylist'] . ' Partylist'; ?></h5>
+                <p class="candidate-description"><?php echo $row['introduce_yourself']; ?></p>
               </div>
-            </div>
-            <h4 class=" mt-5">Candidate No. 2</h4>
-            <h5 class=" fw-bold">Neil  Andrei Monroyo</h5>
-            <h5 class="">Partylist</h5>
-            <p class="candidate-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, aperiam. Aperiam eius nihil optio accusantium nobis quam. Veritatis, amet animi itaque dignissimos facere harum totam mollitia nihil? Veniam, debitis aliquam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, consequuntur autem? In dolorem porro hic incidunt, dolor itaque soluta rerum officiis, ipsum molestias odit quas neque, praesentium voluptatum nihil explicabo.</p>
+            <?php } ?>
 
-          </div>
+            <div style="margin-bottom: 5rem ;border-bottom: 8px solid green;"></div>
+          <?php } ?>
 
         </div>
       </div>

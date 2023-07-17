@@ -76,14 +76,32 @@ if (isset($_POST['edit-candidate'])) {
 
   <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; " method="post" enctype="multipart/form-data">
     <h5 class="text-center">Edit Candidate for <?php User::printGet('studentOrg') ?></h5>
+    
     <label class="form-label" for="position">Position</label>
-    <input class="form-control" type="text" name="position" value="<?php echo $position; ?>" required>
+    <select class="form-select" name="position">
+      <option selected value="President">President</option>
+      <option value="Vice President">Vice President</option>
+      <option value="Secretary">Secretary</option>
+      <option value="Treasurer">Treasurer</option>
+      <option value="Auditor">Auditor</option>
+      <option value="PIO">PIO</option>
+      <option value="Project Manager">Project Manager</option>
+      <option value="Sargeant at Arms">Sargeant at Arms</option>
+      <option value="Muse">Muse</option>
+      <option value="Escort">Escort</option>
+    </select>
+
     <label class="form-label" for="first-name">First Name</label>
     <input class="form-control" type="text" name="first-name" value="<?php echo $first_name; ?>" required>
     <label class="form-label" for="last-name">Last Name</label>
     <input class="form-control" type="text" name="last-name" value="<?php echo $last_name; ?>" required>
     <label class="form-label" for="year">Year</label>
-    <input class="form-control" type="text" name="year" value="<?php echo $year; ?>" required>
+    <select class="form-select" name="year">
+      <option <?php if($year == 'first') {echo 'selected';} ?> value="first">1st</option>
+      <option <?php if($year == 'second') {echo 'selected';} ?>  value="second">2nd</option>
+      <option <?php if($year == 'third') {echo 'selected';} ?>  value="third">3rd</option>
+      <option <?php if($year == 'fourth') {echo 'selected';} ?>  value="fourth">4th</option>
+    </select>
     <label for="">Upload Image</label>
     <div class="input-group mb-1">
       <input type="file" class="form-control" name="candidate-image">

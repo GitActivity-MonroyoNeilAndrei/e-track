@@ -110,7 +110,7 @@ class database
       if (in_array($img_ex_lc, $allowed_exs)) {
         $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
 
-        $img_upload_path = "$path" . $new_img_name;
+        $img_upload_path = $path . $new_img_name;
 
         move_uploaded_file($tmp_name, $img_upload_path);
 
@@ -223,6 +223,24 @@ class database
     }
 
     return $this->mysqli->query($sql);
+  }
+
+  public function incrementData($table, $column, $where = array(), $operator = 'AND') {
+
+    $where_args = array();
+    foreach($where as $key => $value) {
+      $where_args[] = "$key = $value";
+      $this->last_id = $value;
+    }
+
+    $sql = "UPDATE $table SET $column = $column + 1";
+
+    if (!empty($where)) {
+      $sql .= " WHERE " . implode(" $operator ", $where_args);
+    }
+    
+    return $this->mysqli->query($sql);
+
   }
 
   public function select($table, $rows = '*', $where = array(), $operator = 'AND')

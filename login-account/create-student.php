@@ -1,3 +1,44 @@
+<?php
+include '../classes/database.php';
+include '../classes/message.php';
+
+$studentExist  = false;
+$passwordIncorrect = false;
+
+$student = new database();
+
+if (isset($_POST['sign-up'])) {
+
+  $username = mysqli_escape_string($student->mysqli, $_POST['username']);
+  $first_name = mysqli_escape_string($student->mysqli, $_POST['first-name']);
+  $last_name = mysqli_escape_string($student->mysqli, $_POST['last-name']);
+  $address = mysqli_escape_string($student->mysqli, $_POST['address']);
+  $student_id = mysqli_escape_string($student->mysqli, $_POST['student-id']);
+  $course = mysqli_escape_string($student->mysqli, $_POST['course']);
+  $year_and_section = mysqli_escape_string($student->mysqli, $_POST['year-and-section']);
+  $contact_no = mysqli_escape_string($student->mysqli, $_POST['contact-no']);
+  $email = mysqli_escape_string($student->mysqli, $_POST['email']);
+  $password = md5($_POST['password']);
+  $confirm_password = md5($_POST['confirm-password']);
+
+
+  if (!$student->isExisted('student', ['student_id'=>$student_id, 'password'=>$password])) {
+    $studentExist = false;
+
+    if ($password == $confirm_password) {
+
+      $student->insertData('student', ['username' => $username, 'first_name' => $first_name, 'last_name' => $last_name, 'address' => $address, 'student_id' => $student_id, 'course' => $course, 'year_and_section'=>$year_and_section, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
+
+      header("location: login-student.php?login-success");
+    } else {
+      $passwordIncorrect = true;
+    }
+  } else {
+    $studentExist = true;
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +51,11 @@
 </head>
 <body>
   <img src="../images/msc_logo.png" alt="MSC logo">
-  <div class="wrapper">
+  <form method="post" class="wrapper">
     <h3 class="text-center">Create Account</h3>
+    <?php if ($studentExist) {
+      Message::userAlreadyExist();
+    } ?>
     <div>
       <label for="username">Username:</label>
       <input class="form-control" type="text" name="username" required>
@@ -38,17 +82,20 @@
     </div>
     <div>
       <label for="year_and_section">Year & Section:</label>
-      <input class="form-control" type="text" name="year_and_section" required>
+      <input class="form-control" type="text" name="year-and-section" required>
     </div>
     <div>
       <label for="contact-number">Contact No.:</label>
-      <input class="form-control" type="number" name="contact-number" required>
+      <input class="form-control" type="number" name="contact-no" required>
     </div>
     <div>
       <label for="email">Email:</label>
       <input class="form-control" type="email" name="email" required>
     </div>
     <div>
+    <?php if ($passwordIncorrect) {
+        Message::passwordDontMatch();
+      } ?>
       <label for="password">Password:</label>
       <input class="form-control" type="password" name="password" required>
     </div>
@@ -56,8 +103,8 @@
       <label for="confirm-password">Confirm Password:</label>
       <input class="form-control" type="password" name="confirm-password" required>
     </div>
-    <input class="btn btn-success" type="submit" value="Login" name="sign-up">
+    <input class="btn btn-success" type="submit" value="Sign Up" name="sign-up">
     <p class="text-center">Already have an Account?<br> <a href="login-student.php">Login here</a></p>
-  </div>
+  </form >
 </body>
 </html>
