@@ -13,7 +13,14 @@
     $can_vote = mysqli_escape_string($admin->mysqli, $_POST['can-vote']);
 
     $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], ['org_name'=>User::returnValueGet('orgName')]);
-    $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$can_vote]);
+    
+    $courses = explode(' ', $can_vote);
+
+    foreach($courses as $course) {
+      $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
+    }
+
+    
 
 
     
@@ -51,7 +58,7 @@
     <label class="form-label" for="school-year">School Year:</label>
     <input class="form-control" type="text" name="school-year" required>
     <label class="form-label" for="exp-date">Expiration Date:</label>
-    <input class="form-control" type="date" name="exp-date" required>
+    <input class="form-control" type="datetime-local" name="exp-date" required>
 
     <label class="form-label" for="can-vote">Who can Vote?:</label>
     <input class="form-control" type="text" name="can-vote" required>

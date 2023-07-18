@@ -31,7 +31,7 @@
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn">Surename, First Name</button>
+        <button class="dropbtn"><?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=admin">Logout</a>
@@ -44,9 +44,10 @@
           <ul>
           <li onclick="window.location.href='admin-homepage.php'" class="bg-dark-gray2">Dashboard</li>
             <li onclick="window.location.href='admin-election.php'">Election</li>
+            <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='admin-student-organization.php'">Student Organization</li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
-            <li onclick="window.location.href='admin-accomplishment-report.php'">Accomplishment Report</li>
+            <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
             <li onclick="window.location.href='admin-evaluation-of-activities.php'">Evaluation of Activities</li>
             <li onclick="window.location.href='admin-report-to-ovpsas.php'">Report to OVPSAS</li>
           </ul>
@@ -55,7 +56,7 @@
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
-            <h5>Monitor Election</h5>
+            <h5>Dashboard</h5>
           </div>
           <nav class="org-list-nav">
             <ul>

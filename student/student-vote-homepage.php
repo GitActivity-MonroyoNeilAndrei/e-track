@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
       }
     }
   }
-  $result = $student->updateData('student', ['can_vote'=>''], ['student_id'=>User::returnValueSession('student_id')]);
+  $result = $student->updateData('student', ['can_vote'=>'', 'can_monitor'=>User::returnValueGet('can_vote')], ['student_id'=>User::returnValueSession('student_id')]);
 
 
   header('location: student-vote.php?voteSuccessfully');
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"></button>
+        <button class="dropbtn"><?php User::printSession('student_name') ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=student">Logout</a>

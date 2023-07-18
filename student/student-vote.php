@@ -3,6 +3,9 @@ include "../classes/database.php";
 include "../classes/message.php";
 include "../classes/user.php";
 
+date_default_timezone_set('Asia/Manila');
+$date_time_now = date('Y-m-d') . 'T' . date('H:i');
+
 session_start();
 
 $student = new database();
@@ -33,7 +36,7 @@ if (!isset($_SESSION['student_id'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"></button>
+        <button class="dropbtn"><?php User::printSession('student_name') ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=student">Logout</a>
@@ -45,7 +48,7 @@ if (!isset($_SESSION['student_id'])) {
         <nav style="position: sticky; top: 4vh;">
           <ul>
             <li onclick="window.location.href='student-vote.php'" class="bg-dark-gray2">Vote</li>
-            <li onclick="window.location.href='student-view-results.php'">View Election Results</li>
+            <li onclick="window.location.href='student-monitor-result.php'">Monitor Election Result</li>
             <li onclick="window.location.href='student-monitor-activities.php'">Monitor Activities</li>
 
           </ul>
@@ -81,12 +84,14 @@ if (!isset($_SESSION['student_id'])) {
 
                 <?php
                 $result = $student->select('student', '*', ['student_id' => User::returnValueSession('student_id')]);
-
                 $row = mysqli_fetch_assoc($result);
+
+                $result2 = $student->select('candidate', '*', ['org_name'=>$row['can_vote']]);
+                $row2 = mysqli_fetch_assoc($result2);
                 // var_dump($row);
                 if ($row['can_vote'] == NULL || $row['can_vote'] == "") {
                   echo "<h4 class='text-center'>No Election Available</h4>";
-                }else {
+                }else if ( $row2['exp_date'] > $date_time_now) {
                 ?>
 
                 <td><?php echo $row['can_vote']; ?></td>

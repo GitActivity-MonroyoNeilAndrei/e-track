@@ -15,6 +15,7 @@ if(isset($_POST['login'])) {
 
   if($student->isExisted('student', ['student_id'=>$student_id, 'password'=>$password])){
     $_SESSION['student_id'] = $student->pullLastRowModified('student', 'student_id');
+    $_SESSION['student_name'] = $student->pullLastRowModified('student', 'first_name') . ' ' . $student->pullLastRowModified('student', 'last_name');
     $_SESSION['student-course'] = $student->pullLastRowModified('student', 'course');
     header("location: ../student/student-vote.php");
   }

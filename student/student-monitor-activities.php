@@ -1,3 +1,21 @@
+<?php
+include "../classes/database.php";
+include "../classes/message.php";
+include "../classes/user.php";
+
+session_start();
+date_default_timezone_set('Asia/Manila');
+
+$student = new database();
+
+
+if (!isset($_SESSION['student_id'])) {
+  header('login-student.php');
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +36,7 @@
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"></button>
+        <button class="dropbtn"><?php User::printSession('student_name'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=student">Logout</a>
@@ -30,7 +48,7 @@
         <nav style="position: sticky; top: 4vh;">
           <ul>
             <li onclick="window.location.href='student-vote.php'">Vote</li>
-            <li onclick="window.location.href='student-view-results.php'">View Election Results</li>
+            <li onclick="window.location.href='student-monitor-result.php'">Monitor Election Result</li>
             <li onclick="window.location.href='student-monitor-activities.php'" class="bg-dark-gray2">Monitor Activities</li>
 
           </ul>
