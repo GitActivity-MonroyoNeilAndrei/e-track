@@ -22,12 +22,12 @@ if (isset($_POST['sign-up'])) {
   $confirm_password = md5($_POST['confirm-password']);
 
 
-  if (!$student->isExisted('student', ['student_id'=>$student_id, 'password'=>$password])) {
+  if (!$student->isExisted('student', ['student_id' => $student_id, 'password' => $password])) {
     $studentExist = false;
 
     if ($password == $confirm_password) {
 
-      $student->insertData('student', ['username' => $username, 'first_name' => $first_name, 'last_name' => $last_name, 'address' => $address, 'student_id' => $student_id, 'course' => $course, 'year_and_section'=>$year_and_section, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
+      $student->insertData('student', ['username' => $username, 'first_name' => $first_name, 'last_name' => $last_name, 'address' => $address, 'student_id' => $student_id, 'course' => $course, 'year_and_section' => $year_and_section, 'contact_no' => $contact_no, 'email' => $email, 'password' => $password]);
 
       header("location: login-student.php?login-success");
     } else {
@@ -41,6 +41,7 @@ if (isset($_POST['sign-up'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,6 +50,7 @@ if (isset($_POST['sign-up'])) {
   <link rel="stylesheet" href="../css/login-create-account.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
 </head>
+
 <body>
   <img src="../images/msc_logo.png" alt="MSC logo">
   <form method="post" class="wrapper">
@@ -80,9 +82,14 @@ if (isset($_POST['sign-up'])) {
       <label for="course">Course:</label>
       <input class="form-control" type="text" name="course" required>
     </div>
-    <div>
-      <label for="year_and_section">Year & Section:</label>
-      <input class="form-control" type="text" name="year-and-section" required>
+    <div style="width: 100%;">
+      <label class="form-label" for="year-and-section">Year</label>
+      <select class="form-select " name="year-and-section">
+        <option selected value="first">1st</option>
+        <option value="second">2nd</option>
+        <option value="third">3rd</option>
+        <option value="fourth">4th</option>
+      </select>
     </div>
     <div>
       <label for="contact-number">Contact No.:</label>
@@ -93,7 +100,7 @@ if (isset($_POST['sign-up'])) {
       <input class="form-control" type="email" name="email" required>
     </div>
     <div>
-    <?php if ($passwordIncorrect) {
+      <?php if ($passwordIncorrect) {
         Message::passwordDontMatch();
       } ?>
       <label for="password">Password:</label>
@@ -105,6 +112,7 @@ if (isset($_POST['sign-up'])) {
     </div>
     <input class="btn btn-success" type="submit" value="Sign Up" name="sign-up">
     <p class="text-center">Already have an Account?<br> <a href="login-student.php">Login here</a></p>
-  </form >
+  </form>
 </body>
+
 </html>
