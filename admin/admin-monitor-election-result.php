@@ -82,6 +82,12 @@ if (!isset($_GET['activeStudentOrg'])) {
             </ul>
           </nav>
 
+
+
+
+          <!-- Monitors and Displays the deployed ballot to all users  -->
+
+
           <?php
 
           $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
@@ -89,20 +95,84 @@ if (!isset($_GET['activeStudentOrg'])) {
           $result2 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
           $row2 = mysqli_fetch_assoc($result2);
 
-          if(empty($row2)){
+          if (empty($row2)) {
             echo "<h2 class='text-center'>Nothing to Show</h2>";
-          }else {
+          } else {
 
-          if ($row2['exp_date'] > $date_time_now) {
+            if ($row2['exp_date'] > $date_time_now) {
 
           ?>
-            <h4 class="text-center fw-semibold">Election Results for <?php User::printGet('activeStudentOrg'); ?></h4>
+              <h4 class="text-center fw-semibold">Election Results for <?php User::printGet('activeStudentOrg'); ?></h4>
+              <?php
+              $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+              foreach ($positions as $position) {
+              ?>
+
+                <div class="table-responsive mb-4">
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-center" colspan="4">
+                          <h4 class="fw-medium bg-info"><?php echo $position; ?></h4>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th>Name</th>
+                        <th>Partylist</th>
+                        <th>Vote Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <?php
+                      $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
+
+                      while ($row = mysqli_fetch_assoc($result3)) {
+
+                      ?>
+                        <tr>
+                          <td><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></td>
+                          <td><?php echo $row['partylist']; ?></td>
+                          <td><?php echo $row['number_of_votes']; ?></td>
+                        </tr>
+                      <?php } ?>
+                    </tbody>
+                  </table>
+                </div>
+
+          <?php }
+            }
+          } ?>
+
+          <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+          <!-- Monitors and Displays the deployed ballot to all users  -->
+
+
+
+          <!-- diplays the winners of the election, and a button that will officially declare the officers -->
+
+          <?php
+
+          if (empty($row2)) {
+            // do nothing
+          } else if ($row2['exp_date'] <= $date_time_now) {
+            $limit = 1;
+          ?>
+
+            <h4 class="text-center fw-semibold">Final Election Results for <?php User::printGet('activeStudentOrg'); ?></h4>
             <?php
             $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
 
             foreach ($positions as $position) {
+              if (
+                $position == 'PIO' ||
+                $position == 'Project Manager' ||
+                $position == 'Sargeant at Arms'
+              ) {
+                $limit = 2;
+              }
             ?>
-
               <div class="table-responsive mb-4">
                 <table class="table table-striped table-hover">
                   <thead>
@@ -120,9 +190,16 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <tbody>
 
                     <?php
-                    $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
+                    $connection = new mysqli('localhost', 'root', '', 'etrack');
+                    $org_name = User::returnValueGet('activeStudentOrg');
+                    $sql = "SELECT * FROM candidate WHERE org_name = '$org_name' AND position = '$position' ORDER BY number_of_votes DESC LIMIT $limit";
+                    $result3 = $connection->query($sql);
+
+                    // $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
 
                     while ($row = mysqli_fetch_assoc($result3)) {
+
+                      $admin->updateData('candidate', ['status'=>'winner'], ['id'=>$row['id']]);
 
                     ?>
                       <tr>
@@ -135,8 +212,20 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </table>
               </div>
 
-          <?php }
-          } }?>
+
+            <?php } ?>
+
+            <div class="text-center">
+              <a class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Release</a>
+            </div>
+            
+
+
+          <?php } ?>
+
+          <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+          <!-- diplays the winners of the election, and a button that will officially declare the officers -->
+
 
         </div>
       </div>

@@ -91,7 +91,10 @@ if (!isset($_SESSION['student_id'])) {
                 // var_dump($row);
                 if ($row['can_vote'] == NULL || $row['can_vote'] == "") {
                   echo "<h4 class='text-center'>No Election Available</h4>";
-                }else if ( $row2['exp_date'] > $date_time_now) {
+                }else if ($row2) {
+
+                  $row2['exp_date'] > $date_time_now;
+
                 ?>
 
                 <td><?php echo $row['can_vote']; ?></td>

@@ -14,6 +14,29 @@ if (!isset($_GET['activeStudentOrg'])) {
   header("location: admin-election.php?activeStudentOrg=$row[name_of_org]");
 }
 
+
+
+// $result = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
+// $row = mysqli_fetch_assoc($result);
+
+// if ($row['exp_date'] > $date_time_now) {
+//   if (isset($_GET['activeStudentOrg'])) {
+//     if ($_GET['activeStudentOrg'] != "" && $_GET['activeStudentOrg'] != NULL) {
+
+//       $student_org = User::returnValueGet('activeStudentOrg');
+//       header("location: ../election-winners.php?studentOrg=$student_org");
+//     }
+//   }
+// }
+
+
+
+
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -98,7 +121,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </tr>
               </thead>
               <tbody>
-                <?php $result = $admin->select('candidate', '*',['org_name'=>User::returnValueGet('activeStudentOrg')] );
+                <?php $result = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
 
                 while ($row = mysqli_fetch_assoc($result)) {
                 ?>
@@ -113,10 +136,11 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td>
                       <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>">Edit</a>
                       <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>">Delete</a>
+
                     </td>
                   </tr>
-                      <?php } ?>
-                  </tbody>
+                <?php } ?>
+              </tbody>
             </table>
           </div>
           <button class="btn btn-primary d-block mx-auto" onclick="window.location.href='admin-deploy-ballot.php?orgName=<?php User::printGet('activeStudentOrg') ?>'">Deploy Ballot</button>

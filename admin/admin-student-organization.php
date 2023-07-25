@@ -42,7 +42,8 @@ $admin = new database();
       align-items: center;
     }
 
-    h6, h5 {
+    h6,
+    h5 {
       line-height: .7rem;
     }
 
@@ -91,6 +92,26 @@ $admin = new database();
           </div>
 
 
+          <nav class="org-list-nav mb-3">
+            <ul>
+              <?php
+              $result = $admin->selectDistinct('student_org', 'name_of_org');
+              while ($row = mysqli_fetch_assoc($result)) {
+              ?>
+
+                <li id="<?php echo $row['name_of_org']; ?>" onclick="window.location.href = 'admin-student-organization.php?activeStudentOrg=<?php echo $row['name_of_org'] ?>';"><?php echo $row['name_of_org']; ?></li>
+
+              <?php } ?>
+            </ul>
+          </nav>
+
+          <h4 class="text-center">Officers of <?php User::printGet('activeStudentOrg') ?></h4>
+          <h5 class="text-center mb-3">2023-2024</h5>
+
+
+
+          
+
           <div class="candidate-row">
             <div class="container">
               <div class="candidate-container">
@@ -110,7 +131,7 @@ $admin = new database();
             </div>
           </div>
           <div class="candidate-row">
-          <div class="container">
+            <div class="container">
               <div class="candidate-container">
                 <img class="candidate-image" src="" alt="">
               </div>
@@ -133,7 +154,7 @@ $admin = new database();
             </div>
           </div>
           <div class="candidate-row">
-          <div class="container">
+            <div class="container">
               <div class="candidate-container">
                 <img class="candidate-image" src="" alt="">
               </div>
@@ -170,7 +191,7 @@ $admin = new database();
             </div>
           </div>
           <div class="candidate-row">
-          <div class="container">
+            <div class="container">
               <div class="candidate-container">
                 <img class="candidate-image" src="" alt="">
               </div>
@@ -203,5 +224,13 @@ $admin = new database();
       </div>
     </div>
   </div>
+
+
+  <script defer>
+    let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
+    activeLink.style.backgroundColor = "#3C9811";
+    activeLink.style.color = "white";
+  </script>
+</body>
 
 </html>

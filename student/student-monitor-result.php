@@ -1,10 +1,13 @@
 <?php
+
+session_start();
+date_default_timezone_set('Asia/Manila');
+$date_time_now = date('Y-m-d') . 'T' . date('H:i');
+
 include "../classes/database.php";
 include "../classes/message.php";
 include "../classes/user.php";
 
-session_start();
-date_default_timezone_set('Asia/Manila');
 
 $student = new database();
 
@@ -12,6 +15,7 @@ $student = new database();
 if (!isset($_SESSION['student_id'])) {
   header('login-student.php');
 }
+
 
 ?>
 
@@ -67,14 +71,16 @@ if (!isset($_SESSION['student_id'])) {
           $org = mysqli_fetch_assoc($result);
 
 
-          $result2 = $student->select('candidate', 'exp_date', ['org_name'=>$org['can_monitor']]);
+          $result2 = $student->select('candidate', 'exp_date', ['org_name' => $org['can_monitor']]);
           $exp_date = mysqli_fetch_assoc($result2);
 
           $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 
 
           if ($org['can_monitor'] == NULL || $org['can_monitor'] == "") {
-            echo "<h4 class='text-center'>No Voting Result Available</h4>";
+            if($org['can_see_result'] == "" || $org['can_see_result'] == NULL) {
+              echo "<h4 class='text-center'>No Voting Result Available</h4>";
+            }
           } else if ($exp_date['exp_date'] > $date_time_now) {
           ?>
 
@@ -118,9 +124,123 @@ if (!isset($_SESSION['student_id'])) {
               </div>
 
           <?php }
-          }else {
-            $student->updateData('student', ['can_monitor'=>''], ['student_id'=>User::returnValueSession('student_id')]);
+          } else {
+            $student->updateData('student', ['can_monitor' => '', 'can_see_result'=> $org['can_monitor']], ['student_id' => User::returnValueSession('student_id')]);
           } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <!-- diplays the winners of the election, and a button that will officially declare the officers -->
+
+          <?php
+
+
+          $result4 = $student->select('student', '*', ['student_id' => User::returnValueSession('student_id')]);
+          $row2 = mysqli_fetch_assoc($result4);
+
+
+
+          $result5 = $student->select('candidate', '*', ['org_name' => $row2['can_see_result']]);
+          $row3 = mysqli_fetch_assoc($result5);
+
+          if(!$row3){
+            //do nothing
+          } else if($row2['can_see_result'] == " ") {
+            //do nothing
+          }else if ($row3['org_name'] != $row2['can_see_result']) {
+            
+            // do nothing
+          } else if ($row3['exp_date'] <= $date_time_now) {
+            $limit = 1;
+          ?>
+
+            <h4 class="text-center fw-semibold">Final Election Results for <?php echo $row2['can_see_result']; ?></h4>
+            <?php
+            $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+            foreach ($positions as $position) {
+              if (
+                $position == 'PIO' ||
+                $position == 'Project Manager' ||
+                $position == 'Sargeant at Arms'
+              ) {
+                $limit = 2;
+              }
+            ?>
+              <div class="table-responsive mb-4">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th class="text-center" colspan="4">
+                        <h4 class="fw-medium bg-info"><?php echo $position; ?></h4>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Name</th>
+                      <th>Partylist</th>
+                      <th>Vote Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <?php
+                    $connection = new mysqli('localhost', 'root', '', 'etrack');
+                    $org_name = $row2['can_see_result'];
+                    $sql = "SELECT * FROM candidate WHERE org_name = '$org_name' AND position = '$position' ORDER BY number_of_votes DESC LIMIT $limit";
+                    $result3 = $connection->query($sql);
+
+                    // $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
+
+                    while ($row = mysqli_fetch_assoc($result3)) {
+
+                    ?>
+                      <tr>
+                        <td><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></td>
+                        <td><?php echo $row['partylist']; ?></td>
+                        <td><?php echo $row['number_of_votes']; ?></td>
+                      </tr>
+                    <?php } ?>
+                  </tbody>
+                </table>
+              </div>
+
+
+            <?php } ?>
+
+
+
+          <?php } ?>
+
+          <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+          <!-- diplays the winners of the election, and a button that will officially declare the officers -->
+
+
+
+
+
 
         </div>
       </div>
