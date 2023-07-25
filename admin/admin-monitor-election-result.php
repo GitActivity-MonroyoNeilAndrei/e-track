@@ -11,6 +11,9 @@ session_start();
 
 $admin = new database();
 
+User::ifNotLogin('admin-username', '../login-account/login-admin.php');
+
+
 if (!isset($_GET['activeStudentOrg'])) {
   $result = $admin->selectDistinct('student_org', 'name_of_org');
 

@@ -7,6 +7,9 @@ session_start();
 
 $admin = new database();
 
+User::ifNotLogin('admin-username', '../login-account/login-admin.php');
+
+
 
 if (!isset($_GET['activeStudentOrg'])) {
   $result = $admin->selectDistinct('student_org', 'name_of_org');
@@ -157,14 +160,14 @@ $latest_school_year = $row['school_year'];
               $full_name = "$row[first_name]" . " " . "$row[last_name]";
 
               $officers += ["$row[position]" . $project_manager => $full_name];
-              $images += ["$row[position]" . $PIO => $row['photo_url']];
+              $images += ["$row[position]" . $project_manager => $row['photo_url']];
             } else if ($row['position'] == 'Sargeant at Arms') {
               $sargeant_at_arms += 1;
 
               $full_name = "$row[first_name]" . " " . "$row[last_name]";
 
               $officers += ["$row[position]" . $sargeant_at_arms => $full_name];
-              $images += ["$row[position]" . $PIO => $row['photo_url']];
+              $images += ["$row[position]" . $sargeant_at_arms => $row['photo_url']];
             } else {
               $full_name = "$row[first_name]" . " " . "$row[last_name]";
 
@@ -173,19 +176,7 @@ $latest_school_year = $row['school_year'];
             }
           }
 
-
-
-
           ?>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -214,7 +205,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['President']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['President']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['President']; ?></h5>
@@ -242,7 +233,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Secretary']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Secretary']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Secretary']; ?></h5>
@@ -267,7 +258,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Vice President']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Vice President']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Vice President']; ?></h5>
@@ -292,7 +283,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Treasurer']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Treasurer']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Treasurer']; ?></h5>
@@ -319,11 +310,11 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Project Manager1']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Project Manager1']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Project Manager1']; ?></h5>
-                <h6 class="fst-italic">President</h6>
+                <h6 class="fst-italic">Project Manager</h6>
 
               <?php } else { ?>
 
@@ -344,7 +335,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['PIO1']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['PIO1']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['PIO1']; ?></h5>
@@ -369,7 +360,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Auditor']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Auditor']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Auditor']; ?></h5>
@@ -394,7 +385,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['PIO2']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['PIO2']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['PIO2']; ?></h5>
@@ -419,7 +410,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Project Manager2']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Project Manager2']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Project Manager2']; ?></h5>
@@ -446,7 +437,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Sargeant at Arms1']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms1']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Sargeant at Arms1']; ?></h5>
@@ -471,7 +462,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Muse']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Muse']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Muse']; ?></h5>
@@ -496,7 +487,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Escort']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Escort']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Escort']; ?></h5>
@@ -521,7 +512,7 @@ $latest_school_year = $row['school_year'];
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="<?php echo $images['Sargeant at Arms2']; ?>" alt="">
+                  <img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms2']; ?>" alt="">
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Sargeant at Arms2']; ?></h5>

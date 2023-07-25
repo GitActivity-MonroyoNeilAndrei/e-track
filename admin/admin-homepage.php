@@ -5,7 +5,7 @@
   session_start();
 
 
-  User::ifNotLogin('admin-username', '../login-account/login-admin.php')
+  User::ifNotLogin('admin-username', '../login-account/login-admin.php');
 
 ?>
 
