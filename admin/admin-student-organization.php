@@ -28,7 +28,12 @@ $sql = "SELECT DISTINCT school_year FROM officers WHERE org_name = '$org_name' O
 $result = $connection->query($sql);
 $row = mysqli_fetch_assoc($result);
 
-$latest_school_year = $row['school_year'];
+$latest_school_year = "";
+if($row){
+  $latest_school_year = $row['school_year'];
+}
+
+
 
 
 ?>
@@ -51,18 +56,24 @@ $latest_school_year = $row['school_year'];
     }
 
     .candidate-container {
-      border: 1px solid black;
+      border: 1px solid #888888;
       width: 5rem;
       height: 5rem;
       border-radius: 35%;
       overflow: hidden;
       margin-bottom: .3rem;
+      box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    .container h5 {
+      text-align: center;
+      line-height: 1rem;
     }
 
     h6,
@@ -186,15 +197,7 @@ $latest_school_year = $row['school_year'];
 
 
 
-          <div class="candidate-row">
-            <div class="container">
-              <div class="candidate-container">
-                <img class="candidate-image" src="" alt="">
-              </div>
-              <h5 class="fw-medium">tanga ka</h5>
-              <h6 class="fst-italic">Adviser</h6>
-            </div>
-          </div>
+
           <div class="candidate-row">
             <div class="container">
 
@@ -531,9 +534,22 @@ $latest_school_year = $row['school_year'];
             </div>
           </div>
 
+          <div class="candidate-row">
+            <div class="container">
+              <!-- <div class="candidate-container">
+                <img class="candidate-image" src="" alt="">
+              </div> -->
+              <h5 class="fw-medium">tanga ka</h5>
+              <h6 class="fst-italic">Adviser</h6>
+            </div>
+          </div>
 
+          <?php if($admin->isExisted('officers', ['org_name'=>User::returnValueGet('activeStudentOrg')])){ ?>
+          <div class="d-flex justify-content-center mt-4 mb-2">
+            <a class="btn btn-primary" href="admin-edit-organization.php?studentOrg=<?php User::printGet('activeStudentOrg') ?>&latestSchoolYear=<?php echo $latest_school_year; ?>">Edit Members</a>
 
-
+          </div>
+          <?php } ?>
 
         </div>
       </div>
