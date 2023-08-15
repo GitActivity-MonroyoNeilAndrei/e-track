@@ -47,7 +47,7 @@ if($row){
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Home Page</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
-  <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <style>
     .candidate-image {
@@ -109,6 +109,7 @@ if($row){
         <nav style="position: sticky; top: 4vh;">
           <ul>
             <li onclick="window.location.href='admin-dashboard.php'">Dashboard</li>
+            <li onclick="window.location.href='admin-list-of-users.php'" class="mb-4 border-bottom border-dark">List of Users</li>
             <li onclick="window.location.href='admin-election.php'">Election</li>
             <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='admin-student-organization.php'" class="bg-dark-gray2">Student Organization</li>

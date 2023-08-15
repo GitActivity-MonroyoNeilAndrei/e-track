@@ -48,7 +48,7 @@ if (isset($_POST['sign-up'])) {
   <title>Create Student Account</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/login-create-account.css?<?php echo time(); ?>">
-  <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
 </head>
 
 <body>

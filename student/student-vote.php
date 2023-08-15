@@ -3,6 +3,8 @@ include "../classes/database.php";
 include "../classes/message.php";
 include "../classes/user.php";
 
+User::ifNotLogin('student-username', '../login-account/login-student.php');
+
 date_default_timezone_set('Asia/Manila');
 $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 
@@ -25,7 +27,7 @@ if (!isset($_SESSION['student_id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Home Page</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
-  <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
 </head>
 
@@ -98,7 +100,7 @@ if (!isset($_SESSION['student_id'])) {
                 ?>
 
                 <td><?php echo $row['can_vote']; ?></td>
-                <td>Expiry Date</td>
+                <td><?php echo $row2['exp_date']; ?></td>
                 <td><a href="student-vote-homepage.php?can_vote=<?php echo $row['can_vote']; ?>" class="btn btn-primary">Vote</a></td>
                   
                 <?php } ?>

@@ -245,6 +245,11 @@ class database
 
   public function select($table, $rows = '*', $where = array(), $operator = 'AND')
   {
+    if (empty($where)) {
+      $sql = "SELECT $rows FROM $table";
+      return $this->mysqli->query($sql);
+    }
+
     $args = array();
 
     foreach ($where as $key => $value) {

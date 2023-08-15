@@ -3,6 +3,7 @@
   font-family: 'Inter';
   padding: 0;
   margin: 0;
+  word-wrap: break-word;
 }
 
 a {
@@ -110,7 +111,7 @@ div.nav-links nav ul li:hover {
 
 
 .content {
-  width: 100%;
+  width: 90%;
   padding: .4rem;
   background-color: #EEEEEE;
 }
@@ -134,7 +135,7 @@ div.nav-links nav ul li:hover {
   text-decoration: none;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 1rem;
   border-radius: 20px;
 }
 
@@ -262,7 +263,9 @@ button.dropbtn {
 }
 
 
-
+table {
+  word-wrap: break-word;
+}
 
 
 

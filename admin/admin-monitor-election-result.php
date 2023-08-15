@@ -33,7 +33,7 @@ if (!isset($_GET['activeStudentOrg'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Home Page</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
-  <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
 
 </head>
@@ -57,6 +57,7 @@ if (!isset($_GET['activeStudentOrg'])) {
         <nav style="position: sticky; top: 4vh;">
           <ul>
             <li onclick="window.location.href='admin-homepage.php'">Dashboard</li>
+            <li onclick="window.location.href='admin-list-of-users.php'" class="mb-4 border-bottom border-dark">List of Users</li>
             <li onclick="window.location.href='admin-election.php'">Election</li>
             <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark bg-dark-gray2">Monitor Election Result </li>
             <li onclick="window.location.href='admin-student-organization.php'">Student Organization</li>
@@ -117,7 +118,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <thead>
                       <tr>
                         <th class="text-center" colspan="4">
-                          <h4 class="fw-medium bg-info"><?php echo $position; ?></h4>
+                          <h4 class="fw-medium bg-success-subtle"><?php echo $position; ?></h4>
                         </th>
                       </tr>
                       <tr>

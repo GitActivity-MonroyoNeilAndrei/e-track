@@ -30,7 +30,7 @@ if(isset($_POST['login'])) {
   <title>Login Student Account</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/login-create-account.css?<?php echo time(); ?>">
-  <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
 </head>
 <body>
   <img src="../images/msc_logo.png" alt="MSC logo">

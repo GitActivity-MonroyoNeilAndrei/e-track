@@ -3,6 +3,8 @@ include "../classes/database.php";
 include "../classes/message.php";
 include "../classes/user.php";
 
+User::ifNotLogin('student-username', '../login-account/login-student.php');
+
 session_start();
 
 $student = new database();
@@ -42,7 +44,7 @@ if (isset($_POST['submit'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Home Page</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
-  <link rel="stylesheet" href="../css/bootstrap.css?<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
   <script src="../js/script.js"></script>
 </head>
