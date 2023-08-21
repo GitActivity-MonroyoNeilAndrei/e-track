@@ -213,7 +213,6 @@ class database
     $where_args = array();
     foreach ($where as $key => $value) {
       $where_args[] = "$key = '$value'";
-      $this->last_id = $value;
     }
 
     $sql = "UPDATE  $table SET " . implode(', ', $args);
@@ -222,6 +221,7 @@ class database
       $sql .= " WHERE " . implode(" $operator ", $where_args);
     }
 
+    $this->last_id = $value;
     return $this->mysqli->query($sql);
   }
 

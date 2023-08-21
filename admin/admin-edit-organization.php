@@ -80,30 +80,43 @@ if (isset($_POST['edit'])) {
 
 
   $admin->updateData('officers', ['first_name' => $president_first_name, 'last_name' => $president_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['President'][2]]);
+  $admin->updateImage('president-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $vice_president_first_name, 'last_name' => $vice_president_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Vice President'][2]]);
+  $admin->updateImage('vice-president-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $secretary_first_name, 'last_name' => $secretary_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Secretary'][2]]);
+  $admin->updateImage('secretary-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $treasurer_first_name, 'last_name' => $treasurer_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Treasurer'][2]]);
+  $admin->updateImage('treasurer-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $auditor_first_name, 'last_name' => $auditor_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Auditor'][2]]);
+  $admin->updateImage('auditor-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $pio1_first_name, 'last_name' => $pio1_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['PIO1'][2]]);
+  $admin->updateImage('pio-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $pio2_first_name, 'last_name' => $pio2_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['PIO2'][2]]);
+  $admin->updateImage('pio2-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $project_manager1_first_name, 'last_name' => $project_manager1_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Project Manager1'][2]]);
+  $admin->updateImage('project-manager-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $project_manager2_first_name, 'last_name' => $project_manager2_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Project Manager2'][2]]);
+  $admin->updateImage('project-manager2-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $sargeant_at_arms1_first_name, 'last_name' => $sargeant_at_arms1_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Sargeant at Arms1'][2]]);
+  $admin->updateImage('sargeant-at-arms-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $sargeant_at_arms2_first_name, 'last_name' => $sargeant_at_arms2_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Sargeant at Arms2'][2]]);
+  $admin->updateImage('sargeant-at-arms2-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $muse_first_name, 'last_name' => $muse_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Muse'][2]]);
+  $admin->updateImage('muse-image', 'officers', 'photo_url', '../uploads/');
 
   $admin->updateData('officers', ['first_name' => $escort_first_name, 'last_name' => $escort_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['Escort'][2]]);
+  $admin->updateImage('escort-image', 'officers', 'photo_url', '../uploads/');
 
   $org_name = User::returnValueGet('studentOrg');
   header("location: admin-student-organization.php?activeStudentOrg=$org_name");
@@ -157,7 +170,7 @@ if (isset($_POST['edit'])) {
 
 <body>
   <img src="../images/msc_logo.png" alt="MSC logo">
-  <div class="wrapper">
+  <div class="wrapper" style="max-width: 22rem;">
     <h3 class="text-center">Edit Members</h3>
     <form method="post">
       <div>
@@ -176,12 +189,13 @@ if (isset($_POST['edit'])) {
       </div>
     </form>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
       <div>
         <label for="president">President:</label>
         <div class="d-flex">
           <input class="form-control" type="text" name="president-first-name" value="<?php echo $officers['President'][0]; ?>" required>
           <input class="form-control" type="text" name="president-last-name" value="<?php echo $officers['President'][1]; ?>" required>
+          <input class="form-control" type="file" name="president-image">
         </div>
       </div>
       <div>
@@ -189,6 +203,7 @@ if (isset($_POST['edit'])) {
         <div class="d-flex">
           <input class="form-control" type="text" name="vice-president-first-name" value="<?php echo $officers['Vice President'][0]; ?>" required>
           <input class="form-control" type="text" name="vice-president-last-name" value="<?php echo $officers['Vice President'][1]; ?>" required>
+          <input class="form-control" type="file" name="vice-president-image">
         </div>
       </div>
       <div>
@@ -196,6 +211,7 @@ if (isset($_POST['edit'])) {
         <div class="d-flex">
           <input class="form-control" type="text" name="secretary-first-name" value="<?php echo $officers['Secretary'][0]; ?>" required>
           <input class="form-control" type="text" name="secretary-last-name" value="<?php echo $officers['Secretary'][1]; ?>" required>
+          <input class="form-control" type="file" name="secretary-image">
         </div>
       </div>
       <div>
@@ -203,6 +219,7 @@ if (isset($_POST['edit'])) {
         <div class="d-flex">
           <input class="form-control" type="text" name="treasurer-first-name" value="<?php echo $officers['Treasurer'][0]; ?>" required>
           <input class="form-control" type="text" name="treasurer-last-name" value="<?php echo $officers['Treasurer'][1]; ?>" required>
+          <input class="form-control" type="file" name="treasurer-image">
         </div>
       </div>
       <div>
@@ -210,6 +227,7 @@ if (isset($_POST['edit'])) {
         <div class="d-flex">
           <input class="form-control" type="text" name="auditor-first-name" value="<?php echo $officers['Auditor'][0]; ?>" required>
           <input class="form-control" type="text" name="auditor-last-name" value="<?php echo $officers['Auditor'][1]; ?>" required>
+          <input class="form-control" type="file" name="auditor-image">
         </div>
       </div>
       <div>
@@ -217,18 +235,21 @@ if (isset($_POST['edit'])) {
         <div class="d-flex">
           <input class="form-control" type="text" name="pio1-first-name" value="<?php echo $officers['PIO1'][0]; ?>" required>
           <input class="form-control" type="text" name="pio1-last-name" value="<?php echo $officers['PIO1'][1]; ?>" required>
+          <input class="form-control" type="file" name="pio-image">
         </div>
         <div>
           <label for="pio2">PIO 2:</label>
           <div class="d-flex">
             <input class="form-control" type="text" name="pio2-first-name" value="<?php echo $officers['PIO2'][0]; ?>" required>
             <input class="form-control" type="text" name="pio2-last-name" value="<?php echo $officers['PIO2'][1]; ?>" required>
+            <input class="form-control" type="file" name="pio2-image">
           </div>
           <div>
             <label for="project-manager">Project Manager:</label>
             <div class="d-flex">
               <input class="form-control" type="text" name="project-manager1-first-name" value="<?php echo $officers['Project Manager1'][0]; ?>" required>
               <input class="form-control" type="text" name="project-manager1-last-name" value="<?php echo $officers['Project Manager1'][1]; ?>" required>
+              <input class="form-control" type="file" name="project-manager-image">
             </div>
           </div>
           <div>
@@ -236,6 +257,7 @@ if (isset($_POST['edit'])) {
             <div class="d-flex">
               <input class="form-control" type="text" name="project-manager2-first-name" value="<?php echo $officers['Project Manager2'][0]; ?>" required>
               <input class="form-control" type="text" name="project-manager2-last-name" value="<?php echo $officers['Project Manager2'][1]; ?>" required>
+              <input class="form-control" type="file" name="project-manager2-image">
             </div>
           </div>
           <div>
@@ -243,6 +265,7 @@ if (isset($_POST['edit'])) {
             <div class="d-flex">
               <input class="form-control" type="text" name="sargeant-at-arms1-first-name" value="<?php echo $officers['Sargeant at Arms1'][0]; ?>" required>
               <input class="form-control" type="text" name="sargeant-at-arms1-last-name" value="<?php echo $officers['Sargeant at Arms1'][1]; ?>" required>
+              <input class="form-control" type="file" name="sargeant-at-arms-image">
             </div>
           </div>
           <div>
@@ -250,6 +273,7 @@ if (isset($_POST['edit'])) {
             <div class="d-flex">
               <input class="form-control" type="text" name="sargeant-at-arms2-first-name" value="<?php echo $officers['Sargeant at Arms2'][0]; ?>" required>
               <input class="form-control" type="text" name="sargeant-at-arms2-last-name" value="<?php echo $officers['Sargeant at Arms2'][1]; ?>" required>
+              <input class="form-control" type="file" name="sargeant-at-arms2-image">
             </div>
           </div>
           <div>
@@ -257,6 +281,7 @@ if (isset($_POST['edit'])) {
             <div class="d-flex">
               <input class="form-control" type="text" name="muse-first-name" value="<?php echo $officers['Muse'][0]; ?>" required>
               <input class="form-control" type="text" name="muse-last-name" value="<?php echo $officers['Muse'][1]; ?>" required>
+              <input class="form-control" type="file" name="muse-image">
             </div>
           </div>
           <div>
@@ -264,6 +289,7 @@ if (isset($_POST['edit'])) {
             <div class="d-flex">
               <input class="form-control" type="text" name="escort-first-name" value="<?php echo $officers['Escort'][0]; ?>" required>
               <input class="form-control" type="text" name="escort-last-name" value="<?php echo $officers['Escort'][1]; ?>" required>
+              <input class="form-control" type="file" name="escort-image">
             </div>
           </div>
 

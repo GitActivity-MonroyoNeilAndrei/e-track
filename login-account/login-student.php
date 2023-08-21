@@ -6,7 +6,7 @@ session_start();
 
 $student = new database();
 
-User::ifLogin('student-username', '../student/student-homepage.php');
+User::ifLogin('student_id', '../student/student-vote.php');
 
 
 if(isset($_POST['login'])) {
@@ -46,7 +46,6 @@ if(isset($_POST['login'])) {
       <input class="form-control" type="password" name="password" required>
     </div>
     <input class="btn btn-success" type="submit" value="Login" name="login">
-    <p class="text-center">Don't have an account?<br> <a href="create-student.php">Create an Account</a></p>
   </form >
 </body>
 </html>

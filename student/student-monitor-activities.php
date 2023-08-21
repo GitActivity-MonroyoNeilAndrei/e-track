@@ -3,7 +3,6 @@ include "../classes/database.php";
 include "../classes/message.php";
 include "../classes/user.php";
 
-User::ifNotLogin('student-username', '../login-account/login-student.php');
 
 session_start();
 date_default_timezone_set('Asia/Manila');
@@ -12,7 +11,7 @@ $student = new database();
 
 
 if (!isset($_SESSION['student_id'])) {
-  header('login-student.php');
+  header('location: ../login-account/login-student.php');
 }
 
 ?>
@@ -29,6 +28,7 @@ if (!isset($_SESSION['student_id'])) {
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
+  <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -38,7 +38,7 @@ if (!isset($_SESSION['student_id'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><?php User::printSession('student_name'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=student">Logout</a>

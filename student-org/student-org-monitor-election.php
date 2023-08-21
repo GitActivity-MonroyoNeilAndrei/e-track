@@ -9,17 +9,11 @@ $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 
 session_start();
 
-$admin = new database();
+$student_org = new database();
 
-User::ifNotLogin('admin-username', '../login-account/login-admin.php');
+User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
 
 
-if (!isset($_GET['activeStudentOrg'])) {
-  $result = $admin->selectDistinct('student_org', 'name_of_org');
-
-  $row = mysqli_fetch_assoc($result);
-  header("location: admin-monitor-election-result.php?activeStudentOrg=$row[name_of_org]");
-}
 
 ?>
 
@@ -31,7 +25,7 @@ if (!isset($_GET['activeStudentOrg'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Home Page</title>
+  <title>Monitor Election</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
@@ -45,10 +39,10 @@ if (!isset($_GET['activeStudentOrg'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
-          <a href="../logout.php?logout=admin">Logout</a>
+          <a href="../logout.php?logout=student_org">Logout</a>
         </div>
       </div>
     </div>
@@ -56,16 +50,10 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="nav-links">
         <nav style="position: sticky; top: 4vh;">
           <ul>
-            <li onclick="window.location.href='admin-homepage.php'">Dashboard</li>
-            <li onclick="window.location.href='admin-list-of-users.php'" class="mb-4 border-bottom border-dark">List of Users</li>
-            <li onclick="window.location.href='admin-election.php'">Election</li>
-            <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark bg-dark-gray2">Monitor Election Result </li>
-            <li onclick="window.location.href='admin-student-organization.php'">Student Organization</li>
+          <li onclick="window.location.href='student-org-homepage.php'">Dashboard</li>
+            <li onclick="window.location.href='student-org-monitor-election.php'" class="mb-4 border-bottom border-dark bg-dark-gray2">Monitor Election Result </li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
-            <li onclick="window.location.href='admin-monitor-plan-of-activities.php'">Monitor Plan of Activities</li>
             <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
-            <li onclick="window.location.href='admin-evaluation-of-activities.php'">Evaluation of Activities</li>
-            <li onclick="window.location.href='admin-report-to-ovpsas.php'">Report to OVPSAS</li>
           </ul>
         </nav>
       </div>
@@ -74,18 +62,6 @@ if (!isset($_GET['activeStudentOrg'])) {
           <div class="content-header">
             <h5>Monitor Election</h5>
           </div>
-          <nav class="org-list-nav">
-            <ul>
-              <?php
-              $result = $admin->selectDistinct('student_org', 'name_of_org');
-              while ($row = mysqli_fetch_assoc($result)) {
-              ?>
-
-                <li id="<?php echo $row['name_of_org']; ?>" onclick="window.location.href = 'admin-monitor-election-result.php?activeStudentOrg=<?php echo $row['name_of_org'] ?>';"><?php echo $row['name_of_org']; ?></li>
-
-              <?php } ?>
-            </ul>
-          </nav>
 
 
 
@@ -97,7 +73,7 @@ if (!isset($_GET['activeStudentOrg'])) {
 
           $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
 
-          $result2 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
+          $result2 = $student_org->select('candidate', '*', ['org_name' => User::returnValueSession('name_of_org')]);
           $row2 = mysqli_fetch_assoc($result2);
 
           if (empty($row2)) {
@@ -107,7 +83,7 @@ if (!isset($_GET['activeStudentOrg'])) {
             if ($row2['exp_date'] > $date_time_now) {
 
           ?>
-              <h4 class="text-center fw-semibold">Election Results for <?php User::printGet('activeStudentOrg'); ?></h4>
+              <h4 class="text-center fw-semibold">Election Results for <?php User::printSession('name_of_org'); ?></h4>
               <?php
               $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
 
@@ -131,7 +107,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <tbody>
 
                       <?php
-                      $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
+                      $result3 = $student_org->select('candidate', '*', ['org_name' => User::returnValueSession('name_of_org'), 'position' => $position]);
 
                       while ($row = mysqli_fetch_assoc($result3)) {
 
@@ -165,7 +141,7 @@ if (!isset($_GET['activeStudentOrg'])) {
             $limit = 1;
           ?>
 
-            <h4 class="text-center fw-semibold">Final Election Results for <?php User::printGet('activeStudentOrg'); ?></h4>
+            <h4 class="text-center fw-semibold">Final Election Results for <?php User::printSession('name_of_org'); ?></h4>
             <?php
             $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
 
@@ -196,15 +172,15 @@ if (!isset($_GET['activeStudentOrg'])) {
 
                     <?php
                     $connection = new mysqli('localhost', 'root', '', 'etrack');
-                    $org_name = User::returnValueGet('activeStudentOrg');
+                    $org_name = User::returnValueSession('name_of_org');
                     $sql = "SELECT * FROM candidate WHERE org_name = '$org_name' AND position = '$position' ORDER BY number_of_votes DESC LIMIT $limit";
                     $result3 = $connection->query($sql);
 
-                    // $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
+                    // $result3 = $student_org->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
 
                     while ($row = mysqli_fetch_assoc($result3)) {
 
-                      $admin->updateData('candidate', ['status'=>'winner'], ['id'=>$row['id']]);
+                      $student_org->updateData('candidate', ['status'=>'winner'], ['id'=>$row['id']]);
 
                     ?>
                       <tr>
@@ -220,9 +196,6 @@ if (!isset($_GET['activeStudentOrg'])) {
 
             <?php } ?>
 
-            <div class="text-center">
-              <a class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Release</a>
-            </div>
             
 
 
@@ -238,11 +211,6 @@ if (!isset($_GET['activeStudentOrg'])) {
 
   </div>
 
-  <script defer>
-    let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
-    activeLink.style.backgroundColor = "#3C9811";
-    activeLink.style.color = "white";
-  </script>
 </body>
 
 </html>

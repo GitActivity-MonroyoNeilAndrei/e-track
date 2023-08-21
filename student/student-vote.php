@@ -3,7 +3,6 @@ include "../classes/database.php";
 include "../classes/message.php";
 include "../classes/user.php";
 
-User::ifNotLogin('student-username', '../login-account/login-student.php');
 
 date_default_timezone_set('Asia/Manila');
 $date_time_now = date('Y-m-d') . 'T' . date('H:i');
@@ -13,7 +12,7 @@ session_start();
 $student = new database();
 
 if (!isset($_SESSION['student_id'])) {
-  header('login-student.php');
+  header('location: ../login-account/login-student.php');
 }
 
 ?>
@@ -29,6 +28,7 @@ if (!isset($_SESSION['student_id'])) {
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
+  <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -38,7 +38,7 @@ if (!isset($_SESSION['student_id'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><?php User::printSession('student_name') ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=student">Logout</a>
@@ -101,7 +101,7 @@ if (!isset($_SESSION['student_id'])) {
 
                 <td><?php echo $row['can_vote']; ?></td>
                 <td><?php echo $row2['exp_date']; ?></td>
-                <td><a href="student-vote-homepage.php?can_vote=<?php echo $row['can_vote']; ?>" class="btn btn-primary">Vote</a></td>
+                <td><a href="student-vote-homepage.php?can_vote=<?php echo $row['can_vote']; ?>" class="btn btn-primary"><i class="fa-solid fa-file-import"></i> Vote</a></td>
                   
                 <?php } ?>
               </tbody>

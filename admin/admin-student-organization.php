@@ -97,7 +97,7 @@ if($row){
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><?php User::printSession('admin-username'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=admin">Logout</a>
@@ -108,12 +108,13 @@ if($row){
       <div class="nav-links">
         <nav style="position: sticky; top: 4vh;">
           <ul>
-            <li onclick="window.location.href='admin-dashboard.php'">Dashboard</li>
+            <li onclick="window.location.href='admin-homepage.php'">Dashboard</li>
             <li onclick="window.location.href='admin-list-of-users.php'" class="mb-4 border-bottom border-dark">List of Users</li>
             <li onclick="window.location.href='admin-election.php'">Election</li>
             <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='admin-student-organization.php'" class="bg-dark-gray2">Student Organization</li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
+            <li onclick="window.location.href='admin-monitor-plan-of-activities.php'">Monitor Plan of Activities</li>
             <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
             <li onclick="window.location.href='admin-evaluation-of-activities.php'">Evaluation of Activities</li>
             <li onclick="window.location.href='admin-report-to-ovpsas.php'">Report to OVPSAS</li>

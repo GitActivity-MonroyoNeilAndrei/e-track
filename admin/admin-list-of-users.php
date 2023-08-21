@@ -39,6 +39,8 @@ if (!isset($_GET['activeStudentOrg'])) {
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
+  <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -49,7 +51,7 @@ if (!isset($_GET['activeStudentOrg'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><?php User::printSession('admin-username'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=admin">Logout</a>
@@ -66,6 +68,7 @@ if (!isset($_GET['activeStudentOrg'])) {
             <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='admin-student-organization.php'">Student Organization</li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
+            <li onclick="window.location.href='admin-monitor-plan-of-activities.php'">Monitor Plan of Activities</li>
             <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
             <li onclick="window.location.href='admin-evaluation-of-activities.php'">Evaluation of Activities</li>
             <li onclick="window.location.href='admin-report-to-ovpsas.php'">Report to OVPSAS</li>
@@ -84,6 +87,10 @@ if (!isset($_GET['activeStudentOrg'])) {
               <li id="student" onclick="window.location.href='admin-list-of-users.php?user=student'">Students</li>
             </ul>
           </nav>
+
+          <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'admin') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'admin'; ?>"><i class="fa-solid fa-plus"></i> Add Admin</a>
+          <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student'; ?>"><i class="fa-solid fa-plus"></i> Add Student</a>
+          <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student_org'; ?>"><i class="fa-solid fa-plus"></i> Add Student Org.</a>
 
           <div class="table-responsive">
             <table class="table">
@@ -145,9 +152,9 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><?php echo $row['email']; ?></td>
                     <td><?php echo $row['status'] ?></td>
                     <td>
-                      <a class="btn btn-success mb-3" href="">Edit</a>
-                      <a class="btn btn-secondary mb-3" href="">Activate</a>
-                      <a class="btn btn-danger mb-3" href="">Deactivate</a>
+                      <a class="btn btn-success mb-3" href="admin-edit-users.php?id=<?php echo $row['id']; ?>&user=<?php User::printGet('user'); ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>"><i class="fa-solid fa-user"></i> Activate</a>
+                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>"><i class="fa-solid fa-user-slash"></i> Deactivate</a>
                     </td>
                   </tr>
 
@@ -162,9 +169,9 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><?php echo $row['email']; ?></td>
                     <td><?php echo $row['status'] ?></td>
                     <td>
-                      <a class="btn btn-success mb-3" href="">Edit</a>
-                      <a class="btn btn-secondary mb-3" href="">Activate</a>
-                      <a class="btn btn-danger mb-3" href="">Deactivate</a>
+                      <a class="btn btn-success mb-3" href="admin-edit-users.php?id=<?php echo $row['id']; ?>&user=<?php User::printGet('user'); ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>"><i class="fa-solid fa-user"></i> Activate</a>
+                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>"><i class="fa-solid fa-user-slash"></i> Deactivate</a>
                     </td>
                   </tr>
 
@@ -176,9 +183,9 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><?php echo $row['email']; ?></td>
                     <td><?php echo $row['status'] ?></td>
                     <td>
-                      <a class="btn btn-success mb-3" href="">Edit</a>
-                      <a class="btn btn-secondary mb-3" href="">Activate</a>
-                      <a class="btn btn-danger mb-3" href="">Deactivate</a>
+                      <a class="btn btn-success mb-3" href="admin-edit-users.php?id=<?php echo $row['id']; ?>&user=<?php User::printGet('user'); ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>"><i class="fa-solid fa-user"></i> Activate</a>
+                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>"><i class="fa-solid fa-user-slash"></i> Deactivate</a>
                     </td>
                   </tr>
 

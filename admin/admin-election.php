@@ -19,22 +19,6 @@ if (!isset($_GET['activeStudentOrg'])) {
 
 
 
-// $result = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
-// $row = mysqli_fetch_assoc($result);
-
-// if ($row['exp_date'] > $date_time_now) {
-//   if (isset($_GET['activeStudentOrg'])) {
-//     if ($_GET['activeStudentOrg'] != "" && $_GET['activeStudentOrg'] != NULL) {
-
-//       $student_org = User::returnValueGet('activeStudentOrg');
-//       header("location: ../election-winners.php?studentOrg=$student_org");
-//     }
-//   }
-// }
-
-
-
-
 
 
 
@@ -53,6 +37,7 @@ if (!isset($_GET['activeStudentOrg'])) {
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
+  <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -62,7 +47,7 @@ if (!isset($_GET['activeStudentOrg'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><?php User::printSession('admin-username'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=admin">Logout</a>
@@ -79,6 +64,7 @@ if (!isset($_GET['activeStudentOrg'])) {
             <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='admin-student-organization.php'">Student Organization</li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
+            <li onclick="window.location.href='admin-monitor-plan-of-activities.php'">Monitor Plan of Activities</li>
             <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
             <li onclick="window.location.href='admin-evaluation-of-activities.php'">Evaluation of Activities</li>
             <li onclick="window.location.href='admin-report-to-ovpsas.php'">Report to OVPSAS</li>
@@ -108,7 +94,7 @@ if (!isset($_GET['activeStudentOrg'])) {
             Message::candidateEdited();
           } ?>
           <div class="container-add-candidate">
-            <a class="add-candidate-btn" href="admin-add-candidate.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">+Add Candidate</a>
+            <a class="add-candidate-btn" href="admin-add-candidate.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>"><i class="fa-solid fa-plus"></i> Add Candidate</a>
             <h5 class="text-center py-1">School Year: 2023-2024</h5>
           </div>
           <div class="table-responsive">
@@ -135,11 +121,12 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><?php echo $row['first_name']; ?></td>
                     <td><?php echo $row['last_name']; ?></td>
                     <td><?php echo $row['year']; ?></td>
-                    <td><a class="btn btn-secondary" href="../view-image.php?path=uploads/&imageUrl=<?php echo $row['photo_url']; ?>">View</a></td>
+                    <td><a class="btn btn-secondary" href="../view-image.php?path=uploads/&imageUrl=<?php echo $row['photo_url']; ?>"><i class="fa-regular fa-eye"></i> View</a></td>
                     <td><?php echo $row['partylist']; ?></td>
                     <td>
-                      <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>">Edit</a>
-                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>">Delete</a>
+                      <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>"><i class="fa-solid fa-user-minus"></i>
+ Delete</a>
 
                     </td>
                   </tr>
