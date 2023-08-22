@@ -13,17 +13,6 @@ $student_org = new database();
 
 User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
 
-// if(!isset($_GET['user'])){
-//   header('location: admin-list-of-users.php?user=admin');
-// }
-
-
-// if (!isset($_GET['activeStudentOrg'])) {
-//   $result = $admin->selectDistinct('student_org', 'name_of_org');
-
-//   $row = mysqli_fetch_assoc($result);
-//   header("location: admin-monitor-election-result.php?activeStudentOrg=$row[name_of_org]");
-// }
 
 ?>
 
@@ -66,7 +55,7 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
             <li onclick="window.location.href='student-org-monitor-election.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
             <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
-          </ul> 
+          </ul>
         </nav>
       </div>
       <div class="content border border-primary">

@@ -12,9 +12,6 @@ session_start();
 $student_org = new database();
 
 User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
-
-
-
 ?>
 
 
@@ -52,8 +49,8 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
           <ul>
           <li onclick="window.location.href='student-org-homepage.php'">Dashboard</li>
             <li onclick="window.location.href='student-org-monitor-election.php'" class="mb-4 border-bottom border-dark bg-dark-gray2">Monitor Election Result </li>
-            <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
-            <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
+            <li onclick="window.location.href='student-org-plan-of-activities.php'">Plan of Activities</li>
+            <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
           </ul>
         </nav>
       </div>
