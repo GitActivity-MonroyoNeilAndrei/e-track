@@ -225,6 +225,26 @@ class database
     return $this->mysqli->query($sql);
   }
 
+  public function advanceUpdateData($table, $para = array(), $where = '')
+  {
+    $args = array();
+
+    foreach ($para as $key => $value) {
+      $args[] = "$key = '$value'";
+    }
+
+    $sql = "UPDATE  $table SET " . implode(', ', $args);
+
+    if ($where != '') {
+      $sql .= " WHERE $where";
+    }
+
+    $this->last_id = $value;
+    return $this->mysqli->query($sql);
+  }
+
+
+
   public function incrementData($table, $column, $where = array(), $operator = 'AND') {
 
     $where_args = array();
@@ -262,5 +282,20 @@ class database
 
     $sql = "SELECT $rows FROM $table WHERE " . implode(" $operator ", $args);
     return $this->mysqli->query($sql);
+  }
+
+  public function advanceSelect($table, $rows = '*', $where = '')
+  {
+    if ($where == '') {
+      $sql = "SELECT $rows FROM $table";
+      return $this->mysqli->query($sql);
+    } else if($where != '') {
+      $sql = "SELECT $rows FROM $table WHERE $where";
+      return $this->mysqli->query($sql);
+    }
+
+    
+
+    
   }
 }

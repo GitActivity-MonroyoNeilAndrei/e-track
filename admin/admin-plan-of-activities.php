@@ -103,9 +103,27 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </tr>
               </thead>
               <tbody>
+                <?php 
+                  $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
+
+                  while ($row = mysqli_fetch_assoc($plan_of_activity)) {
+
+                ?>
                 <tr>
-                  <td>bobo nga talaga</td>
+                  <td><?php echo $row['name_of_activity']; ?></td>
+                  <td><?php echo $row['date']; ?></td>
+                  <td><?php echo $row['venue']; ?></td>
+                  <td><?php echo $row['sponsors']; ?></td>
+                  <td><?php echo $row['nature_of_activity']; ?></td>
+                  <td><?php echo $row['purpose']; ?></td>
+                  <td><?php echo $row['beneficiaries']; ?></td>
+                  <td><?php echo $row['target_output']; ?></td>
+                  <td>
+                    <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing"><i class="fa-solid fa-check"></i> Accept</a>
+                    <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned"><i class="fa-solid fa-xmark"></i> Reject</a>
+                  </td>
                 </tr>
+                <?php } ?>
               </tbody>
             </table>
           </div>

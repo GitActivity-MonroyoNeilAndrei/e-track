@@ -77,12 +77,15 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
                   <th>Purpose</th>
                   <th>Beneficiaries</th>
                   <th>Target Output</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                 $plan_of_activities = $student_org->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'status'=>'draft']);
+                $name_of_org = User::returnValueSession('name_of_org');
+
+                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned')");
 
                  while ($row = mysqli_fetch_assoc($plan_of_activities)) {
                 ?>
@@ -95,8 +98,10 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['beneficiaries']; ?></td>
                   <td><?php echo $row['target_output']; ?></td>
+                  <td><?php echo $row['status']; ?></td>
                   <td>
                     <a class="btn btn-secondary mb-2" href="edit-plan-of-activity.php?id=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a class="btn btn-success mb-2" href="submit-plan-of-activity.php?id=<?php echo $row['id']; ?>">Submit</a>
                     <a class="btn btn-danger mb-2" href="delete-plan-of-activity.php?id=<?php echo $row['id']; ?>"><i class="fa-solid fa-trash"></i> Delete</a>
                   </td>
                 </tr>
@@ -107,7 +112,7 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
           </div> <!-- table responsive -->
 
           <div class="d-flex justify-content-center">
-            <a class="btn btn-success" href=""><i class="fa-solid fa-arrow-right"></i> Submit</a>
+            <a class="btn btn-success" href="submit-plan-of-activity.php"><i class="fa-solid fa-arrow-right"></i> Submit</a>
           </div>
 
         </div>

@@ -11,12 +11,13 @@ $student_org = new database();
 User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
 
 $id = User::returnValueGet('id');
+$status = User::returnValueGet('status');
 
 if(isset($_POST['yes'])) {
-  $student_org->delete('plan_of_activities', "id = $id");
-  header('location: student-org-plan-of-activities.php');
+  $student_org->updateData('plan_of_activities', ['status'=>$status], ['id'=>$id]);
+  header('location: admin-plan-of-activities.php');
 } else if (isset($_POST['no'])) {
-  header('location: student-org-plan-of-activities.php');
+  header('location: admin-plan-of-activities.php');
 }
 
 ?>
@@ -33,7 +34,7 @@ if(isset($_POST['yes'])) {
 </head>
 <body>
 	<form method="post" class="border border-dark mt-5 mx-auto px-5 py-3" style="max-width: 500px;">
-		<h4 class="text-center">Are You Sure You want to delete this Plan Activity?</h4>
+		<h4 class="text-center">Are You Sure You want to change status of Plan Activity?</h4>
 		<div class="row">
 			<input class="btn btn-success mb-2" type="submit" name="yes" value="Yes">
 			<input class="btn btn-danger" type="submit" name="no" value="No" >
