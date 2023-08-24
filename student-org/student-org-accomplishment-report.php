@@ -53,31 +53,28 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
           <ul>
             <li onclick="window.location.href='student-org-homepage.php'">Dashboard</li>
             <li onclick="window.location.href='student-org-monitor-election.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
-            <li onclick="window.location.href='student-org-plan-of-activities.php'" class="bg-dark-gray2">Plan of Activities</li>
-            <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
+            <li onclick="window.location.href='student-org-plan-of-activities.php'">Plan of Activities</li>
+            <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark bg-dark-gray2">Accomplishment Report</li>
           </ul>
         </nav>
       </div>
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
-            <h5>Submit Plan of Activity</h5>
+            <h5>Submit Accomplishment Report</h5>
           </div>
-          <h3 class="text-center">Plan of Activities</h3>
-          <a class="btn btn-primary mb-3" href="add-plan-of-activity.php"><i class="fa-solid fa-plus"></i> Add Plan</a>
+          <h3 class="text-center">Accomplishment Reports</h3>
+          <a class="btn btn-primary mb-3" href="add-accomplishment-report.php"><i class="fa-solid fa-plus"></i> Add Plan</a>
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th>Name of Activity</th>
-                  <th>Date</th>
-                  <th>Venue</th>
-                  <th>Sponsor's/Collaborators</th>
-                  <th>Nature of Activity</th>
+                  <th>Planned Activity</th>
                   <th>Purpose</th>
-                  <th>Beneficiaries</th>
-                  <th>Target Output</th>
-                  <th>Status</th>
+                  <th>Date Accomplished</th>
+                  <th>Budget</th>
+                  <th>Liquidations</th>
+                  <th>Remarks</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -85,24 +82,21 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
                 <?php
                 $name_of_org = User::returnValueSession('name_of_org');
 
-                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned')");
+                $accomplishment_reports = $student_org->advanceSelect('accomplishment_reports', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned')");
 
-                 while ($row = mysqli_fetch_assoc($plan_of_activities)) {
+                 while ($row = mysqli_fetch_assoc($accomplishment_reports)) {
                 ?>
                 <tr>
-                  <td><?php echo $row['name_of_activity']; ?></td>
-                  <td><?php echo $row['date']; ?></td>
-                  <td><?php echo $row['venue']; ?></td>
-                  <td><?php echo $row['sponsors']; ?></td>
-                  <td><?php echo $row['nature_of_activity']; ?></td>
+                  <td><?php echo $row['planned_activity']; ?></td>
                   <td><?php echo $row['purpose']; ?></td>
-                  <td><?php echo $row['beneficiaries']; ?></td>
-                  <td><?php echo $row['target_output']; ?></td>
-                  <td><?php echo $row['status']; ?></td>
+                  <td><?php echo $row['date_accomplished']; ?></td>
+                  <td><?php echo $row['budget']; ?></td>
+                  <td><button class="btn btn-outline-info">Upload Docx.</button></td>
+                  <td><?php echo $row['remarks']; ?></td>
                   <td>
-                    <a class="btn btn-secondary mb-2" href="edit-plan-of-activity.php?id=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                    <a class="btn btn-success mb-2" href="submit-plan-of-activity.php?id=<?php echo $row['id']; ?>">Submit</a>
-                    <a class="btn btn-danger mb-2" href="delete-plan-of-activity.php?id=<?php echo $row['id']; ?>"><i class="fa-solid fa-trash"></i> Delete</a>
+                    <a class="btn btn-secondary mb-2" href="edit-accomplishment-report.php?id=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a class="btn btn-success mb-2" href="submit-accomplishment-report.php?id=<?php echo $row['id']; ?>">Submit</a>
+                    <a class="btn btn-danger mb-2" href="delete-accomplishment-report.php?id=<?php echo $row['id']; ?>"><i class="fa-solid fa-trash"></i> Delete</a>
                   </td>
                 </tr>
 
@@ -112,7 +106,7 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
           </div> <!-- table responsive -->
 
           <div class="d-flex justify-content-center">
-            <a class="btn btn-success" href="submit-plan-of-activity.php"><i class="fa-solid fa-arrow-right"></i> Submit All</a>
+            <a class="btn btn-success" href="submit-accomplishment-report.php"><i class="fa-solid fa-arrow-right"></i> Submit All</a>
           </div>
 
         </div>

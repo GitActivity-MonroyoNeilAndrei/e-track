@@ -66,10 +66,12 @@ if (!isset($_GET['activeStudentOrg'])) {
             <li onclick="window.location.href='admin-list-of-users.php'" class="mb-4 border-bottom border-dark bg-dark-gray2">List of Users</li>
             <li onclick="window.location.href='admin-election.php'">Election</li>
             <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
-            <li onclick="window.location.href='admin-student-organization.php'">Student Organization</li>
+            <li onclick="window.location.href='admin-student-organization.php'" class="mb-4 border-bottom border-dark">Student Organization</li>
             <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
-            <li onclick="window.location.href='admin-monitor-plan-of-activities.php'">Monitor Plan of Activities</li>
-            <li onclick="window.location.href='admin-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
+            <li onclick="window.location.href='admin-list-of-plan-of-activities.php'">List of Plan of Activities</li>
+            <li onclick="window.location.href='admin-monitor-plan-of-activities.php'" class="mb-4 border-bottom border-dark">Monitor Plan of Activities</li>
+            <li onclick="window.location.href='admin-accomplishment-report.php'">Accomplishment Report</li>
+            <li onclick="window.location.href='admin-list-of-accomplishment-report.php'" class="mb-4 border-bottom border-dark">List of Accomplishment Report</li>
             <li onclick="window.location.href='admin-evaluation-of-activities.php'">Evaluation of Activities</li>
             <li onclick="window.location.href='admin-report-to-ovpsas.php'">Report to OVPSAS</li>
           </ul> 

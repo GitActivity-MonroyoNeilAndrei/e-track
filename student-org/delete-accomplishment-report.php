@@ -11,16 +11,12 @@ $student_org = new database();
 User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
 
 $id = User::returnValueGet('id');
-$status = User::returnValueGet('status');
-$name_of_org = User::returnValueGet('studentOrg');
-$path = User::returnValueGet('path');
 
 if(isset($_POST['yes'])) {
-  $student_org->updateData(User::returnValueGet('type'), ['status'=>$status], ['id'=>$id, 'name_of_org'=>$name_of_org]);
-  header("location: $path?activeStudentOrg=$name_of_org");
-
+  $student_org->delete('accomplishment_reports', "id = $id");
+  header('location: student-org-accomplishment-report.php');
 } else if (isset($_POST['no'])) {
-  header("location: $path?activeStudentOrg=$name_of_org");
+  header('location: student-org-accomplishment-report.php');
 }
 
 ?>
@@ -37,7 +33,7 @@ if(isset($_POST['yes'])) {
 </head>
 <body>
 	<form method="post" class="border border-dark mt-5 mx-auto px-5 py-3" style="max-width: 500px;">
-		<h4 class="text-center">Are You Sure You want to change status of Plan Activity?</h4>
+		<h4 class="text-center">Are You Sure You want to delete this Accomplishment Report?</h4>
 		<div class="row">
 			<input class="btn btn-success mb-2" type="submit" name="yes" value="Yes">
 			<input class="btn btn-danger" type="submit" name="no" value="No" >

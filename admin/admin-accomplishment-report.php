@@ -18,7 +18,7 @@ if (!isset($_GET['activeStudentOrg'])) {
   $result = $admin->selectDistinct('student_org', 'name_of_org');
 
   $row = mysqli_fetch_assoc($result);
-  header("location: admin-plan-of-activities.php?activeStudentOrg=$row[name_of_org]");
+  header("location: admin-accomplishment-report.php?activeStudentOrg=$row[name_of_org]");
 }
 
 ?>
@@ -56,15 +56,15 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="nav-links">
         <nav style="position: sticky; top: 4vh;">
           <ul>
-          <li onclick="window.location.href='admin-homepage.php'">Dashboard</li>
-            <li onclick="window.location.href='admin-list-of-users.php'" class="mb-4 border-bottom border-dark ">List of Users</li>
+            <li onclick="window.location.href='admin-homepage.php'">Dashboard</li>
+            <li onclick="window.location.href='admin-list-of-users.php'" class="mb-4 border-bottom border-dark">List of Users</li>
             <li onclick="window.location.href='admin-election.php'">Election</li>
             <li onclick="window.location.href='admin-monitor-election-result.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='admin-student-organization.php'" class="mb-4 border-bottom border-dark">Student Organization</li>
-            <li onclick="window.location.href='admin-plan-of-activities.php'" class="bg-dark-gray2">Plan of Activities</li>
+            <li onclick="window.location.href='admin-plan-of-activities.php'">Plan of Activities</li>
             <li onclick="window.location.href='admin-list-of-plan-of-activities.php'">List of Plan of Activities</li>
             <li onclick="window.location.href='admin-monitor-plan-of-activities.php'" class="mb-4 border-bottom border-dark">Monitor Plan of Activities</li>
-            <li onclick="window.location.href='admin-accomplishment-report.php'">Accomplishment Report</li>
+            <li onclick="window.location.href='admin-accomplishment-report.php'" class="bg-dark-gray2">Accomplishment Report</li>
             <li onclick="window.location.href='admin-list-of-accomplishment-report.php'" class="mb-4 border-bottom border-dark">List of Accomplishment Report</li>
             <li onclick="window.location.href='admin-evaluation-of-activities.php'">Evaluation of Activities</li>
             <li onclick="window.location.href='admin-report-to-ovpsas.php'">Report to OVPSAS</li>
@@ -74,7 +74,7 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
-            <h5>Plan of Activities</h5>
+            <h5>Accomplishment Reports</h5>
           </div>
           <nav class="org-list-nav">
             <ul>
@@ -83,7 +83,7 @@ if (!isset($_GET['activeStudentOrg'])) {
               while ($row = mysqli_fetch_assoc($result)) {
               ?>
 
-                <li id="<?php echo $row['name_of_org']; ?>" onclick="window.location.href = 'admin-plan-of-activities.php?activeStudentOrg=<?php echo $row['name_of_org'] ?>';"><?php echo $row['name_of_org']; ?></li>
+                <li id="<?php echo $row['name_of_org']; ?>" onclick="window.location.href = 'admin-accomplishment-report.php?activeStudentOrg=<?php echo $row['name_of_org'] ?>';"><?php echo $row['name_of_org']; ?></li>
 
               <?php } ?>
             </ul>
@@ -93,50 +93,39 @@ if (!isset($_GET['activeStudentOrg'])) {
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>Name of Activity</th>
-                  <th>Date</th>
-                  <th>Venue</th>
-                  <th>Sponsor's/Collaborators</th>
-                  <th>Nature of Activity</th>
+                  <th>Planned Activity</th>
                   <th>Purpose</th>
-                  <th>Beneficiaries</th>
-                  <th>Target Output</th>
+                  <th>Date Accomplished</th>
+                  <th>Budget</th>
+                  <th>Remarks</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php 
-                  $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
+                  $accomplishment_report = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
 
-                  while ($row = mysqli_fetch_assoc($plan_of_activity)) {
-
+                  while ($row = mysqli_fetch_assoc($accomplishment_report)) {
                 ?>
                 <tr>
-                  <td><?php echo $row['name_of_activity']; ?></td>
-                  <td><?php echo $row['date']; ?></td>
-                  <td><?php echo $row['venue']; ?></td>
-                  <td><?php echo $row['sponsors']; ?></td>
-                  <td><?php echo $row['nature_of_activity']; ?></td>
+                  <td><?php echo $row['planned_activity']; ?></td>
                   <td><?php echo $row['purpose']; ?></td>
-                  <td><?php echo $row['beneficiaries']; ?></td>
-                  <td><?php echo $row['target_output']; ?></td>
+                  <td><?php echo $row['date_accomplished']; ?></td>
+                  <td><?php echo $row['budget']; ?></td>
+                  <td><?php echo $row['remarks']; ?></td>
                   <td>
-                    <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"><i class="fa-solid fa-check"></i> Accept</a>
-                    <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"><i class="fa-solid fa-xmark"></i> Reject</a>
+                    <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=accomplishment_reports&path=admin-accomplishment-report.php"><i class="fa-solid fa-check"></i> Accept</a>
+                    <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=accomplishment_reports&path=admin-accomplishment-report.php"><i class="fa-solid fa-xmark"></i> Reject</a>
                   </td>
                 </tr>
                 <?php } ?>
               </tbody>
             </table>
           </div>
-
-
         </div>
       </div>
     </div>
-
   </div>
-
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
     activeLink.style.backgroundColor = "#3C9811";

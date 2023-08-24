@@ -16,25 +16,21 @@ User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
 
 
 if(isset($_POST['submit'])) {
-  $name_of_activity = mysqli_escape_string($student_org->mysqli, $_POST['name-of-activity']);
-  $date = mysqli_escape_string($student_org->mysqli, $_POST['date']);
-  $venue = mysqli_escape_string($student_org->mysqli, $_POST['venue']);
-  $sponsors = mysqli_escape_string($student_org->mysqli, $_POST['sponsors']);
-  $nature_of_activity = mysqli_escape_string($student_org->mysqli, $_POST['nature-of-activity']);
-  $purpose = mysqli_escape_string($student_org->mysqli, $_POST['purpose']);
-  $beneficiaries = mysqli_escape_string($student_org->mysqli, $_POST['beneficiaries']);
-  $target_output = mysqli_escape_string($student_org->mysqli, $_POST['target-output']);
+  $planned_activity = $_POST['planned-activity'];
+  $purpose = $_POST['purpose'];
+  $date_accomplished = $_POST['date-accomplished'];
+  $budget = $_POST['budget'];
+  $remarks = $_POST['remarks'];
 
-  if($student_org->isExisted('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org')])) {
+  if($student_org->isExisted('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org')])) {
 
-    $plan_of_activity_exist = 'Plan of Activity already Exist';
-
+    $accomplishment_report_exist = 'Accomplishment Report already Exist';
   } else {
 
-    $student_org->insertData('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org')]);
 
-    header('location: student-org-plan-of-activities.php');
+    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org')]);
 
+    header('location: student-org-accomplishment-report.php');
   }
 
 
@@ -89,39 +85,33 @@ if(isset($_POST['submit'])) {
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
-            <h5>Submit Plan of Activity > Add Plan of Acvitity</h5>
+            <h5>Submit Accomplishment Report > Add Accomplishment Report</h5>
           </div>
-          <h3 class="text-center">Add Plan of Activity</h3>
+          <h3 class="text-center">Add Accomplishment Report</h3>
 
           <form method="post" class="d-flex flex-column border border-dark-subtle shadow p-3 rounded-3 mb-3 mx-auto" style="max-width: 20rem;">
             <?php 
-              if(isset($plan_of_activity_exist)) {
+              if(isset($accomplishment_report_exist)) {
                 echo "
                 <div class='alert alert-danger' role='alert'>
-                  $plan_of_activity_exist
+                  $accomplishment_report_exist
                 </div>
                 ";
               }
             ?>
-            <label class="form-label" for="name-of-activity">Name of Activity: </label>
-            <input class="form-control" type="text" name="name-of-activity" required>
-            <label class="form-label" for="date">Date: </label>
-            <input class="form-control" type="date" name="date" required>
-            <label class="form-label" for="venue">Venue: </label>
-            <input class="form-control" type="text" name="venue" required>
-            <label class="form-label" for="sponsors">Sponsors : </label>
-            <input class="form-control" type="text" name="sponsors" required>
-            <label class="form-label" for="nature-of-activity">Nature of Activity: </label>
-            <input class="form-control" type="text" name="nature-of-activity" required>
-            <label class="form-label" for="purpose">Purpose : </label>
+            <label class="form-label" for="planned-activity">Planned Activity: </label>
+            <input class="form-control" type="text" name="planned-activity" required>
+            <label class="form-label" for="purpose">Purpose: </label>
             <input class="form-control" type="text" name="purpose" required>
-            <label class="form-label" for="beneficiaries">Beneficiaries: </label>
-            <input class="form-control" type="text" name="beneficiaries" required>
-            <label class="form-label" for="target-output">Target Output: </label>
-            <input class="form-control" type="text" name="target-output" required>
+            <label class="form-label" for="date-accomplished">Date Accomplished: </label>
+            <input class="form-control" type="date" name="date-accomplished" required>
+            <label class="form-label" for="budget">Budget: </label>
+            <input class="form-control" type="number" name="budget" required>
+            <label class="form-label" for="remarks">Remarks: </label>
+            <input class="form-control" type="text" name="remarks" required>
             <div class="d-flex justify-content-center align-items-center mt-3">
               <input class="btn btn-primary shadow me-2" type="submit" name="submit">
-              <a class="btn btn-danger shadow" href="student-org-plan-of-activities.php">Cancel</a>
+              <a class="btn btn-danger shadow" href="student-org-accomplishment-report.php">Cancel</a>
             </div>
             
           </form>

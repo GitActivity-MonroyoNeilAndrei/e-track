@@ -43,9 +43,7 @@ header .calendar-current-date {
 	font-size: 1.45rem;
 }
 
-.calendar-body {
-	/* padding: 20px; */
-}
+
 
 .calendar-body ul {
 	list-style: none;
@@ -64,6 +62,16 @@ header .calendar-current-date {
   min-height: 5em;
 	font-size: 1.07rem;
 	color: #414141;
+}
+
+@media (max-width: 400px) {
+	.calendar-body li {
+		font-size: .7rem;
+	}
+
+	li {
+		min-height: 2.8em;
+	}
 }
 
 .calendar-body .calendar-weekdays li {
