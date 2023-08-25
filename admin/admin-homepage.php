@@ -4,12 +4,14 @@
   include '../classes/user.php';
   session_start();
 
+  $admin = new database();
+
 
   User::ifNotLogin('admin-username', '../login-account/login-admin.php');
   
-$admin_id = User::returnValueSession('admin-id');
+  $admin_id = User::returnValueSession('admin-id');
 
-User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+  User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
 
 ?>
 

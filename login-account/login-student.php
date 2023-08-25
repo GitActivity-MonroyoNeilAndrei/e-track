@@ -9,25 +9,31 @@ $student = new database();
 User::ifLogin('student_id', '../student/student-vote.php');
 
 
-if(isset($_POST['login'])) {
+if (isset($_POST['login'])) {
   $student_id = mysqli_escape_string($student->mysqli, $_POST['student-id']);
   $password = md5($_POST['password']);
 
-  if(User::ifDeactivated($student->select('student', 'status', ['student_id'=>$student_id, 'password'=>$password]))) {
-    $deactivated = "Your Account Had Been Deactivate";
-  } else if($student->isExisted('student', ['student_id'=>$student_id, 'password'=>$password])){
-    $_SESSION['student_id'] = $student->pullLastRowModified('student', 'student_id');
-    $_SESSION['student_name'] = $student->pullLastRowModified('student', 'first_name') . ' ' . $student->pullLastRowModified('student', 'last_name');
-    $_SESSION['student-course'] = $student->pullLastRowModified('student', 'course');
-    $_SESSION['student-id'] = $student->pullLastRowModified('student', 'id');
+  if ($student->isExisted('student', ['student_id' => $student_id, 'password' => $password])) {
 
-    header("location: ../student/student-vote.php");
+    if (User::ifDeactivated($student->select('student', 'status', ['student_id' => $student_id, 'password' => $password]))) {
+      $deactivated = "Your Account Had Been Deactivate";
+    } else {
+      $_SESSION['student_id'] = $student->pullLastRowModified('student', 'student_id');
+      $_SESSION['student_name'] = $student->pullLastRowModified('student', 'first_name') . ' ' . $student->pullLastRowModified('student', 'last_name');
+      $_SESSION['student-course'] = $student->pullLastRowModified('student', 'course');
+      $_SESSION['student-id'] = $student->pullLastRowModified('student', 'id');
+
+      header("location: ../student/student-vote.php");
+    }
+  }else {
+    $incorrect_inputs = "Incorrect Inputs";
   }
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,12 +42,20 @@ if(isset($_POST['login'])) {
   <link rel="stylesheet" href="../css/login-create-account.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
 </head>
+
 <body>
   <img src="../images/msc_logo.png" alt="MSC logo">
   <form method="post" class="wrapper">
     <h3>Login</h3>
-    <?php if(isset($_REQUEST['login-success'])){Message::createAccountSuccess();} ?>
-    <?php if(isset($deactivated)){Message::accountDeactivated($deactivated);} ?>
+    <?php if (isset($_REQUEST['login-success'])) {
+      Message::createAccountSuccess();
+    } ?>
+    <?php if (isset($deactivated)) {
+      Message::accountDeactivated($deactivated);
+    } ?>
+    <?php if (isset($incorrect_inputs)) {
+      Message::incorrectInputs($incorrect_inputs);
+    } ?>
     <div>
       <label for="student-id">Student ID:</label>
       <input class="form-control" type="text" name="student-id" required>
@@ -52,6 +66,7 @@ if(isset($_POST['login'])) {
     </div>
     <input class="btn btn-success" type="submit" value="Login" name="login">
     <p class="text-center">Don't have an Account? <br>Create <a href="create-student.php">here</a></p>
-  </form >
+  </form>
 </body>
+
 </html>

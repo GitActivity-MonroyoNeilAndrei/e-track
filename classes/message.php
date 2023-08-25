@@ -39,6 +39,11 @@ class Message
     echo "<div class='alert alert-danger' role='alert'> Incorrect Email </div>";
   }
 
+  public static function incorrectInputs($message)
+  {
+    echo "<div class='alert alert-danger' role='alert'> $message </div>";
+  }
+
   public static function loginFirst()
   {
     echo "<div class='alert alert-danger' role='alert'> Login First </div>";

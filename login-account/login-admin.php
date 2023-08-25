@@ -9,16 +9,20 @@ $admin = new database();
 User::ifLogin('admin-username', '../admin/admin-homepage.php');
 
 
-if(isset($_POST['login'])) {
+if (isset($_POST['login'])) {
   $email = mysqli_escape_string($admin->mysqli, $_POST['email']);
   $password = md5($_POST['password']);
 
-  if(User::ifDeactivated($admin->select('admin', 'status', ['email'=>$email, 'password'=>$password]))) {
-    $deactivated = "Your Account Had Been Deactivate";
-  }else if($admin->isExisted('admin', ['email'=>$email, 'password'=>$password])){
-    $_SESSION['admin-username'] = $admin->pullLastRowModified('admin', 'username');
-    $_SESSION['admin-id'] = $admin->pullLastRowModified('admin', 'id');
-    header("location: ../admin/admin-homepage.php");
+  if ($admin->isExisted('admin', ['email' => $email, 'password' => $password])) {
+    if (User::ifDeactivated($admin->select('admin', 'status', ['email' => $email, 'password' => $password]))) {
+      $deactivated = "Your Account Had Been Deactivate";
+    } else {
+      $_SESSION['admin-username'] = $admin->pullLastRowModified('admin', 'username');
+      $_SESSION['admin-id'] = $admin->pullLastRowModified('admin', 'id');
+      header("location: ../admin/admin-homepage.php");
+    }
+  } else {
+    $incorrect_inputs = "Incorrect Inputs";
   }
 }
 
@@ -26,6 +30,7 @@ if(isset($_POST['login'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,12 +39,20 @@ if(isset($_POST['login'])) {
   <link rel="stylesheet" href="../css/login-create-account.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
 </head>
+
 <body>
   <img src="../images/msc_logo.png" alt="MSC logo">
   <form class="wrapper" method="post">
     <h3>Login Admin</h3>
-    <?php if(isset($_REQUEST['login-success'])){Message::createAccountSuccess();} ?>
-    <?php if(isset($deactivated)){Message::accountDeactivated($deactivated);} ?>
+    <?php if (isset($_REQUEST['login-success'])) {
+      Message::createAccountSuccess();
+    } ?>
+    <?php if (isset($deactivated)) {
+      Message::accountDeactivated($deactivated);
+    } ?>
+    <?php if (isset($incorrect_inputs)) {
+      Message::incorrectInputs($incorrect_inputs);
+    } ?>
     <div>
       <label for="email">Email:</label>
       <input class="form-control" type="email" name="email" required>
@@ -51,4 +64,5 @@ if(isset($_POST['login'])) {
     <input class="btn btn-success" type="submit" value="Login" name="login">
   </form>
 </body>
+
 </html>
