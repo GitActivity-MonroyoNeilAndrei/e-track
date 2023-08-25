@@ -13,8 +13,11 @@ if(isset($_POST['login'])) {
   $email = mysqli_escape_string($admin->mysqli, $_POST['email']);
   $password = md5($_POST['password']);
 
-  if($admin->isExisted('admin', ['email'=>$email, 'password'=>$password])){
+  if(User::ifDeactivated($admin->select('admin', 'status', ['email'=>$email, 'password'=>$password]))) {
+    $deactivated = "Your Account Had Been Deactivate";
+  }else if($admin->isExisted('admin', ['email'=>$email, 'password'=>$password])){
     $_SESSION['admin-username'] = $admin->pullLastRowModified('admin', 'username');
+    $_SESSION['admin-id'] = $admin->pullLastRowModified('admin', 'id');
     header("location: ../admin/admin-homepage.php");
   }
 }
@@ -36,6 +39,7 @@ if(isset($_POST['login'])) {
   <form class="wrapper" method="post">
     <h3>Login Admin</h3>
     <?php if(isset($_REQUEST['login-success'])){Message::createAccountSuccess();} ?>
+    <?php if(isset($deactivated)){Message::accountDeactivated($deactivated);} ?>
     <div>
       <label for="email">Email:</label>
       <input class="form-control" type="email" name="email" required>

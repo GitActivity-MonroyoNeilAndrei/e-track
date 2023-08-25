@@ -13,6 +13,10 @@ $admin = new database();
 
 User::ifNotLogin('admin-username', '../login-account/login-admin.php');
 
+$admin_id = User::returnValueSession('admin-id');
+
+User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+
 $id = User::returnValueGet('id');
 $user = User::returnValueGet('user');
 $status = User::returnValueGet('status');

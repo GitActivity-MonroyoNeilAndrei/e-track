@@ -14,8 +14,11 @@ if(isset($_POST['login'])) {
   $email = mysqli_escape_string($student_org->mysqli, $_POST['email']);
   $password = md5($_POST['password']);
 
-  if($student_org->isExisted('student_org', ['email'=>$email, 'password'=>$password])){
+  if(User::ifDeactivated($student_org->select('student_org', 'status', ['email'=>$email, 'password'=>$password]))) {
+    $deactivated = "Your Account Had Been Deactivate";
+  } else if($student_org->isExisted('student_org', ['email'=>$email, 'password'=>$password])){
     $_SESSION['name_of_org'] = $student_org->pullLastRowModified('student_org', 'name_of_org');
+    $_SESSION['student-org-id'] = $student_org->pullLastRowModified('student_org', 'id');
     header("location: ../student-org/student-org-homepage.php");
   }
 }
@@ -38,6 +41,7 @@ if(isset($_POST['login'])) {
   <form class="wrapper" method="post">
     <h3>Login Student Org.</h3>
     <?php if(isset($_REQUEST['login-success'])){Message::createAccountSuccess();} ?>
+    <?php if(isset($deactivated)){Message::accountDeactivated($deactivated);} ?>
     <div>
       <label for="email">Email:</label>
       <input class="form-control" type="email" name="email" required>

@@ -10,6 +10,10 @@ $student_org = new database();
 
 User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
 
+$student_org_id = User::returnValueSession('student-org-id');
+
+User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
+
 $id = User::returnValueGet('id');
 
 if(isset($_POST['yes'])) {

@@ -85,6 +85,10 @@ class Message
     echo "<div class='alert alert-success' role='alert'> Vote Successfully </div>";
   }
 
+  public static function accountDeactivated($message) {
+    echo "<div class='alert alert-danger' role='alert'> $message </div>";
+  }
+
   
 }
 

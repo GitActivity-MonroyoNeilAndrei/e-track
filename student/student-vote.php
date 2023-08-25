@@ -15,6 +15,9 @@ if (!isset($_SESSION['student_id'])) {
   header('location: ../login-account/login-student.php');
 }
 
+$student_id = User::returnValueSession('student-id');
+
+User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
 ?>
 
 <!DOCTYPE html>

@@ -13,6 +13,10 @@ $admin = new database();
 
 User::ifNotLogin('admin-username', '../login-account/login-admin.php');
 
+$admin_id = User::returnValueSession('admin-id');
+
+User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+
 if (isset($_POST['submit'])) {
   if(User::returnValueGet('user') == 'admin') {
     $username = $_POST['username'];
@@ -27,7 +31,7 @@ if (isset($_POST['submit'])) {
     if($password != $confirm_password) {
       $error_password = "Password doesn't Match";
     } else {
-      $admin->insertData('admin', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'contact_no'=>$contact_no, 'email'=>$email]);
+      $admin->insertData('admin', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
       header('location: admin-list-of-users.php?user=admin');
     }
@@ -51,7 +55,7 @@ if (isset($_POST['submit'])) {
     if($password != $confirm_password) {
       $error_password = "Password doesn't Match";
     } else {
-      $admin->insertData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email]);
+      $admin->insertData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
       header('location: admin-list-of-users.php?user=student');
     }
@@ -71,7 +75,7 @@ if (isset($_POST['submit'])) {
     if($password != $confirm_password) {
       $error_password = "Password doesn't Match";
     } else {
-      $admin->insertData('student_org', ['name_of_org'=>$name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email]);
+      $admin->insertData('student_org', ['name_of_org'=>$name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
       header('location: admin-list-of-users.php?user=student_org');
     }

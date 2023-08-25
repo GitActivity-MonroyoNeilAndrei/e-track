@@ -55,10 +55,27 @@
       }
     }
 
-    public static function logout() {
+    public static function ifDeactivatedReturnTo($select_query, $path) {
+      $row = mysqli_fetch_assoc($select_query);
+
+      if($row['status'] == 'deactivated') {
+        header("location: $path");
+      }
+    }
+
+    public static function ifDeactivated($select_query) {
+      $row = mysqli_fetch_assoc($select_query);
+
+      if($row['status'] == 'deactivated') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    public static function logout($name) {
       session_start();
-      session_unset();
-      session_destroy();
+      unset($_SESSION["$name"]);
     }
   
   }

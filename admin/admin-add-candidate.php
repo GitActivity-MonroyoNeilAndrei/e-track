@@ -11,6 +11,10 @@ $candidateExist = false;
 
 User::ifGetNotIssetReturnTo('studentOrg', 'admin-election.php');
 
+$admin_id = User::returnValueSession('admin-id');
+
+User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+
 if (isset($_POST['add-candidate'])) {
   $position = mysqli_escape_string($admin->mysqli, $_POST['position']);
   $first_name = mysqli_escape_string($admin->mysqli, $_POST['first-name']);

@@ -13,10 +13,14 @@ if(isset($_POST['login'])) {
   $student_id = mysqli_escape_string($student->mysqli, $_POST['student-id']);
   $password = md5($_POST['password']);
 
-  if($student->isExisted('student', ['student_id'=>$student_id, 'password'=>$password])){
+  if(User::ifDeactivated($student->select('student', 'status', ['student_id'=>$student_id, 'password'=>$password]))) {
+    $deactivated = "Your Account Had Been Deactivate";
+  } else if($student->isExisted('student', ['student_id'=>$student_id, 'password'=>$password])){
     $_SESSION['student_id'] = $student->pullLastRowModified('student', 'student_id');
     $_SESSION['student_name'] = $student->pullLastRowModified('student', 'first_name') . ' ' . $student->pullLastRowModified('student', 'last_name');
     $_SESSION['student-course'] = $student->pullLastRowModified('student', 'course');
+    $_SESSION['student-id'] = $student->pullLastRowModified('student', 'id');
+
     header("location: ../student/student-vote.php");
   }
 }
@@ -37,6 +41,7 @@ if(isset($_POST['login'])) {
   <form method="post" class="wrapper">
     <h3>Login</h3>
     <?php if(isset($_REQUEST['login-success'])){Message::createAccountSuccess();} ?>
+    <?php if(isset($deactivated)){Message::accountDeactivated($deactivated);} ?>
     <div>
       <label for="student-id">Student ID:</label>
       <input class="form-control" type="text" name="student-id" required>
@@ -46,6 +51,7 @@ if(isset($_POST['login'])) {
       <input class="form-control" type="password" name="password" required>
     </div>
     <input class="btn btn-success" type="submit" value="Login" name="login">
+    <p class="text-center">Don't have an Account? <br>Create <a href="create-student.php">here</a></p>
   </form >
 </body>
 </html>

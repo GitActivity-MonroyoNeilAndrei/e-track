@@ -11,6 +11,10 @@ $candidateExist = false;
 
 User::ifGetNotIssetReturnTo('studentOrg', 'admin-election.php');
 
+$admin_id = User::returnValueSession('admin-id');
+
+User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+
 $position = "";
 $first_name = "";
 $last_name = "";

@@ -293,9 +293,5 @@ class database
       $sql = "SELECT $rows FROM $table WHERE $where";
       return $this->mysqli->query($sql);
     }
-
-    
-
-    
   }
 }
