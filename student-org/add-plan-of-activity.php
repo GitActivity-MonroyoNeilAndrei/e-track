@@ -17,7 +17,7 @@ $student_org_id = User::returnValueSession('student-org-id');
 
 User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
-
+$student_org_school_year = User::returnValueSession('school-year');
 
 if(isset($_POST['submit'])) {
   $name_of_activity = mysqli_escape_string($student_org->mysqli, $_POST['name-of-activity']);
@@ -35,7 +35,7 @@ if(isset($_POST['submit'])) {
 
   } else {
 
-    $student_org->insertData('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org')]);
+    $student_org->insertData('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org'), 'school_year'=>$student_org_school_year]);
 
     header('location: student-org-plan-of-activities.php');
 

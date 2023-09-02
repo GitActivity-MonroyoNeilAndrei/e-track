@@ -92,7 +92,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $contact_no = $_POST['contact-no'];
     $email = $_POST['email'];
 
-    $admin->updateData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year'=>$year, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueGet('id')]);
+    $admin->updateData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueGet('id')]);
 
     header('location: admin-list-of-users.php?user=student');
 
@@ -203,10 +203,24 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
             <input class="form-control" type="text" name="address" value="<?php echo $address; ?>" required>
             <label class="form-label" for="student-id">Student ID:</label>
             <input class="form-control" type="text" name="student-id" value="<?php echo $student_id; ?>" required>
-            <label class="form-label" for="course">Course:</label>
-            <input class="form-control" type="text" name="course" value="<?php echo $course; ?>" required>
+            <div style="width: 100%;">
+              <label for="course">Course:</label>
+              <select class="form-select" name="course">
+                <?php 
+                  $course = $admin->select('courses', '*');
+
+                  while ($row = mysqli_fetch_assoc($course)) {
+                ?>
+              
+
+                <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
+
+              <?php } ?>
+              </select>
+              <!-- <input class="form-control" type="text" name="course" required> -->
+            </div>
             <label class="form-label" for="year-and-section">Year and Section:</label>
-            <input class="form-control" type="text" name="year-and-section" value="<?php echo $year; ?>" required>
+            <input class="form-control" type="text" name="year" value="<?php echo $year; ?>" required>
             <label class="form-label" for="contact-no">Contact No.:</label>
             <input class="form-control" type="number" name="contact-no" value="<?php echo $contact_no; ?>" required>
             <label class="form-label" for="email">Email:</label>

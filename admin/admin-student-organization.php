@@ -216,7 +216,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['President']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['President']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['President']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['President']; ?></h5>
@@ -244,7 +244,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Secretary']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Secretary']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Secretary']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Secretary']; ?></h5>
@@ -269,7 +269,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Vice President']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Vice President']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Vice President']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Vice President']; ?></h5>
@@ -294,7 +294,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Treasurer']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Treasurer']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Treasurer']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Treasurer']; ?></h5>
@@ -321,7 +321,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Project Manager1']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Project Manager1']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Project Manager1']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Project Manager1']; ?></h5>
@@ -346,7 +346,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['PIO1']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['PIO1']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['PIO1']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['PIO1']; ?></h5>
@@ -371,7 +371,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Auditor']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Auditor']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Auditor']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Auditor']; ?></h5>
@@ -396,7 +396,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['PIO2']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['PIO2']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['PIO2']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['PIO2']; ?></h5>
@@ -421,7 +421,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Project Manager2']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Project Manager2']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Project Manager2']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Project Manager2']; ?></h5>
@@ -448,7 +448,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms1']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Sargeant at Arms1']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms1']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Sargeant at Arms1']; ?></h5>
@@ -473,7 +473,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Muse']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Muse']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Muse']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Muse']; ?></h5>
@@ -498,7 +498,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Escort']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Escort']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Escort']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Escort']; ?></h5>
@@ -523,7 +523,7 @@ if($row){
 
 
                 <div class="candidate-container">
-                  <img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms2']; ?>" alt="">
+                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Sargeant at Arms2']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms2']; ?>" alt=""></a>
                 </div>
 
                 <h5 class="fw-medium"><?php echo $officers['Sargeant at Arms2']; ?></h5>

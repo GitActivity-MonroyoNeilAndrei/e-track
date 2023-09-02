@@ -93,6 +93,11 @@ if (!isset($_GET['activeStudentOrg'])) {
               <li id="student" onclick="window.location.href='admin-list-of-users.php?user=student'">Students</li>
             </ul>
           </nav>
+          <nav class="org-list-nav">
+            <ul>
+              <li onclick="window.location.href='admin-list-of-courses.php'">Available Courses</li>
+            </ul>
+          </nav>
 
           <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'admin') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'admin'; ?>"><i class="fa-solid fa-plus"></i> Add Admin</a>
           <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student'; ?>"><i class="fa-solid fa-plus"></i> Add Student</a>

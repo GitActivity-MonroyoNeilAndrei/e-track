@@ -182,11 +182,6 @@ class database
   //   return $this->mysqli->query($sql);
   // }
 
-  public function selectDistinct($table, $row)
-  {
-    $sql = "SELECT DISTINCT $row FROM $table";
-    return $this->mysqli->query($sql);
-  }
 
   public function delete($table, $id)
   {
@@ -283,6 +278,28 @@ class database
     $sql = "SELECT $rows FROM $table WHERE " . implode(" $operator ", $args);
     return $this->mysqli->query($sql);
   }
+
+  public function selectDistinct($table, $rows = '*', $where = array(), $operator = 'AND')
+  {
+    if (empty($where)) {
+      $sql = "SELECT DISTINCT $rows FROM $table";
+      return $this->mysqli->query($sql);
+    }
+
+    $args = array();
+
+    foreach ($where as $key => $value) {
+      if (is_int($value)) {
+        $args[] = "$key = $value";
+      } else {
+        $args[] = "$key = '$value'";
+      }
+    }
+
+    $sql = "SELECT DISTINCT $rows FROM $table WHERE " . implode(" $operator ", $args);
+    return $this->mysqli->query($sql);
+  }
+
 
   public function advanceSelect($table, $rows = '*', $where = '')
   {

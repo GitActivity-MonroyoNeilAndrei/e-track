@@ -9,6 +9,17 @@ $student_org = new database();
 
 User::ifLogin('name-of-org', '../student-org/student-org-homepage.php');
 
+function getSchoolYear($orgName) {
+  $student_org = new database();
+
+  $sql = " SELECT school_year FROM officers WHERE org_name = '$orgName' ORDER BY school_year DESC";
+  $select = $student_org->mysqli->query($sql);
+
+  $row = mysqli_fetch_assoc($select);
+
+  return $row['school_year'];
+}
+
 
 if (isset($_POST['login'])) {
   $email = mysqli_escape_string($student_org->mysqli, $_POST['email']);
@@ -20,6 +31,7 @@ if (isset($_POST['login'])) {
     } else {
       $_SESSION['name_of_org'] = $student_org->pullLastRowModified('student_org', 'name_of_org');
       $_SESSION['student-org-id'] = $student_org->pullLastRowModified('student_org', 'id');
+      $_SESSION['school-year'] = getSchoolYear($student_org->pullLastRowModified('student_org', 'name_of_org'));
       header("location: ../student-org/student-org-homepage.php");
     }
   } else {

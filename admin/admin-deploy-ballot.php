@@ -20,11 +20,6 @@
       $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
     }
 
-    
-
-
-    
-
     $active_student_org = User::returnValueGet('orgName');
     header("location: admin-election.php?activeStudentOrg=$active_student_org");
   }

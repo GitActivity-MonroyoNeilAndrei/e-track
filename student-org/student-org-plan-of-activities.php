@@ -58,6 +58,7 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
             <li onclick="window.location.href='student-org-homepage.php'">Dashboard</li>
             <li onclick="window.location.href='student-org-monitor-election.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
             <li onclick="window.location.href='student-org-plan-of-activities.php'" class="bg-dark-gray2">Plan of Activities</li>
+            <li onclick="window.location.href='student-org-monitor-activities.php'">Monitor Plan of Activities</li>
             <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
           </ul>
         </nav>

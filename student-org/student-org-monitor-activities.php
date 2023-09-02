@@ -8,7 +8,7 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 
-$student = new database();
+$student_org= new database();
 
 
 if (!isset($_SESSION['student_id'])) {
@@ -17,35 +17,13 @@ if (!isset($_SESSION['student_id'])) {
 
 $student_id = User::returnValueSession('student-id');
 
-
-
-
-User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
-
-function canMonitor() {
-  $can_monitor = array();
-  $student = new database();
-  $studentOrgs = $student->selectDistinct('plan_of_activities', 'name_of_org, can_monitor', ['status'=>'ongoing']);
-
-  while($row = mysqli_fetch_assoc($studentOrgs)) {
-    $array = explode(',', $row['can_monitor']);
-    foreach ($array as $course) {
-      if($course == User::returnValueSession('student-course')) {
-        array_push($can_monitor, $row['name_of_org']);
-      }
-    }
-  }
-  return $can_monitor;
-}
-
-
-
+User::ifDeactivatedReturnTo($student_org->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
 
 
 function returnDate() {
   $admin = new database();
 
-  $name_of_org = User::returnValueGet('activeStudentOrg');
+  $name_of_org = User::returnValueSession('name_of_org');
 
   $activity_date = $admin->advanceSelect('plan_of_activities', '*', "status = 'ongoing' AND name_of_org = '$name_of_org'");
 
@@ -66,7 +44,7 @@ function returnDate() {
 function returnNameOfAct() {
   $admin = new database();
 
-  $name_of_org = User::returnValueGet('activeStudentOrg');
+  $name_of_org = User::returnValueSession('name_of_org');
 
   $activity_date = $admin->advanceSelect('plan_of_activities', '*', "status = 'ongoing' AND name_of_org = '$name_of_org'");
 
@@ -114,7 +92,7 @@ $nameOfAct = returnNameOfAct();
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
           <a href="#">My Profile</a>
           <a href="../logout.php?logout=student">Logout</a>
@@ -125,32 +103,18 @@ $nameOfAct = returnNameOfAct();
       <div class="nav-links">
         <nav style="position: sticky; top: 4vh;">
           <ul>
-            <li onclick="window.location.href='student-vote.php'">Vote</li>
-            <li onclick="window.location.href='student-monitor-result.php'">Monitor Election Result</li>
-            <li onclick="window.location.href='student-monitor-activities.php'" class="bg-dark-gray2">Monitor Activities</li>
-
+            <li onclick="window.location.href='student-org-homepage.php'">Dashboard</li>
+            <li onclick="window.location.href='student-org-monitor-election.php'" class="mb-4 border-bottom border-dark">Monitor Election Result </li>
+            <li onclick="window.location.href='student-org-plan-of-activities.php'">Plan of Activities</li>
+            <li onclick="window.location.href='student-org-monitor-activities.php'" class="bg-dark-gray2">Monitor Plan of Activities</li>
+            <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark">Accomplishment Report</li>
           </ul>
         </nav>
       </div>
       <div class="content border border-primary">
         <div class="content-container">
-        <nav class="org-list-nav">
-            <ul>
-              <?php
-                $can_monitor = canMonitor();
-                foreach ($can_monitor as $student_org) {
-                if(!isset($_GET['activeStudentOrg'])){
-                  header("location: student-monitor-activities.php?activeStudentOrg=$student_org");
-                }
-              ?>
-
-                <li id="<?php echo $student_org; ?>" onclick="window.location.href = 'student-monitor-activities.php?activeStudentOrg=<?php echo $student_org; ?>';"><?php echo $student_org; ?></li>
-
-              <?php } ?>
-            </ul>
-          </nav>
           <div class="content-header">
-            <h5>Deploy Ballot</h5>
+            <h5>Monitor Plan of Activities</h5>
           </div>
           <nav class="org-list-nav">
             <ul>
@@ -191,11 +155,6 @@ $nameOfAct = returnNameOfAct();
       </div>
     </div>
   </div>
-  <script defer>
-    let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
-    activeLink.style.backgroundColor = "#3C9811";
-    activeLink.style.color = "white";
-  </script>
   <script>
     let date = new Date();
     let year = date.getFullYear();

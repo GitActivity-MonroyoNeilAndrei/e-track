@@ -78,9 +78,21 @@ if (isset($_POST['sign-up'])) {
       <label for="student-id">Student ID:</label>
       <input class="form-control" type="text" name="student-id" required>
     </div>
-    <div>
+    <div style="width: 100%;">
       <label for="course">Course:</label>
-      <input class="form-control" type="text" name="course" required>
+      <select class="form-select" name="course">
+        <?php 
+          $course = $student->select('courses', '*');
+
+          while ($row = mysqli_fetch_assoc($course)) {
+        ?>
+      
+
+        <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
+
+      <?php } ?>
+      </select>
+      <!-- <input class="form-control" type="text" name="course" required> -->
     </div>
     <div style="width: 100%;">
       <label class="form-label" for="year-and-section">Year</label>

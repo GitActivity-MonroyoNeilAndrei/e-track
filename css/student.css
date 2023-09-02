@@ -288,6 +288,36 @@ button.dropbtn {
 
 
 
+.org-list-nav ul {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  border-radius: 20px;
+}
+
+@media (max-width: 300px) {
+  .org-list-nav ul {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+  }
+}
+
+.org-list-nav ul li {
+  padding: .1rem .5rem;
+  background-color: #D3D3D3;
+  margin: 0;
+}
+
+.org-list-nav ul li:hover {
+  background-color: #3C9811;
+  color: white;
+  cursor: pointer;
+}
 
 
 

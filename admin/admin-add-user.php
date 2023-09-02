@@ -203,8 +203,21 @@ if (isset($_POST['submit'])) {
             <input class="form-control" type="text" name="address" required>
             <label class="form-label" for="student-id">Student ID:</label>
             <input class="form-control" type="text" name="student-id" required>
-            <label class="form-label" for="course">Course:</label>
-            <input class="form-control" type="text" name="course" required>
+            <div style="width: 100%;">
+              <label for="course">Course:</label>
+              <select class="form-select" name="course"> 
+                <?php 
+                  $course = $admin->select('courses', '*');
+
+                  while ($row = mysqli_fetch_assoc($course)) {
+                ?>
+
+                <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
+
+              <?php } ?>
+              </select>
+              <!-- <input class="form-control" type="text" name="course" required> -->
+            </div>
             <label class="form-label" for="year">Year and Section:</label>
             <input class="form-control" type="text" name="year" required>
             <label class="form-label" for="contact-no">Contact No.:</label>

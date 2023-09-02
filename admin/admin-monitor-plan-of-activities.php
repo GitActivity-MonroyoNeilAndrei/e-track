@@ -143,6 +143,10 @@ $nameOfAct = returnNameOfAct();
             </ul>
           </nav>
 
+          <div class="text-center">
+            <a class="text-primary" href="admin-who-can-monitor-activities.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Who can Monitor this Plan of Activity?</a>
+          </div>
+
           <div class="calendar-container mx-auto">
             <header class="calendar-header">
               <p class="calendar-current-date"></p>
@@ -171,7 +175,7 @@ $nameOfAct = returnNameOfAct();
               <ul class="calendar-dates mx-2 mb-3"></ul>
             </div>
           </div>
-
+          
           
         </div>
       </div>
