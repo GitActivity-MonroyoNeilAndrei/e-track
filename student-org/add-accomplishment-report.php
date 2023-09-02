@@ -18,7 +18,7 @@ $student_org_id = User::returnValueSession('student-org-id');
 User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
 
-
+$student_org_school_year = User::returnValueSession('school-year');
 
 if(isset($_POST['submit'])) {
   $planned_activity = $_POST['planned-activity'];
@@ -33,7 +33,7 @@ if(isset($_POST['submit'])) {
   } else {
 
 
-    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org')]);
+    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'school_year'=>$student_org_school_year]);
 
     header('location: student-org-accomplishment-report.php');
   }
