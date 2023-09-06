@@ -311,4 +311,11 @@ class database
       return $this->mysqli->query($sql);
     }
   }
+
+  public function countSelect($table, $row = '*', $where = "") {
+    $sql = "SELECT COUNT($row) AS num FROM $table WHERE $where";
+    $result = $this->mysqli->query($sql);
+    $row = mysqli_fetch_assoc($result);
+    return $row['num'];
+  }
 }

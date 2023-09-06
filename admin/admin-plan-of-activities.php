@@ -94,7 +94,7 @@ if (!isset($_GET['activeStudentOrg'])) {
           </nav>
 
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Name of Activity</th>

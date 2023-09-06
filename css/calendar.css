@@ -4,6 +4,7 @@
 	max-width: 50rem;
 	border-radius: 10px;
 	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+	border: 1.3px solid rgba(0, 0, 0, 0.26);
 }
 
 .calendar-container header {

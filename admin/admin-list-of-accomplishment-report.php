@@ -118,7 +118,7 @@ if(isset($_POST['submit'])) {
 
 
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Planned Activity</th>

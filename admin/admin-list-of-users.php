@@ -104,7 +104,7 @@ if (!isset($_GET['activeStudentOrg'])) {
           <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student_org'; ?>"><i class="fa-solid fa-plus"></i> Add Student Org.</a>
 
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-striped table-hover">
               <thead>
                   
                 <tr class="<?php if(User::returnValueGet('user') != 'admin') {echo 'd-none';} ?>">

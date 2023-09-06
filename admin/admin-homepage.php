@@ -1,17 +1,26 @@
 <?php
-  include '../classes/database.php';
-  include '../classes/message.php';
-  include '../classes/user.php';
-  session_start();
+include '../classes/database.php';
+include '../classes/message.php';
+include '../classes/user.php';
+session_start();
 
-  $admin = new database();
+$admin = new database();
 
 
-  User::ifNotLogin('admin-username', '../login-account/login-admin.php');
-  
-  $admin_id = User::returnValueSession('admin-id');
+User::ifNotLogin('admin-username', '../login-account/login-admin.php');
 
-  User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+$admin_id = User::returnValueSession('admin-id');
+
+User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id' => $admin_id]), '../logout.php?logout=admin');
+
+$total_admin_user = $admin->countSelect('admin', 'status', "status = 'activated'");
+$total_studentOrg_user = $admin->countSelect('student_org', 'status', "status = 'activated'");
+$total_student_user = $admin->countSelect('student', 'status', "status = 'activated'");
+
+$to_validate_plan_of_activities = $admin->countSelect('plan_of_activities', 'status', "status = 'submitted'");
+$to_validate_accomplishment_report = $admin->countSelect('accomplishment_reports', 'status', "status = 'submitted'");
+
+
 
 ?>
 
@@ -28,6 +37,80 @@
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+  <style>
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      width: 18rem;
+      height: 8rem;
+      border: none;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      padding: .7rem;
+    }
+
+    .wrapper-a {
+      margin: .8rem .8rem;
+    }
+
+    @media (max-width: 900px) {
+      .wrapper {
+        flex-wrap: wrap;
+        margin-bottom: 0;
+      }
+
+    }
+
+
+    .card-text {
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+    }
+
+    .card-pink {
+      background-color: #DA526DCB;
+    }
+
+    .card-pink:hover {
+      background-color: #DA526DF4;
+    }
+
+    .card-bluegreen {
+      background-color: #3A997FCB;
+    }
+
+    .card-bluegreen:hover {
+      background-color: #3A997FF4;
+    }
+
+    .card-orange {
+      background-color: #EA8D58CB;
+    }
+
+    .card-orange:hover {
+      background-color: #EA8D58F4;
+    }
+
+    .card-darkpink {
+      background-color: #C72A49F4;
+    }
+
+    .card-darkpink:hover {
+      background-color: #C72A49CB;
+    }
+
+    .card-darkorange {
+      background-color: #D66A2DF4;
+    }
+
+    .card-darkorange:hover {
+      background-color: #D66A2DCB;
+    }
+  </style>
 </head>
 
 <body>
@@ -68,16 +151,46 @@
           <div class="content-header">
             <h5>Dashboard</h5>
           </div>
-          <nav class="org-list-nav">
-            <ul>
-              <li>SICSSO</li>
-              <li>ITSO</li>
-              <li>ESO</li>
-              <li>SCpES</li>
-              <li>ESO</li>
-            </ul>
-          </nav>
+          <h3 class="text-center fw-normal" style="color: rgba(0, 0, 0, 0.8.4);">Admin Dashboard</h3>
+          <div class="wrapper">
+            <a class="wrapper-a" href="admin-list-of-users.php?user=admin">
+              <div class="card card-pink">
+                <h5 class="fw-semibold card-text">Total Admin User</h5>
+                <h3 class="fw-semibold card-text"><?php echo $total_admin_user; ?></h3>
+              </div>
+            </a>
 
+            <a class="wrapper-a" href="admin-list-of-users.php?user=student_org">
+              <div class="card card-bluegreen">
+                <h5 class="fw-semibold card-text">Total Student Org. User</h5>
+                <h3 class="fw-semibold card-text"><?php echo $total_studentOrg_user; ?></h3>
+              </div>
+            </a>
+
+            <a class="wrapper-a" href="admin-list-of-users.php?user=student">
+              <div class="card card-orange">
+                <h5 class="fw-semibold card-text">Total Student User</h5>
+                <h3 class="fw-semibold card-text"><?php echo $total_student_user; ?></h3>
+              </div>
+            </a>
+
+          </div>
+          <div class="wrapper">
+            <a class="wrapper-a" href="admin-plan-of-activities.php">
+              <div class="card card-darkpink">
+                <h5 class="fw-semibold card-text">To Validate Plan of Activitiy</h5>
+                <h3 class="fw-semibold card-text"><?php echo $to_validate_plan_of_activities; ?></h3>
+              </div>
+            </a>
+
+            <a class="wrapper-a" href="admin-accomplishment-report.php">
+              <div class="card card-darkorange">
+                <h5 class="fw-semibold card-text">To Validate Accomplishment Report</h5>
+                <h3 class="fw-semibold card-text"><?php echo $to_validate_accomplishment_report; ?></h3>
+              </div>
+            </a>
+
+          </div>
 
         </div>
       </div>
