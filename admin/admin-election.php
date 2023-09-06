@@ -53,8 +53,8 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#">My Profile</a>
-          <a href="../logout.php?logout=admin">Logout</a>
+          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>
@@ -131,8 +131,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><?php echo $row['partylist']; ?></td>
                     <td>
                       <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>"><i class="fa-solid fa-user-minus"></i>
- Delete</a>
+                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>"><i class="fa-solid fa-user-minus"></i>Delete</a>
 
                     </td>
                   </tr>

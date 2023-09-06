@@ -38,6 +38,18 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+  <style>
+    .table-responsive {
+      max-width: 35rem;
+      margin: auto;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-radius: 8px;
+    }
+
+    h4 {
+      border-radius: 4px;
+    }
+  </style>
 </head>
 
 <body>
@@ -49,8 +61,8 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       <div class="dropdown">
       <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
         <div class="dropdown-content">
-          <a href="#">My Profile</a>
-          <a href="../logout.php?logout=student">Logout</a>
+          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=student"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>

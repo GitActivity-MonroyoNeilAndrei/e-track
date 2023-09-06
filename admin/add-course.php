@@ -57,8 +57,8 @@ if (isset($_POST['submit'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#">My Profile</a>
-          <a href="../logout.php?logout=admin">Logout</a>
+          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>

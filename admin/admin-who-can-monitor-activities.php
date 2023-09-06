@@ -72,8 +72,8 @@ if(isset($_POST['submit'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#">My Profile</a>
-          <a href="../logout.php?logout=admin">Logout</a>
+          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>
@@ -122,6 +122,7 @@ if(isset($_POST['submit'])) {
 
             <div class="text-center mt-4">
               <input class="btn btn-success" type="submit" name="submit" value="Submit">
+              <a class="btn btn-danger" href="admin-monitor-plan-of-activities.php?activeStudentOrg=<?php User::printGet('studentOrg') ?>">Cancel</a>
             </div>
           </form>
         </div>

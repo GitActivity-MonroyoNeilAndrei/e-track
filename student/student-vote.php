@@ -43,8 +43,8 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
         <div class="dropdown-content">
-          <a href="#">My Profile</a>
-          <a href="../logout.php?logout=student">Logout</a>
+          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=student"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>

@@ -40,6 +40,18 @@ if (!isset($_GET['activeStudentOrg'])) {
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+  <style>
+    .table-responsive {
+      max-width: 35rem;
+      margin: auto;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-radius: 8px;
+    }
+
+    h4 {
+      border-radius: 4px;
+    }
+  </style>
 </head>
 
 <body>
@@ -51,8 +63,8 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#">My Profile</a>
-          <a href="../logout.php?logout=admin">Logout</a>
+          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>
@@ -227,7 +239,7 @@ if (!isset($_GET['activeStudentOrg'])) {
             <?php } ?>
 
             <div class="text-center">
-              <a class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Release</a>
+              <a class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>"> <i class="fa-solid fa-arrow-up"></i> Release</a>
             </div>
             
 
