@@ -92,6 +92,30 @@ class database
 
   // }
 
+  public function checkIfImage($name)
+  {
+    $img_name = $_FILES["$name"]['name'];
+    $img_size = $_FILES["$name"]['size'];
+    $tmp_name = $_FILES["$name"]['tmp_name'];
+    $error = $_FILES["$name"]['error'];
+
+    if ($error === 0) {
+      $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+      $img_ex_lc = strtolower($img_ex);
+
+      $allowed_exs = array('jpg', 'jpeg', 'png');
+
+      if (in_array($img_ex_lc, $allowed_exs)) {
+
+        return true;
+      }else {
+        return false;
+      }
+
+      
+    }
+  }
+
   public function insertImage($name, $table, $column, $path)
   {
     $img_name = $_FILES["$name"]['name'];
@@ -116,6 +140,65 @@ class database
 
         $update = "UPDATE $table SET $column = '$new_img_name' WHERE id = $this->last_id";
         return $this->mysqli->query($update);
+      }else {
+        return false;
+      }
+
+      
+    }
+  }
+
+  public function checkIfPDF($name)
+  {
+    $img_name = $_FILES["$name"]['name'];
+    $img_size = $_FILES["$name"]['size'];
+    $tmp_name = $_FILES["$name"]['tmp_name'];
+    $error = $_FILES["$name"]['error'];
+
+
+
+    if ($error === 0) {
+      $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+      $img_ex_lc = strtolower($img_ex);
+
+      $allowed_exs = array('pdf');
+
+      if (in_array($img_ex_lc, $allowed_exs)) {
+        return true;
+      }else {
+        return false;
+      }
+
+      
+    }
+  }
+
+
+  public function insertPDF($name, $table, $column, $path)
+  {
+    $img_name = $_FILES["$name"]['name'];
+    $img_size = $_FILES["$name"]['size'];
+    $tmp_name = $_FILES["$name"]['tmp_name'];
+    $error = $_FILES["$name"]['error'];
+
+
+
+    if ($error === 0) {
+      $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+      $img_ex_lc = strtolower($img_ex);
+
+      $allowed_exs = array('pdf');
+
+      if (in_array($img_ex_lc, $allowed_exs)) {
+        $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
+
+        $img_upload_path = $path . $new_img_name;
+
+        move_uploaded_file($tmp_name, $img_upload_path);
+
+        $update = "UPDATE $table SET $column = '$new_img_name' WHERE id = $this->last_id";
+        $this->mysqli->query($update);
+        return true;
       }else {
         return false;
       }

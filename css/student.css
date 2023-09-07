@@ -55,6 +55,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* overflow: hidden; */
 }
 
 
@@ -228,9 +229,21 @@ button.dropbtn {
   color: rgb(204, 204, 204);
 }
 
-@media (max-width: 450px) {
+@media (max-width: 590px) {
   .dropbtn {
-    font-size: 4vw;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 440px) {
+  .dropbtn {
+    font-size: .8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dropbtn {
+    font-size: .68rem;
   }
 }
 

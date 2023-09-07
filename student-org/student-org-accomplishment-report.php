@@ -95,7 +95,7 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['date_accomplished']; ?></td>
                   <td><?php echo $row['budget']; ?></td>
-                  <td><button class="btn btn-outline-info">Upload Docx.</button></td>
+                  <td><a class="btn btn-outline-primary" href="../uploads/<?php echo $row['liquidations']; ?>" target="_blank">View</a></td>
                   <td><?php echo $row['remarks']; ?></td>
                   <td>
                     <a class="btn btn-secondary mb-2" href="edit-accomplishment-report.php?id=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>

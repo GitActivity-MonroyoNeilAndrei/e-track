@@ -4,7 +4,7 @@ include "../classes/message.php";
 include "../classes/user.php";
 
 date_default_timezone_set('Asia/Manila');
-$date_time_now = date('Y-m-d') . 'T' . date('H:i');
+$date_now = date('Y-m-d');
 
 
 session_start();
@@ -31,11 +31,15 @@ if(isset($_POST['submit'])) {
 
     $accomplishment_report_exist = 'Accomplishment Report already Exist';
   } else {
+    if(!$student_org->checkIfPDF('liquidation')) {
+      $error_file = "Upload PDF file only";
+    }else {
+    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now,'school_year'=>$student_org_school_year]);
 
-
-    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'school_year'=>$student_org_school_year]);
+    $student_org->insertPDF('liquidation', 'accomplishment_reports', 'liquidations', '../uploads/');
 
     header('location: student-org-accomplishment-report.php');
+    }
   }
 
 
@@ -95,12 +99,20 @@ if(isset($_POST['submit'])) {
           </div>
           <h3 class="text-center">Add Accomplishment Report</h3>
 
-          <form method="post" class="d-flex flex-column border border-dark-subtle shadow p-3 rounded-3 mb-3 mx-auto" style="max-width: 20rem;">
+          <form method="post" enctype="multipart/form-data" class="d-flex flex-column border border-dark-subtle shadow p-3 rounded-3 mb-3 mx-auto" style="max-width: 20rem;">
             <?php 
               if(isset($accomplishment_report_exist)) {
                 echo "
                 <div class='alert alert-danger' role='alert'>
                   $accomplishment_report_exist
+                </div>
+                ";
+              }
+
+              if(isset($error_file)){
+                echo "
+                <div class='alert alert-danger' role='alert'>
+                  $error_file
                 </div>
                 ";
               }
@@ -113,6 +125,8 @@ if(isset($_POST['submit'])) {
             <input class="form-control" type="date" name="date-accomplished" required>
             <label class="form-label" for="budget">Budget: </label>
             <input class="form-control" type="number" name="budget" required>
+            <label class="form-label" for="liquidation">Liquidation</label>
+            <input class="form-control" type="file" name="liquidation" required>
             <label class="form-label" for="remarks">Remarks: </label>
             <input class="form-control" type="text" name="remarks" required>
             <div class="d-flex justify-content-center align-items-center mt-3">
