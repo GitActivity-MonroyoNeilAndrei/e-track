@@ -7,6 +7,8 @@ session_start();
 
 $student = new database();
 
+$num = 0;
+
 if (!isset($_SESSION['student_id'])) {
   header('location: ../login-account/login-student.php');
 }
@@ -14,7 +16,7 @@ if (!isset($_SESSION['student_id'])) {
 $student_id = User::returnValueSession('student-id');
 
 
-User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
+User::ifDeactivatedReturnTo($student->select('student', 'status', ['id' => $student_id]), '../logout.php?logout=student');
 
 if (isset($_POST['submit'])) {
 
@@ -26,11 +28,11 @@ if (isset($_POST['submit'])) {
       $candidates = $_POST["$position"];
 
       foreach ($candidates as $candidate) {
-        $student->incrementData('candidate', 'number_of_votes', ['id'=>"$candidate"]);
+        $student->incrementData('candidate', 'number_of_votes', ['id' => "$candidate"]);
       }
     }
   }
-  $result = $student->updateData('student', ['can_vote'=>'', 'can_monitor'=>User::returnValueGet('can_vote')], ['student_id'=>User::returnValueSession('student_id')]);
+  $result = $student->updateData('student', ['can_vote' => '', 'can_monitor' => User::returnValueGet('can_vote')], ['student_id' => User::returnValueSession('student_id')]);
 
 
   header('location: student-vote.php?voteSuccessfully');
@@ -60,89 +62,79 @@ if (isset($_POST['submit'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-      <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
         <div class="dropdown-content">
           <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=student"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>
-    <div class="page-content">
-
-      <div class="vote-section">
-        <form class="vote-section-content" style="position: sticky; top: 0; height: 100vh;" method="post">
-
-          <?php
-          $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
-          foreach ($positions as $position) {
-          ?>
-            <div id="<?php echo $position; ?>">
+    <form class="page-content d-flex flex-column p-3" method="post">
 
 
-              <h4 class="mt-5"><?php echo $position; ?></h4>
-              <?php
-              $candidate = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
-              while ($row = mysqli_fetch_assoc($candidate)) {
-              ?>
-                <div class="vote-candidate ps-2">
-                  <input name="<?php echo str_replace(" ", "_", "$position"); ?>[]" class="form-check-input" type="checkbox" value="<?php echo $row['id']; ?>">
+    <?php
 
-                  <label for="<?php echo $position; ?>"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></label>
-                </div>
-              <?php } ?>
-            </div>
-            <script>
-              onlyTwoCheckBox("<?php echo $position ?>");
-            </script>
-          <?php } ?>
+    $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager',  'Sargeant at Arms', 'Muse', 'Escort'];
+    foreach ($positions as $position) {
+    ?>
 
-          <input class="btn btn-primary mx-auto mt-4" type="submit" name="submit" value="Submit">
-        </form>
+    <div class="candidate-container mt-0">
+      <div class="candidate-position bg-primary">
+        <?php echo $position; ?>
       </div>
 
+      <?php
+        $result = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
+        while ($row = mysqli_fetch_assoc($result)) {
+      ?>
 
-      <div class="content border border-primary">
-        <div class="content-container">
-          <div class="content-header">
-            <h5 class="text-start">Voting Ballot</h5>
+      <div class="candidate-position-border"></div>
+      <div class="candidate">
+        <div class="candidate-details">
+          <div class="candidate-details-image">
+            <div><img class="candidate-details-image" src="../uploads/IMG-64d8733b976686.19475466.png" alt=""></div>
           </div>
-          <h6>Voting will expired in: july 20 2023</h6>
-          <div class="container-add-candidate">
-            <h2 class="text-center py-1 fw-bold">Vote Responsibly</h2>
-          </div>
+          <div class="candidate-details-name"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></div>
+          <div class="candidate-details-partylist"><?php echo $row['partylist'] . ' Partylist'; ?></div>
+        </div>
+        <div class="candidate-description">
 
-          <?php
-
-          $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager',  'Sargeant at Arms', 'Muse', 'Escort'];
-          foreach ($positions as $position) {
-
-          ?>
-            <h3 class="text-center fw-bold"><?php echo $position; ?></h3>
-            <!-- Candidates -->
-            <?php
-            $result = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
-            while ($row = mysqli_fetch_assoc($result)) {
-            ?>
-
-              <div class="candidate-container">
-                <div class="bg-secondary bg-gradient ">
-                  <div class="candidate-image">
-                    <img style="height: 100%; width: 100%;" src="../uploads/<?php echo $row['photo_url'] ?>" alt="candidate image">
-                  </div>
-                </div>
-                <h4 class="mt-5">Candidate No. 1</h4>
-                <h5 class="fw-bold"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></h5>
-                <h5><?php echo $row['partylist'] . ' Partylist'; ?></h5>
-                <p class="candidate-description"><?php echo $row['introduce_yourself']; ?></p>
-              </div>
-            <?php } ?>
-
-            <div style="margin-bottom: 5rem ;border-bottom: 8px solid green;"></div>
-          <?php } ?>
-
+          <p><?php echo $row['introduce_yourself']; ?></p>
         </div>
       </div>
+
+
+
+      <?php } ?>
+      
+      <div id="<?php echo $position; ?>" class="vote-section">
+      <?php
+        $candidate = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
+        while ($row = mysqli_fetch_assoc($candidate)) {
+          $num += 1;
+      ?>
+
+        <input name="<?php echo str_replace(" ", "_", "$position"); ?>[]" type="checkbox" class="btn-check" id="<?php echo $num; ?>"  value="<?php echo $row['id']; ?>" autocomplete="off">
+        <label class="btn btn-outline-danger m-2" for="<?php echo $num; ?>"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></label>
+
+      <?php } ?>
+
+
+        
+      </div>
+      <script>
+        onlyTwoCheckBox("<?php echo $position ?>");
+      </script>
+
+
     </div>
+    <?php } ?>
+
+    <input class="btn btn-primary mx-auto mt-4" type="submit" name="submit" value="Submit">
+
+
+
+    </form>
   </div>
 </body>
 
