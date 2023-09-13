@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
     foreach ($positions as $position) {
     ?>
 
-    <div class="candidate-container mt-0">
+    <div class="candidate-container">
       <div class="candidate-position bg-primary">
         <?php echo $position; ?>
       </div>
@@ -91,13 +91,13 @@ if (isset($_POST['submit'])) {
       <div class="candidate-position-border"></div>
       <div class="candidate">
         <div class="candidate-details">
-          <div class="candidate-details-image">
+          <div class="candidate-details-image shadow-lg">
             <div><img class="candidate-details-image" src="../uploads/IMG-64d8733b976686.19475466.png" alt=""></div>
           </div>
           <div class="candidate-details-name"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></div>
           <div class="candidate-details-partylist"><?php echo $row['partylist'] . ' Partylist'; ?></div>
         </div>
-        <div class="candidate-description">
+        <div class="candidate-description shadow">
 
           <p><?php echo $row['introduce_yourself']; ?></p>
         </div>
@@ -130,12 +130,17 @@ if (isset($_POST['submit'])) {
     </div>
     <?php } ?>
 
-    <input class="btn btn-primary mx-auto mt-4" type="submit" name="submit" value="Submit">
+    <input class="btn btn-primary mx-auto mt-1" type="submit" name="submit" value="Submit">
 
 
 
     </form>
   </div>
+  <style>
+    form div.candidate-container {
+      margin: 0 !important;
+    }
+  </style>
 </body>
 
 </html>

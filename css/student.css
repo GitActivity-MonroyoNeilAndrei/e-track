@@ -308,6 +308,9 @@ button.dropbtn {
   background-color: #3788ff;
   max-width: 15rem;
   padding: 0.5rem 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .candidate-details-partylist {
@@ -335,6 +338,7 @@ button.dropbtn {
 
 .candidate-description p {
   text-align: justify;
+  color: black;
 }
 
 .vote-section {
