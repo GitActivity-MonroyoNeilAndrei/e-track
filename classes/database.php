@@ -362,6 +362,16 @@ class database
     return $this->mysqli->query($sql);
   }
 
+  public function limitSelectAll($table, $limit = 0, $offset = 0)
+  {
+    if($limit == 0 && $offset == 0){
+      $sql = "SELECT * FROM $table";
+      return $this->mysqli->query($sql);
+    }
+    $sql = "SELECT * FROM $table ORDER BY id LIMIT $limit OFFSET $offset";
+    return $this->mysqli->query($sql);
+  }
+
   public function selectDistinct($table, $rows = '*', $where = array(), $operator = 'AND')
   {
     if (empty($where)) {

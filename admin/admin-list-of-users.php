@@ -8,7 +8,6 @@ $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 
 
 session_start();
-
 $admin = new database();
 
 User::ifNotLogin('admin-username', '../login-account/login-admin.php');
@@ -18,15 +17,16 @@ $admin_id = User::returnValueSession('admin-id');
 User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
 
 if(!isset($_GET['user'])){
-  header('location: admin-list-of-users.php?user=admin');
+  header('location: admin-list-of-users.php?user=admin&page=all');
+}else if ($_GET['user'] == '') {
+  header('location: admin-list-of-users.php?user=admin&page=all');
 }
 
+$user = User::returnValueGet('user');
 
-if (!isset($_GET['activeStudentOrg'])) {
-  $result = $admin->selectDistinct('student_org', 'name_of_org');
 
-  $row = mysqli_fetch_assoc($result);
-  // header("location: admin-monitor-election-result.php?activeStudentOrg=$row[name_of_org]");
+if (!isset($_GET['page'])) {
+  header("location: admin-list-of-users.php?user=$user&page=all");
 }
 
 ?>
@@ -103,11 +103,33 @@ if (!isset($_GET['activeStudentOrg'])) {
           <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student'; ?>"><i class="fa-solid fa-plus"></i> Add Student</a>
           <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student_org'; ?>"><i class="fa-solid fa-plus"></i> Add Student Org.</a>
 
+          <nav class="mt-3">
+            <ul class="pagination d-flex justify-content-center">
+              <li class="page-item"><a class="page-link" href="admin-list-of-users.php?user=<?php echo $user; ?>&page=<?php echo 'all'; ?>" id="<?php echo 'all'; ?>">all</a></li>
+              <?php
+                $sql = "SELECT COUNT(id) FROM $user;";
+                $result = $admin->mysqli->query($sql);
+
+                $count = $result->fetch_assoc();
+
+                $num = $count['COUNT(id)'] / 10;
+                $num_of_page = ceil($num);
+                
+                for ($i = 1; $i <= $num_of_page; $i++){
+                
+              ?>
+                <li class="page-item"><a class="page-link" href="admin-list-of-users.php?user=<?php echo $user; ?>&page=<?php echo $i; ?>" id="<?php echo $i; ?>"><?php echo $i; ?></a></li>
+
+              <?php } ?>
+            </ul>
+          </nav>
+
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
                   
                 <tr class="<?php if(User::returnValueGet('user') != 'admin') {echo 'd-none';} ?>">
+                  <th>ID</th>
                   <th>Username</th>
                   <th>Full Name</th>
                   <th>Address</th>
@@ -118,6 +140,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </tr>
 
                 <tr class="<?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>">
+                  <th>ID</th>
                   <th>Username</th>
                   <th>Full Name</th>
                   <th>Address</th>
@@ -131,6 +154,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </tr>
 
                 <tr class="<?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>">
+                  <th>ID</th>
                   <th>Name of Org</th>
                   <th>College Of</th>
                   <th>Adviser</th>
@@ -145,9 +169,16 @@ if (!isset($_GET['activeStudentOrg'])) {
                 <tbody>
 
                 <?php 
+                  if($_GET['page'] == 'all'){
+                    $result = $admin->limitSelectAll($user);
+                  }else {
+                    $num = ((int)$_GET['page']) - 1;
+                    $offset = (string)$num . '0';
 
-                  $user = User::returnValueGet('user');
-                  $result = $admin->select($user, '*');
+
+                    $result = $admin->limitSelectAll($user, 10, (int)$offset);
+                  }
+                  
 
 
 
@@ -156,6 +187,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                 ?>
 
                   <tr class="<?php if (User::returnValueGet('user') != 'admin') { echo 'd-none' ;}  ?>">
+                    <td><?php echo $row['id'] ?></td>
                     <td><?php echo $row['username']; ?></td>
                     <td><?php echo $row['first_name'] .' '.  $row['last_name']; ?></td>
                     <td><?php echo $row['address']; ?></td>
@@ -170,6 +202,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   </tr>
 
                   <tr class="<?php if (User::returnValueGet('user') != 'student') { echo 'd-none' ;}  ?>">
+                    <td><?php echo $row['id'] ?></td>
                     <td><?php echo $row['username']; ?></td>
                     <td><?php echo $row['first_name'] .' '.  $row['last_name']; ?></td>
                     <td><?php echo $row['address']; ?></td>
@@ -187,6 +220,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   </tr>
 
                   <tr class="<?php if (User::returnValueGet('user') != 'student_org') { echo 'd-none' ;}  ?>">
+                    <td><?php echo $row['id'] ?></td>
                     <td><?php echo $row['name_of_org']; ?></td>
                     <td><?php echo $row['college_of']; ?></td>
                     <td><?php echo $row['adviser']; ?></td>
@@ -217,6 +251,9 @@ if (!isset($_GET['activeStudentOrg'])) {
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
+
+    let activePage = document.getElementById("<?php User::printGet('page'); ?>");
+    activePage.classList.add('active');
   </script>
 </body>
 
