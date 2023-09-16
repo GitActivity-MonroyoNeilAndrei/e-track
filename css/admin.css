@@ -160,6 +160,18 @@ div.nav-links nav ul li:hover {
   cursor: pointer;
 }
 
+.button-search-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 550px) {
+  .button-search-wrapper {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
 .add-candidate-btn {
   border-radius: 10px;
   text-align: center;

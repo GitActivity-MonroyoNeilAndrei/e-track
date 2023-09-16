@@ -34,7 +34,7 @@ if(isset($_POST['submit'])) {
     if(!$student_org->checkIfPDF('liquidation')) {
       $error_file = "Upload PDF file only";
     }else {
-    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now,'school_year'=>$student_org_school_year]);
+    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now, 'school_year'=>$student_org_school_year]);
 
     $student_org->insertPDF('liquidation', 'accomplishment_reports', 'liquidations', '../uploads/');
 

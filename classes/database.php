@@ -411,4 +411,14 @@ class database
     $row = mysqli_fetch_assoc($result);
     return $row['num'];
   }
+
+  public function search($table, $column1, $column2, $value){
+    $sql = "SELECT * FROM $table WHERE $column1 LIKE '%$value%' OR $column2 LIKE '%$value%';";   
+    return $this->mysqli->query($sql);
+  }
+
+  public function modifiedSearch($table, $where, $column1, $value){
+    $sql = "SELECT * FROM $table WHERE ($where) AND $column1 LIKE '%$value%';";   
+    return $this->mysqli->query($sql);
+  }
 }

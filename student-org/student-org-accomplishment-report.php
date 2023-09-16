@@ -17,6 +17,10 @@ $student_org_id = User::returnValueSession('student-org-id');
 
 User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
+if(!isset($_SESSION['school-year'])){
+  header("location: ../logout.php?logout=student-org");
+}
+
 ?>
 
 
@@ -68,7 +72,7 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
             <h5>Submit Accomplishment Report</h5>
           </div>
           <h3 class="text-center">Accomplishment Reports</h3>
-          <a class="btn btn-primary mb-3" href="add-accomplishment-report.php"><i class="fa-solid fa-plus"></i> Add Plan</a>
+          <a class="btn btn-primary mb-3" href="add-accomplishment-report.php"><i class="fa-solid fa-plus"></i> Add Report</a>
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>

@@ -17,6 +17,9 @@ $student_org_id = User::returnValueSession('student-org-id');
 
 User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
+if(!isset($_SESSION['school-year'])){
+  header("location: ../logout.php?logout=student-org");
+}
 
 ?>
 

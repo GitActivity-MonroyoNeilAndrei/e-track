@@ -99,10 +99,17 @@ if (!isset($_GET['page'])) {
             </ul>
           </nav>
 
-          <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'admin') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'admin'; ?>"><i class="fa-solid fa-plus"></i> Add Admin</a>
-          <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student'; ?>"><i class="fa-solid fa-plus"></i> Add Student</a>
-          <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student_org'; ?>"><i class="fa-solid fa-plus"></i> Add Student Org.</a>
+          <div class="button-search-wrapper">
+            <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'admin') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'admin'; ?>"><i class="fa-solid fa-plus"></i> Add Admin</a>
+            <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student'; ?>"><i class="fa-solid fa-plus"></i> Add Student</a>
+            <a class="btn btn-primary <?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>" href="admin-add-user.php?user=<?php echo 'student_org'; ?>"><i class="fa-solid fa-plus"></i> Add Student Org.</a>
 
+            <form method="post" class="d-flex" role="search">
+              <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit" name="submit">Search</button>
+            </form>
+          </div>
+          
           <nav class="mt-3">
             <ul class="pagination d-flex justify-content-center">
               <li class="page-item"><a class="page-link" href="admin-list-of-users.php?user=<?php echo $user; ?>&page=<?php echo 'all'; ?>" id="<?php echo 'all'; ?>">all</a></li>
@@ -168,18 +175,25 @@ if (!isset($_GET['page'])) {
               <tbody>
                 <tbody>
 
-                <?php 
+                <?php
+                  if(isset($_POST['submit'])) {
+                    $search = $_POST['search'];
+                    if($user == 'student_org'){
+                      $result = $admin->search($user, 'name_of_org', 'college_of', $search);
+                    } else {
+                      $result = $admin->search($user, 'first_name', 'last_name', $search);
+                    }
+                    
+                  }else {
                   if($_GET['page'] == 'all'){
                     $result = $admin->limitSelectAll($user);
                   }else {
                     $num = ((int)$_GET['page']) - 1;
                     $offset = (string)$num . '0';
 
-
                     $result = $admin->limitSelectAll($user, 10, (int)$offset);
                   }
-                  
-
+                  }
 
 
                   while($row = mysqli_fetch_assoc($result)) {

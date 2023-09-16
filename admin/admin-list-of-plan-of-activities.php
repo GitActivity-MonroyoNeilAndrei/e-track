@@ -13,26 +13,56 @@ $admin_id = User::returnValueSession('admin-id');
 
 User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id' => $admin_id]), '../logout.php?logout=admin');
 
+$activeStudentOrg = "";
+
 if (!isset($_GET['activeStudentOrg'])) {
   $result = $admin->selectDistinct('student_org', 'name_of_org');
 
   $row = mysqli_fetch_assoc($result);
+  $activeStudentOrg = $row['name_of_org'];
+
   header("location: admin-list-of-plan-of-activities.php?activeStudentOrg=$row[name_of_org]");
 }
 
-$school_year2;
+$school_year2 = User::returnValueGet('schoolYear');
+
 
 if(isset($_POST['submit'])) {
   $school_year = $_POST['school-year'];
+  if($activeStudentOrg == ""){
+    $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+    header("location: admin-list-of-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+  } else {
+    header("location: admin-list-of-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+  }
 
-  $school_year2 = $school_year;
 } else {
-  $result = $admin->selectDistinct('plan_of_activities', 'school_year');
-  $row = mysqli_fetch_assoc($result);
+  if(!isset($_GET['schoolYear'])) {
+    $result = $admin->selectDistinct('plan_of_activities', 'school_year');
+    $row = mysqli_fetch_assoc($result);
 
-  $school_year2 = $row['school_year'];
+    $school_year = $row['school_year'];
+    if($activeStudentOrg == "") {
+      $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+      header("location: admin-list-of-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+    } else {
+      header("location: admin-list-of-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+
+    }
+
+  }
 }
 
+if(isset($_POST['search_submit'])) {
+  $search = mysqli_escape_string($admin->mysqli, $_POST['search']);
+
+  $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+  $school_year1 = User::returnValueGet('schoolYear');
+
+  header("location: admin-list-of-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year1&search=$search");
+
+
+}
 ?>
 
 
@@ -116,6 +146,11 @@ if(isset($_POST['submit'])) {
             <input class="btn btn-primary mt-2" type="submit" name="submit" value="Select">
           </form>
 
+          <form method="post" class="d-flex mx-auto mt-3" role="search" style="max-width: 20rem;">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+            <button class="btn btn-outline-success" name="search_submit" type="submit">Search</button>
+          </form>
+
 
           <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -133,7 +168,24 @@ if(isset($_POST['submit'])) {
               </thead>
               <tbody>
                 <?php 
-                  $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                  $school_year2 = User::returnValueGet('schoolYear');
+
+                  if(!isset($_GET['search'])) {
+                    $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                  } else if (isset($_GET['search'])) {
+                    if($_GET['search'] == "") {
+                      $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                    }
+                  }
+
+                  if (isset($_GET['search'])) {
+                    if($_GET != '') {
+                      $name_of_org = User::returnValueGet('activeStudentOrg');
+                      $search = User::returnValueGet('search');
+                      $plan_of_activity = $admin->modifiedSearch('plan_of_activities', "name_of_org = '$name_of_org' AND status = 'ongoing' AND school_year = '$school_year2'", "name_of_activity", $search);
+                    }
+                  }
+                    
 
                   while ($row = mysqli_fetch_assoc($plan_of_activity)) {
 
