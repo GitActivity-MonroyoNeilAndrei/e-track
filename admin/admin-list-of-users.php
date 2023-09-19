@@ -255,6 +255,27 @@ if (!isset($_GET['page'])) {
             </table>
           </div> <!-- div responsive table -->
 
+          <nav class="mt-3">
+            <ul class="pagination d-flex justify-content-center">
+              <li class="page-item"><a class="page-link" href="admin-list-of-users.php?user=<?php echo $user; ?>&page=<?php echo 'all'; ?>" id="<?php echo 'all'; ?>">all</a></li>
+              <?php
+                $sql = "SELECT COUNT(id) FROM $user;";
+                $result = $admin->mysqli->query($sql);
+
+                $count = $result->fetch_assoc();
+
+                $num = $count['COUNT(id)'] / 10;
+                $num_of_page = ceil($num);
+                
+                for ($i = 1; $i <= $num_of_page; $i++){
+                
+              ?>
+                <li class="page-item"><a class="page-link" href="admin-list-of-users.php?user=<?php echo $user; ?>&page=<?php echo $i; ?>" id="<?php echo $i; ?>"><?php echo $i; ?></a></li>
+
+              <?php } ?>
+            </ul>
+          </nav>
+
         </div>
       </div>
     </div>
@@ -268,6 +289,8 @@ if (!isset($_GET['page'])) {
 
     let activePage = document.getElementById("<?php User::printGet('page'); ?>");
     activePage.classList.add('active');
+
+    
   </script>
 </body>
 
