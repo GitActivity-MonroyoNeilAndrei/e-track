@@ -279,7 +279,9 @@ table {
   word-wrap: break-word;
 }
 
-
+.graph {
+  max-width: 80%;
+}
 
 
 

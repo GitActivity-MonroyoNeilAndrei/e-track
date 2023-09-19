@@ -358,3 +358,7 @@ button.dropbtn {
 .vote-section label {
   color: white;
 }
+
+.graph {
+  max-width: 80%;
+}

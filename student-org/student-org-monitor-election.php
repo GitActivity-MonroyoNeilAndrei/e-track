@@ -31,6 +31,7 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
   <style>
     .table-responsive {
       max-width: 35rem;
@@ -207,6 +208,8 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
                 </table>
               </div>
 
+              <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+
 
             <?php } ?>
 
@@ -225,6 +228,66 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
   </div>
 
+
+  <?php 
+    if (empty($row2)) {
+      // do nothing
+    } else if ($row2['exp_date'] <= $date_time_now) {
+
+    $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+    foreach ($positions as $position) {
+
+      $xArray = array();
+      $yArray = array();
+
+
+
+      $connection = new mysqli('localhost', 'root', '', 'etrack');
+      $org_name = User::returnValueSession('name_of_org');
+      $sql = "SELECT * FROM candidate WHERE org_name = '$org_name' AND position = '$position' ORDER BY number_of_votes DESC";
+      $result3 = $connection->query($sql);
+
+      // $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
+
+      while ($row = mysqli_fetch_assoc($result3)) {
+        array_push($xArray, "$row[first_name] $row[last_name]");
+        array_push($yArray, "$row[number_of_votes]");
+
+
+      }
+    ?>
+
+    <script>        
+        Plotly.newPlot("<?php echo $position; ?>",
+        [{
+          x:[
+            <?php 
+              $first = true;
+              foreach ($xArray as $xarr) { 
+              ?>
+                "<?php echo $xarr; ?>" ,
+              <?php } ?>
+            ],
+            y:[
+            <?php 
+              $first = true;
+              foreach ($yArray as $yarr) { 
+              ?>
+                parseInt(<?php echo $yarr; ?>) ,
+
+              <?php } ?>
+            ],
+          type:"bar"
+        }]
+        , {title:"<?php echo $position; ?> Graph Representation"});
+    </script>
+
+  <?php 
+    }
+
+  }
+  ?>
 </body>
 
 </html>

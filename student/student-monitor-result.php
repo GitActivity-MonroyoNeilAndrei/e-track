@@ -38,6 +38,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
   <style>
     .table-responsive {
       max-width: 35rem;
@@ -154,24 +155,6 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <!-- diplays the winners of the election, and a button that will officially declare the officers -->
 
           <?php
@@ -246,6 +229,8 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
                 </table>
               </div>
 
+              <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+
 
             <?php } ?>
 
@@ -265,6 +250,72 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       </div>
     </div>
   </div>
+
+
+  <?php 
+    if (empty($row3)) {
+      // do nothing
+    } else if ($row3['exp_date'] <= $date_time_now) {
+
+    $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+    foreach ($positions as $position) {
+
+      $xArray = array();
+      $yArray = array();
+
+
+
+      $connection = new mysqli('localhost', 'root', '', 'etrack');
+      $org_name = $row2['can_see_result'];
+      $sql = "SELECT * FROM candidate WHERE org_name = '$org_name' AND position = '$position' ORDER BY number_of_votes DESC";
+      $result3 = $connection->query($sql);
+
+      // $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
+
+      while ($row = mysqli_fetch_assoc($result3)) {
+        array_push($xArray, "$row[first_name] $row[last_name]");
+        array_push($yArray, "$row[number_of_votes]");
+
+        
+
+      }
+      var_dump($yArray);
+    ?>
+
+    <script>        
+        Plotly.newPlot("<?php echo $position; ?>",
+        [{ 
+          x:[
+            <?php 
+              $first = true;
+              foreach ($xArray as $xarr) { 
+
+              ?>
+                "<?php echo $xarr; ?>",
+
+              <?php } ?>
+            ],
+            y:[
+            <?php 
+              $first = true;
+              foreach ($yArray as $yarr) { 
+
+              ?>
+                parseInt(<?php echo $yarr; ?>),
+
+              <?php } ?>
+            ],
+          type:"bar"
+        }]
+        , {title:"<?php echo $position; ?> Graph Representation"});
+    </script>
+
+  <?php 
+    }
+
+  }
+  ?>
 </body>
 
 </html>
