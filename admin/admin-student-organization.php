@@ -22,20 +22,38 @@ if (!isset($_GET['activeStudentOrg'])) {
   header("location: admin-student-organization.php?activeStudentOrg=$row[name_of_org]");
 }
 
-$connection = new mysqli('localhost', 'root', '', 'etrack');
-
-
 $org_name = User::returnValueGet('activeStudentOrg');
 
-$sql = "SELECT DISTINCT school_year FROM officers WHERE org_name = '$org_name' ORDER BY school_year DESC LIMIT 2;";
+if(!isset($_GET['school_year'])) {
+  $connection = new mysqli('localhost', 'root', '', 'etrack');
 
-$result = $connection->query($sql);
-$row = mysqli_fetch_assoc($result);
 
-$latest_school_year = "";
-if($row){
-  $latest_school_year = $row['school_year'];
+  $sql = "SELECT DISTINCT school_year FROM officers WHERE org_name = '$org_name' ORDER BY school_year DESC LIMIT 2;";
+
+  $result = $connection->query($sql);
+  $row = mysqli_fetch_assoc($result);
+
+  $latest_school_year = "";
+  if($row){
+    $latest_school_year = $row['school_year'];
+  }
+
+  $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+
+  if($latest_school_year != "") {
+    header("location: admin-student-organization.php?activeStudentOrg=$activeStudentOrg&school_year=$latest_school_year");
+  }
+
 }
+
+if(isset($_POST['submit'])) {
+  $school_year = $_POST['school_year'];
+
+  $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+
+  header("location: admin-student-organization.php?activeStudentOrg=$activeStudentOrg&school_year=$school_year");
+}
+
 
 
 
@@ -148,13 +166,30 @@ if($row){
           </nav>
 
           <h4 class="text-center">Officers of <?php User::printGet('activeStudentOrg') ?></h4>
-          <h5 class="text-center mb-3"><?php echo $latest_school_year; ?></h5>
+
+
+          <form method="post" class="mx-auto text-center" style="max-width: 10rem;">
+            <select name="school_year" class="form-select">
+              <?php 
+                $sql = "SELECT DISTINCT school_year FROM officers WHERE org_name = '$org_name' ORDER BY school_year DESC";
+                $school_years = $admin->mysqli->query($sql);
+                
+                while($row = mysqli_fetch_assoc($school_years)) {
+              ?>
+                <option value="<?php echo $row['school_year']; ?>" <?php if($row['school_year'] == User::returnValueGet('school_year')) {echo "selected";} ?>><?php echo $row['school_year']; ?></option>
+              <?php
+                }
+              ?>
+            </select>
+            <input class="btn btn-primary my-2" type="submit" name="submit" value="Select">
+          </form>
+
+          
 
 
 
           <?php
-
-          $result = $admin->select('officers', '*', ['school_year' => $latest_school_year, 'org_name' => $org_name]);
+          $result = $admin->select('officers', '*', ['school_year' => User::returnValueGet('school_year'), 'org_name' => $org_name]);
 
           $officers = array();
           $images = array();
@@ -196,16 +231,6 @@ if($row){
           }
 
           ?>
-
-
-
-
-
-
-
-
-
-
           <div class="candidate-row">
             <div class="container">
 
@@ -554,7 +579,7 @@ if($row){
 
           <?php if($admin->isExisted('officers', ['org_name'=>User::returnValueGet('activeStudentOrg')])){ ?>
           <div class="d-flex justify-content-center mt-4 mb-2">
-            <a class="btn btn-primary" href="admin-edit-organization.php?studentOrg=<?php User::printGet('activeStudentOrg') ?>&latestSchoolYear=<?php echo $latest_school_year; ?>">Edit Members</a>
+            <a class="btn btn-primary" href="admin-edit-organization.php?studentOrg=<?php User::printGet('activeStudentOrg') ?>&latestSchoolYear=<?php User::printGet('school_year'); ?>">Edit Members</a>
 
           </div>
           <?php } ?>

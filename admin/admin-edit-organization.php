@@ -79,6 +79,7 @@ if (isset($_POST['edit'])) {
   $escort_last_name = $_POST["escort-last-name"];
 
 
+
   $admin->updateData('officers', ['first_name' => $president_first_name, 'last_name' => $president_last_name], ['school_year' => User::returnValueGet('latestSchoolYear'), 'org_name' => User::returnValueGet('studentOrg'), 'id' => $officers['President'][2]]);
   $admin->updateImage('president-image', 'officers', 'photo_url', '../uploads/');
 
@@ -180,9 +181,7 @@ if (isset($_POST['edit'])) {
                                        </div>";
         } ?>
         <label for="adviser">Adviser:</label>
-        <input class="form-control" type="text" name="adviser" value="<?php if (array_key_exists("Adviser", $officers)) {
-                                                                        echo $officers['Adviser'][0];
-                                                                      } ?>">
+        <input class="form-control" type="text" name="adviser" value="<?php if (array_key_exists("Adviser", $officers)) { echo $officers['Adviser'][0];} ?>">
       </div>
       <div class="d-flex text">
         <input class="btn btn-primary" style="font-size: .9em;" type="submit" name="add-edit-adviser" value="edit-adviser">
@@ -193,8 +192,8 @@ if (isset($_POST['edit'])) {
       <div>
         <label for="president">President:</label>
         <div class="d-flex">
-          <input class="form-control" type="text" name="president-first-name" value="<?php echo $officers['President'][0]; ?>" required>
-          <input class="form-control" type="text" name="president-last-name" value="<?php echo $officers['President'][1]; ?>" required>
+          <input class="form-control" type="text" name="president-first-name" value="<?php if (array_key_exists("President", $officers)) { echo $officers['President'][0];} ?>" required>
+          <input class="form-control" type="text" name="president-last-name" value="<?php if (array_key_exists("President", $officers)) { echo $officers['President'][1];} ?>" required>
           <input class="form-control" type="file" name="president-image">
         </div>
       </div>
@@ -209,86 +208,86 @@ if (isset($_POST['edit'])) {
       <div>
         <label for="secretary">Secretary:</label>
         <div class="d-flex">
-          <input class="form-control" type="text" name="secretary-first-name" value="<?php echo $officers['Secretary'][0]; ?>" required>
-          <input class="form-control" type="text" name="secretary-last-name" value="<?php echo $officers['Secretary'][1]; ?>" required>
+          <input class="form-control" type="text" name="secretary-first-name" value="<?php if (array_key_exists("Secretary", $officers)) { echo $officers['Secretary'][0];} ?>" required>
+          <input class="form-control" type="text" name="secretary-last-name" value="<?php if (array_key_exists("Secretary", $officers)) { echo $officers['Secretary'][1];} ?>" required>
           <input class="form-control" type="file" name="secretary-image">
         </div>
       </div>
       <div>
         <label for="treasurer">Treasurer:</label>
         <div class="d-flex">
-          <input class="form-control" type="text" name="treasurer-first-name" value="<?php echo $officers['Treasurer'][0]; ?>" required>
-          <input class="form-control" type="text" name="treasurer-last-name" value="<?php echo $officers['Treasurer'][1]; ?>" required>
+          <input class="form-control" type="text" name="treasurer-first-name" value="<?php if (array_key_exists("Treasurer", $officers)) { echo $officers['Treasurer'][0];} ?>" required>
+          <input class="form-control" type="text" name="treasurer-last-name" value="<?php if (array_key_exists("Treasurer", $officers)) { echo $officers['Treasurer'][1];} ?>" required>
           <input class="form-control" type="file" name="treasurer-image">
         </div>
       </div>
       <div>
         <label for="auditor">Auditor:</label>
         <div class="d-flex">
-          <input class="form-control" type="text" name="auditor-first-name" value="<?php echo $officers['Auditor'][0]; ?>" required>
-          <input class="form-control" type="text" name="auditor-last-name" value="<?php echo $officers['Auditor'][1]; ?>" required>
+          <input class="form-control" type="text" name="auditor-first-name" value="<?php if (array_key_exists("Auditor", $officers)) { echo $officers['Auditor'][0];} ?>" required>
+          <input class="form-control" type="text" name="auditor-last-name" value="<?php if (array_key_exists("Auditor", $officers)) { echo $officers['Auditor'][1];} ?>" required>
           <input class="form-control" type="file" name="auditor-image">
         </div>
       </div>
       <div>
         <label for="pio">PIO:</label>
         <div class="d-flex">
-          <input class="form-control" type="text" name="pio1-first-name" value="<?php echo $officers['PIO1'][0]; ?>" required>
-          <input class="form-control" type="text" name="pio1-last-name" value="<?php echo $officers['PIO1'][1]; ?>" required>
+          <input class="form-control" type="text" name="pio1-first-name" value="<?php if (array_key_exists("PIO1", $officers)) { echo $officers['PIO1'][0];} ?>" required>
+          <input class="form-control" type="text" name="pio1-last-name" value="<?php if (array_key_exists("PIO1", $officers)) { echo $officers['PIO1'][1];} ?>" required>
           <input class="form-control" type="file" name="pio-image">
         </div>
         <div>
           <label for="pio2">PIO 2:</label>
           <div class="d-flex">
-            <input class="form-control" type="text" name="pio2-first-name" value="<?php echo $officers['PIO2'][0]; ?>" required>
-            <input class="form-control" type="text" name="pio2-last-name" value="<?php echo $officers['PIO2'][1]; ?>" required>
+            <input class="form-control" type="text" name="pio2-first-name" value="<?php if (array_key_exists("PIO2", $officers)) { echo $officers['PIO2'][0];} ?>" required>
+            <input class="form-control" type="text" name="pio2-last-name" value="<?php if (array_key_exists("PIO2", $officers)) { echo $officers['PIO2'][1];} ?>" required>
             <input class="form-control" type="file" name="pio2-image">
           </div>
           <div>
             <label for="project-manager">Project Manager:</label>
             <div class="d-flex">
-              <input class="form-control" type="text" name="project-manager1-first-name" value="<?php echo $officers['Project Manager1'][0]; ?>" required>
-              <input class="form-control" type="text" name="project-manager1-last-name" value="<?php echo $officers['Project Manager1'][1]; ?>" required>
+              <input class="form-control" type="text" name="project-manager1-first-name" value="<?php if (array_key_exists("Project Manager1", $officers)) { echo $officers['Project Manager1'][0];} ?>" required>
+              <input class="form-control" type="text" name="project-manager1-last-name" value="<?php if (array_key_exists("Project Manager1", $officers)) { echo $officers['Project Manager1'][1];} ?>" required>
               <input class="form-control" type="file" name="project-manager-image">
             </div>
           </div>
           <div>
             <label for="project-manager2">Project Manager 2:</label>
             <div class="d-flex">
-              <input class="form-control" type="text" name="project-manager2-first-name" value="<?php echo $officers['Project Manager2'][0]; ?>" required>
-              <input class="form-control" type="text" name="project-manager2-last-name" value="<?php echo $officers['Project Manager2'][1]; ?>" required>
+              <input class="form-control" type="text" name="project-manager2-first-name" value="<?php if (array_key_exists("Project Manager2", $officers)) { echo $officers['Project Manager2'][0];} ?>" required>
+              <input class="form-control" type="text" name="project-manager2-last-name" value="<?php if (array_key_exists("Project Manager2", $officers)) { echo $officers['Project Manager2'][1];} ?>" required>
               <input class="form-control" type="file" name="project-manager2-image">
             </div>
           </div>
           <div>
             <label for="sargeant-at-arms">Sargeant at Arms:</label>
             <div class="d-flex">
-              <input class="form-control" type="text" name="sargeant-at-arms1-first-name" value="<?php echo $officers['Sargeant at Arms1'][0]; ?>" required>
-              <input class="form-control" type="text" name="sargeant-at-arms1-last-name" value="<?php echo $officers['Sargeant at Arms1'][1]; ?>" required>
+              <input class="form-control" type="text" name="sargeant-at-arms1-first-name" value="<?php if (array_key_exists("Sargeant at Arms1", $officers)) { echo $officers['Sargeant at Arms1'][0];} ?>" required>
+              <input class="form-control" type="text" name="sargeant-at-arms1-last-name" value="<?php if (array_key_exists("Sargeant at Arms1", $officers)) { echo $officers['Sargeant at Arms1'][0];} ?>" required>
               <input class="form-control" type="file" name="sargeant-at-arms-image">
             </div>
           </div>
           <div>
             <label for="sargeant-at-arms2">Sargeant at Arms 2:</label>
             <div class="d-flex">
-              <input class="form-control" type="text" name="sargeant-at-arms2-first-name" value="<?php echo $officers['Sargeant at Arms2'][0]; ?>" required>
-              <input class="form-control" type="text" name="sargeant-at-arms2-last-name" value="<?php echo $officers['Sargeant at Arms2'][1]; ?>" required>
+              <input class="form-control" type="text" name="sargeant-at-arms2-first-name" value="<?php if (array_key_exists("Sargeant at Arms2", $officers)) { echo $officers['Sargeant at Arms2'][0];} ?>" required>
+              <input class="form-control" type="text" name="sargeant-at-arms2-last-name" value="<?php if (array_key_exists("Sargeant at Arms2", $officers)) { echo $officers['Sargeant at Arms2'][1];} ?>" required>
               <input class="form-control" type="file" name="sargeant-at-arms2-image">
             </div>
           </div>
           <div>
             <label for="muse">Muse:</label>
             <div class="d-flex">
-              <input class="form-control" type="text" name="muse-first-name" value="<?php echo $officers['Muse'][0]; ?>" required>
-              <input class="form-control" type="text" name="muse-last-name" value="<?php echo $officers['Muse'][1]; ?>" required>
+              <input class="form-control" type="text" name="muse-first-name" value="<?php if (array_key_exists("Muse", $officers)) { echo $officers['Muse'][0];} ?>" required>
+              <input class="form-control" type="text" name="muse-last-name" value="<?php if (array_key_exists("Muse", $officers)) { echo $officers['Muse'][1];} ?>" required>
               <input class="form-control" type="file" name="muse-image">
             </div>
           </div>
           <div>
             <label for="escort">Escort:</label>
             <div class="d-flex">
-              <input class="form-control" type="text" name="escort-first-name" value="<?php echo $officers['Escort'][0]; ?>" required>
-              <input class="form-control" type="text" name="escort-last-name" value="<?php echo $officers['Escort'][1]; ?>" required>
+              <input class="form-control" type="text" name="escort-first-name" value="<?php if (array_key_exists("Escort", $officers)) { echo $officers['Escort'][0];} ?>" required>
+              <input class="form-control" type="text" name="escort-last-name" value="<?php if (array_key_exists("Escort", $officers)) { echo $officers['Escort'][1];} ?>" required>
               <input class="form-control" type="file" name="escort-image">
             </div>
           </div>

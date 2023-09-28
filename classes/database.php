@@ -279,6 +279,13 @@ class database
     $this->mysqli->close();
   }
 
+  public function deleteRow($table, $where = "") {
+
+    $sql = "DELETE FROM $table WHERE $where";
+
+    return $this->mysqli->query($sql);
+  }
+
 
   public function updateData($table, $para = array(), $where = array(), $operator = 'AND')
   {
@@ -372,7 +379,7 @@ class database
     return $this->mysqli->query($sql);
   }
 
-  public function selectDistinct($table, $rows = '*', $where = array(), $operator = 'AND')
+  public function selectDistinct($table, $rows = '*', $where = array(), $operator = 'AND', $order = "")
   {
     if (empty($where)) {
       $sql = "SELECT DISTINCT $rows FROM $table";
@@ -389,8 +396,10 @@ class database
       }
     }
 
+
     $sql = "SELECT DISTINCT $rows FROM $table WHERE " . implode(" $operator ", $args);
     return $this->mysqli->query($sql);
+    
   }
 
 

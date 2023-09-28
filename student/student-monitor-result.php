@@ -280,7 +280,6 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
         
 
       }
-      var_dump($yArray);
     ?>
 
     <script>        

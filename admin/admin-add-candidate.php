@@ -21,7 +21,8 @@ if (isset($_POST['add-candidate'])) {
   $last_name = mysqli_escape_string($admin->mysqli, $_POST['last-name']);
   $year = mysqli_escape_string($admin->mysqli, $_POST['year']);
   $partylist = mysqli_escape_string($admin->mysqli, $_POST['partylist']);
-  $introduce_yourself = $_POST['introduce-yourself'];
+  $introduce_yourself = mysqli_escape_string($admin->mysqli, $_POST['introduce-yourself']);
+
 
   if ($admin->isExisted('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'org_name' => User::returnValueGet('studentOrg'),])) {
     $candidateExist = true;
