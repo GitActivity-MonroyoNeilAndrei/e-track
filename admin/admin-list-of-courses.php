@@ -93,20 +93,26 @@ if (isset($_POST['submit'])) {
             <a class="btn btn-primary text-center" href="add-course.php">Add Course</a>
           </div>
 
+          <table class="table table-striped table-hover mx-auto border shadow" style="max-width: 20rem;">
+          <tbody>
           <?php
             $courses = $admin->select('courses', '*');
             
             while ($row = mysqli_fetch_assoc($courses)){
           ?>
-
-          <div class="text-center mb-2">
-            <button class="btn btn-outline-primary me-3"><?php echo $row['course']; ?></button>
-            <a class="btn btn-outline-danger" href="delete-course.php?id=<?php echo $row['id']; ?>">Delete</a>
-          </div>
-          
+            
+            <tr>
+              <td>
+                <h5 style="font-size: 1.2em;"><?php echo $row['course']; ?></h5>
+              </td>
+              <td>
+                <a class="btn btn-danger" href="delete-course.php?id=<?php echo $row['id']; ?>">Delete</a>
+              </td>
+            </tr>
 
           <?php }?>
-
+          </tbody>
+          </table>
 
         </div>
       </div>

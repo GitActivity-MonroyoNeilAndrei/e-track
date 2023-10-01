@@ -97,10 +97,11 @@ if (isset($_POST['submit'])) {
             }
           ?>
             <label class="form-label" for="">Name of Course</label>
-            <input class="form-control" type="text" name="course" focus>
+            <input class="form-control" type="text" name="course" focus required>
 
             <div class="text-center mt-3">
               <input class="btn btn-success mx-auto" type="submit" name="submit" value="Add">
+              <a class="btn btn-danger" href="admin-list-of-courses.php">Cancel</a>
             </div>
           </form>
 
