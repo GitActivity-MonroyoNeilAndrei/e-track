@@ -10,7 +10,7 @@ $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 session_start();
 $admin = new database();
 
-User::ifNotLogin('admin-username', '../login-account/login-admin.php');
+User::ifNotLogin('admin-username', '../login-account/login-user.php');
 
 $admin_id = User::returnValueSession('admin-id');
 

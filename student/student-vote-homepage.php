@@ -10,7 +10,7 @@ $student = new database();
 $num = 0;
 
 if (!isset($_SESSION['student_id'])) {
-  header('location: ../login-account/login-student.php');
+  header('location: ../login-account/login-user.php');
 }
 
 $student_id = User::returnValueSession('student-id');

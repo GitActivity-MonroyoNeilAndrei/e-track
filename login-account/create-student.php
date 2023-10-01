@@ -22,7 +22,11 @@ if (isset($_POST['sign-up'])) {
   $confirm_password = md5($_POST['confirm-password']);
 
 
-  if (!$student->isExisted('student', ['student_id' => $student_id, 'password' => $password])) {
+  if (!$student->isExisted('student', ['student_id' => $student_id, 'email' => $email, 'password' => $password]) &&
+      !$student->isExisted('student_org', ['email' => $email, 'password' => $password]) &&
+      !$student->isExisted('admin', ['email' => $email, 'password' => $password])
+
+  ) {
     $studentExist = false;
 
     if ($password == $confirm_password) {
@@ -123,7 +127,7 @@ if (isset($_POST['sign-up'])) {
       <input class="form-control" type="password" name="confirm-password" required>
     </div>
     <input class="btn btn-success" type="submit" value="Sign Up" name="sign-up">
-    <p class="text-center">Already have an Account?<br> <a href="login-student.php">Login here</a></p>
+    <p class="text-center">Already have an Account?<br> <a href="login-user.php">Login here</a></p>
   </form>
 </body>
 

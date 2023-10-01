@@ -11,7 +11,7 @@ session_start();
 
 $student_org = new database();
 
-User::ifNotLogin('name_of_org', '../login-account/login-student-org.php');
+User::ifNotLogin('name_of_org', '../login-account/login-user.php');
 
 $student_org_id = User::returnValueSession('student-org-id');
 
