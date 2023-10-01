@@ -278,6 +278,7 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
               <?php } ?>
             ],
+          orientation: 'h',
           type:"bar"
         }]
         , {title:"<?php echo $position; ?> Graph Representation"});

@@ -52,9 +52,18 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       <div class="nav-links">
         <nav style="position: sticky; top: 4vh;">
           <ul>
-            <li onclick="window.location.href='student-vote.php'" class="bg-dark-gray2">Vote</li>
-            <li onclick="window.location.href='student-monitor-result.php'">Monitor Election Result</li>
-            <li onclick="window.location.href='student-monitor-activities.php'">Monitor Activities</li>
+            <li onclick="window.location.href='student-vote.php'" class="bg-dark-gray2">
+              <span>Vote</span>
+              <span><i class="fa-solid fa-check-to-slot"></i></span>
+            </li>
+            <li onclick="window.location.href='student-monitor-result.php'">
+              <span>Monitor Election Result</span>
+              <span><i class="fa-solid fa-square-poll-horizontal"></i></span>
+            </li>
+            <li onclick="window.location.href='student-monitor-activities.php'">
+              <span>Monitor Activities</span>
+              <span><i class="fa-regular fa-file"></i></span>
+            </li>
 
           </ul>
         </nav>

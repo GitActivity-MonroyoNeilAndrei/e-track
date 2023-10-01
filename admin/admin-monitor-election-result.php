@@ -317,6 +317,7 @@ if (!isset($_GET['activeStudentOrg'])) {
 
               <?php } ?>
             ],
+          orientation: 'h',
           type:"bar"
         }]
         , {title:"<?php echo $position; ?> Graph Representation"});

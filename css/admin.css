@@ -121,6 +121,7 @@ div.nav-links nav ul li:hover {
   border: 2px solid rgba(25, 78, 170, 0.5);
   border-radius: 16px;
   padding: 0.3rem;
+  overflow: hidden;
   }
 
 .content-header {
@@ -280,7 +281,19 @@ table {
 }
 
 .graph {
+  padding: 0;
+  pointer-events: none;
   max-width: 80%;
+  margin: 0 auto;
+}
+
+@media (max-width: 500px) {
+  .graph {
+    position: relative;
+    left: -10vw;
+    min-width: 70vw;
+    margin: 0 auto;
+  }
 }
 
 

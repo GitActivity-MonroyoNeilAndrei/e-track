@@ -72,9 +72,18 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
         <nav style="position: sticky; top: 4vh;">
           <ul>
 
-            <li onclick="window.location.href='student-vote.php'">Vote</li>
-            <li onclick="window.location.href='student-monitor-result.php'" class="bg-dark-gray2">Monitor Election Result</li>
-            <li onclick="window.location.href='student-monitor-activities.php'">Monitor Activities</li>
+            <li onclick="window.location.href='student-vote.php'">
+              <span>Vote</span>
+              <span><i class="fa-solid fa-check-to-slot"></i></span>
+            </li>
+            <li onclick="window.location.href='student-monitor-result.php'" class="bg-dark-gray2">
+              <span>Monitor Election Result</span>
+              <span><i class="fa-solid fa-square-poll-horizontal"></i></span>
+            </li>
+            <li onclick="window.location.href='student-monitor-activities.php'">
+              <span>Monitor Activities</span>
+              <span><i class="fa-regular fa-file"></i></span>
+            </li>
 
           </ul>
         </nav>
@@ -305,6 +314,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
 
               <?php } ?>
             ],
+          orientation: 'h',
           type:"bar"
         }]
         , {title:"<?php echo $position; ?> Graph Representation"});
