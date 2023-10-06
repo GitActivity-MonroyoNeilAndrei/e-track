@@ -8,14 +8,14 @@
 switch ($_GET['logout']) {
   case 'admin':
     User::logout('admin-username');
-    header('location: login-account/login-admin.php');
+    header('location: login-account/login-user.php');
     break;
   case 'student':
     User::logout('student_id');
-    header('location: login-account/login-student.php');
+    header('location: login-account/login-user.php');
     break;
   case 'student-org':
     User::logout('name_of_org');
-    header('location: login-account/login-student-org.php');
+    header('location: login-account/login-user.php');
     break;
 }

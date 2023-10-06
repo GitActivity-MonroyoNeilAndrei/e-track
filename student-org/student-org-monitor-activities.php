@@ -11,13 +11,12 @@ $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 $student_org= new database();
 
 
-if (!isset($_SESSION['student_id'])) {
-  header('location: ../login-account/login-student.php');
-}
+User::ifNotLogin('name_of_org', '../login-account/login-user.php');
 
-$student_id = User::returnValueSession('student-id');
 
-User::ifDeactivatedReturnTo($student_org->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
+$student_org_id = User::returnValueSession('student-org-id');
+
+User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student');
 
 
 function returnDate() {
