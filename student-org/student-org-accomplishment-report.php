@@ -103,7 +103,6 @@ if(!isset($_SESSION['school-year'])){
                   <td><?php echo $row['remarks']; ?></td>
                   <td>
                     <a class="btn btn-secondary mb-2" href="edit-accomplishment-report.php?id=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                    <a class="btn btn-success mb-2" href="submit-accomplishment-report.php?id=<?php echo $row['id']; ?>">Submit</a>
                     <a class="btn btn-danger mb-2" href="delete-accomplishment-report.php?id=<?php echo $row['id']; ?>"><i class="fa-solid fa-trash"></i> Delete</a>
                   </td>
                 </tr>
