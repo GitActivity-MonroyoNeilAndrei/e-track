@@ -200,8 +200,8 @@ if (isset($_POST['edit'])) {
       <div>
         <label for="vice-president">Vice President:</label>
         <div class="d-flex">
-          <input class="form-control" type="text" name="vice-president-first-name" value="<?php echo $officers['Vice President'][0]; ?>" required>
-          <input class="form-control" type="text" name="vice-president-last-name" value="<?php echo $officers['Vice President'][1]; ?>" required>
+          <input class="form-control" type="text" name="vice-president-first-name" value="<?php if (array_key_exists("Vice President", $officers)) { echo $officers['Vice President'][0];} ?>" required>
+          <input class="form-control" type="text" name="vice-president-last-name" value="<?php if (array_key_exists("Vice President", $officers)) { echo $officers['Vice President'][1];} ?>" required>
           <input class="form-control" type="file" name="vice-president-image">
         </div>
       </div>
