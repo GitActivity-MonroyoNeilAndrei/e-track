@@ -108,6 +108,26 @@ div.nav-links nav ul li:hover {
   cursor: pointer;
 }
 
+li span:first-child {
+  display: inline;
+}
+
+li span:nth-child(2) {
+  display: none;
+}
+
+@media (max-width: 450px) {
+  li span:first-child {
+    display: none;
+  }
+  
+  li span:nth-child(2) {
+    display: inline-block;
+    width: 18vw;
+    height: 2.5rem;
+  }
+}
+
 
 
 .content {
