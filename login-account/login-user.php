@@ -113,7 +113,6 @@ if (isset($_POST['login'])) {
       <input class="form-control" type="password" name="password" required>
     </div>
     <input class="btn btn-success" type="submit" value="Login" name="login">
-    <p class="text-center">Don't have an Account? <br>Create <a href="create-student.php">here</a></p>
   </form>
 </body>
 
