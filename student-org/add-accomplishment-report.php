@@ -20,30 +20,50 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
 $student_org_school_year = User::returnValueSession('school-year');
 
+
+
+// new code
 if(isset($_POST['submit'])) {
-  $planned_activity = $_POST['planned-activity'];
-  $purpose = $_POST['purpose'];
-  $date_accomplished = $_POST['date-accomplished'];
-  $budget = $_POST['budget'];
-  $remarks = $_POST['remarks'];
 
-  if($student_org->isExisted('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org')])) {
-
-    $accomplishment_report_exist = 'Accomplishment Report already Exist';
+  if(!$student_org->checkIfPDF('liquidation')) {
+    $error_file = "Upload PDF file only";
   } else {
-    if(!$student_org->checkIfPDF('liquidation')) {
-      $error_file = "Upload PDF file only";
-    }else {
-    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$planned_activity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now, 'school_year'=>$student_org_school_year]);
+    $plan_of_activity_id = $_POST['planned_of_activity'];
+    $budget = $_POST['budget'];
+    $remarks = $_POST['remarks'];
+
+    $name_of_acitvity = "";
+    $venue = "";
+    $sponsors = "";
+    $nature_of_activity = "";
+    $beneficiaries = "";
+    $target_output = "";
+    $purpose = "";
+    $date_accomplished = "";
+
+    $planned_activity = $student_org->select('plan_of_activities', '*', ['id'=>$plan_of_activity_id]);
+
+    while($row = mysqli_fetch_assoc($planned_activity)){
+      $name_of_acitvity = $row['name_of_activity'];
+      $venue = $row['venue'];
+      $sponsors = $row['sponsors'];
+      $nature_of_activity = $row["nature_of_activity"];
+      $beneficiaries = $row['beneficiaries'];
+      $target_output = $row['target_output'];
+      $purpose = $row['purpose'];
+      $date_accomplished = $row['date'];
+    }
+    
+
+
+    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$name_of_acitvity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now, 'school_year'=>$student_org_school_year, 'status'=>'accomplished', 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output]);
 
     $student_org->insertPDF('liquidation', 'accomplishment_reports', 'liquidations', '../uploads/');
 
+    $student_org->updateData('plan_of_activities', ['status'=>'accomplished'], ['id'=>$plan_of_activity_id]);
+
     header('location: student-org-accomplishment-report.php');
-    }
   }
-
-
-
 }
 
 
@@ -92,7 +112,7 @@ if(isset($_POST['submit'])) {
               <span>Monitor Election Result</span>
               <span><i class="fa-solid fa-square-poll-horizontal"></i></span> 
             </li>
-            <li onclick="window.location.href='student-org-plan-of-activities.php'" class="bg-dark-gray2">
+            <li onclick="window.location.href='student-org-plan-of-activities.php'">
               <span>Plan of Activities</span>
               <span><i class="fa-solid fa-check-to-slot"></i></span>
             </li>
@@ -100,7 +120,7 @@ if(isset($_POST['submit'])) {
               <span>Monitor Plan of Activities</span>
               <span><i class="fa-solid fa-tv"></i></span>
             </li>
-            <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark">
+            <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark bg-dark-gray2">
               <span>Accomplishment Report</span>
               <span><i class="fa-solid fa-check-to-slot"></i></span>
             </li>
@@ -133,11 +153,20 @@ if(isset($_POST['submit'])) {
               }
             ?>
             <label class="form-label" for="planned-activity">Planned Activity: </label>
-            <input class="form-control" type="text" name="planned-activity" required>
-            <label class="form-label" for="purpose">Purpose: </label>
-            <input class="form-control" type="text" name="purpose" required>
-            <label class="form-label" for="date-accomplished">Date Accomplished: </label>
-            <input class="form-control" type="date" name="date-accomplished" required>
+            <select name="planned_of_activity" class="form-select" required>
+              <?php 
+                $planned_activity = $student_org->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'school_year'=>$student_org_school_year, 'status'=>'ongoing']);
+
+                while ($row = mysqli_fetch_assoc($planned_activity)) {
+              ?>
+                <option value="<?php echo $row['id'] ?>"><?php echo $row['name_of_activity'] ?></option>
+
+              <?php
+                }
+              ?>
+            </select>
+
+
             <label class="form-label" for="budget">Budget: </label>
             <input class="form-control" type="number" name="budget" required>
             <label class="form-label" for="liquidation">Liquidation</label>
@@ -148,7 +177,6 @@ if(isset($_POST['submit'])) {
               <input class="btn btn-primary shadow me-2" type="submit" name="submit">
               <a class="btn btn-danger shadow" href="student-org-accomplishment-report.php">Cancel</a>
             </div>
-            
           </form>
         </div>
       </div>

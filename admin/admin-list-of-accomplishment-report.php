@@ -204,10 +204,10 @@ if(isset($_POST['search_submit'])) {
                   $school_year2 = User::returnValueGet('schoolYear');
 
                   if(!isset($_GET['search'])) {
-                    $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                    $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'accomplished', 'school_year'=>$school_year2]);
                   } else if (isset($_GET['search'])) {
                     if($_GET['search'] == "") {
-                      $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                      $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'accomplished', 'school_year'=>$school_year2]);
                     }
                   }
 
@@ -215,7 +215,7 @@ if(isset($_POST['search_submit'])) {
                     if($_GET != '') {
                       $name_of_org = User::returnValueGet('activeStudentOrg');
                       $search = User::returnValueGet('search');
-                      $accomplishment_reports = $admin->modifiedSearch('accomplishment_reports', "name_of_org = '$name_of_org' AND status = 'ongoing' AND school_year = '$school_year2'", "name_of_activity", $search);
+                      $accomplishment_reports = $admin->modifiedSearch('accomplishment_reports', "name_of_org = '$name_of_org' AND status = 'accomplished' AND school_year = '$school_year2'", "name_of_activity", $search);
                     }
                   }
 
