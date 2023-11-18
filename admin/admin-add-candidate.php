@@ -68,9 +68,10 @@ if (isset($_POST['add-candidate'])) {
       Message::userAlreadyExist();
     } ?>
 
-    <label class="form-label" for="position">Position</label>
-    <select class="form-select" name="position">
-      <option selected value="President">President</option>
+    <label class="form-label">Position</label>
+    <input class="form-control" list="datalistOptions" id="exampleDataList" name="position">
+    <datalist id="datalistOptions">
+    <option selected value="President">President</option>
       <option value="Vice President">Vice President</option>
       <option value="Secretary">Secretary</option>
       <option value="Treasurer">Treasurer</option>
@@ -80,7 +81,8 @@ if (isset($_POST['add-candidate'])) {
       <option value="Sargeant at Arms">Sargeant at Arms</option>
       <option value="Muse">Muse</option>
       <option value="Escort">Escort</option>
-    </select>
+    </datalist>
+
 
     <label class="form-label" for="first-name">First Name</label>
     <input class="form-control" type="text" name="first-name" required>
