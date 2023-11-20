@@ -182,6 +182,11 @@ $to_validate_accomplishment_report = $admin->countSelect('accomplishment_reports
     </div>
 
   </div>
+
+  <script>
+    var activeNav = document.getElementById('dashboard')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

@@ -114,5 +114,11 @@ if(isset($_POST['submit'])) {
       </div>
     </div>
   </div>
+
+
+  <script>
+    var activeNav = document.getElementById('monitor-plan-of-activities')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 </html>

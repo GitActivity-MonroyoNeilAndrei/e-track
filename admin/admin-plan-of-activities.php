@@ -130,6 +130,12 @@ if (!isset($_GET['activeStudentOrg'])) {
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
+
+    
+    var activeNav = document.getElementById('plan-of-activities')
+    activeNav.classList.add('bg-dark-gray2');
+  
+
   </script>
 </body>
 

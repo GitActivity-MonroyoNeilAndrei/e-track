@@ -326,6 +326,11 @@ $nameOfAct = returnNameOfAct();
 
   </script>
   <link rel="stylesheet" href="../css/calendar.css?<?php echo time(); ?>">
+
+  <script>
+    var activeNav = document.getElementById('monitor-plan-of-activities')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

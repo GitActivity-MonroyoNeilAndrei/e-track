@@ -276,6 +276,9 @@ if (!isset($_GET['page'])) {
     activePage.classList.add('active');
 
     
+    var activeNav = document.getElementById('list-of-users')
+    activeNav.classList.add('bg-dark-gray2');
+    
   </script>
 </body>
 

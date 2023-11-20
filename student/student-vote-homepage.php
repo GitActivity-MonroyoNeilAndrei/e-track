@@ -18,11 +18,44 @@ $student_id = User::returnValueSession('student-id');
 
 User::ifDeactivatedReturnTo($student->select('student', 'status', ['id' => $student_id]), '../logout.php?logout=student');
 
+$candidateTwoWinners = ["", "", "", "", ""];
+
+$positions = array();
+
+$result = $student->selectDistinct('candidate', 'position', ['org_name' => User::returnValueGet('can_vote')]);
+$j = 0;
+while ($row = mysqli_fetch_assoc($result)) {
+  $positions[$j] = $row['position'];
+  $j++;
+}
+
+$result = $student->selectDistinct('candidate', 'position, max_winners', ['org_name' => User::returnValueGet('can_vote')]);
+$i = 0;
+while ($row = mysqli_fetch_assoc($result)) {
+  if($row['max_winners'] >= 2) {
+    $candidateTwoWinners[$i] = $row['position'];
+    $i++;
+  }
+}
+
+
+
+
 if (isset($_POST['submit'])) {
 
-  $positions = ['President', 'Vice_President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project_Manager', 'Sargeant_at_Arms', 'Muse', 'Escort'];
+  $positions1 = array();
 
-  foreach ($positions as $position) {
+  $result = $student->selectDistinct('candidate', 'position', ['org_name' => User::returnValueGet('can_vote')]);
+  $j = 0;
+  while ($row = mysqli_fetch_assoc($result)) {
+    echo $row['position'];
+    $positions1[$j] = $row['position'];
+    $j++;
+  }
+
+  foreach ($positions1 as $position) {
+
+    $position = str_replace(" ", "_", "$position");
 
     if (isset($_POST["$position"])) {
       $candidates = $_POST["$position"];
@@ -47,12 +80,50 @@ if (isset($_POST['submit'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Home Page</title>
+  <!-- <title>Admin Home Page</title> -->
+  <title></title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/student.css?<?php echo time(); ?>">
-  <script src="../js/script.js"></script>
+  <!-- <script src="../js/script.js"></script> -->
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+
+
+  <script>
+    function onlyTwoCheckBox(div_id) {
+    var limit = 1;
+    if(div_id == "<?php echo $candidateTwoWinners[0]; ?>" ||
+     div_id == "<?php echo $candidateTwoWinners[1]; ?>" ||
+     div_id == "<?php echo $candidateTwoWinners[2]; ?>" ||
+     div_id == "<?php echo $candidateTwoWinners[3]; ?>") 
+    {
+      limit = 2;
+    }
+
+    console.log(limit);
+
+    // gets the 2 inputs on/off
+    var checkboxgroup = document.getElementById(div_id).getElementsByTagName("input");
+    // for loop to iterate to the inputs, in our case just 2 inputs
+    for (var i = 0; i < checkboxgroup.length; i++) {
+      checkboxgroup[i].onclick = function() {
+        var checkedcount = 0;
+        // increment the value of checkedcount if we check something in the checkbox input
+        for (var i = 0; i < checkboxgroup.length; i++) {
+          checkedcount += (checkboxgroup[i].checked) ? 1 : 0;
+        }
+        // if the limit is reach, we must throw an alert message saying that the user reach their limit checks
+        if (checkedcount > limit) {
+          console.log("You can select maximum of " + limit);
+          alert("You can select maximum of " + limit );
+          this.checked = false;
+        }
+      }
+    }
+  }
+  </script>
+
+
 </head>
 
 <body>
@@ -74,7 +145,7 @@ if (isset($_POST['submit'])) {
 
     <?php
 
-    $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager',  'Sargeant at Arms', 'Muse', 'Escort'];
+
     foreach ($positions as $position) {
     ?>
 
@@ -92,7 +163,7 @@ if (isset($_POST['submit'])) {
       <div class="candidate">
         <div class="candidate-details">
           <div class="candidate-details-image shadow-lg">
-            <div><img class="candidate-details-image" src="../uploads/IMG-64d8733b976686.19475466.png" alt=""></div>
+            <div><img class="candidate-details-image" src="../uploads/<?php echo $row['photo_url']; ?>" alt=""></div>
           </div>
           <div class="candidate-details-name"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></div>
           <div class="candidate-details-partylist"><?php echo $row['partylist'] . ' Partylist'; ?></div>
@@ -141,6 +212,9 @@ if (isset($_POST['submit'])) {
       margin: 0 !important;
     }
   </style>
+
+
+
 </body>
 
 </html>

@@ -22,12 +22,6 @@ if (!isset($_GET['activeStudentOrg'])) {
 }
 
 
-
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +79,12 @@ if (!isset($_GET['activeStudentOrg'])) {
             Message::candidateEdited();
           } ?>
           <div class="container-add-candidate">
-            <a class="add-candidate-btn" href="admin-add-candidate.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>"><i class="fa-solid fa-plus"></i> Add Candidate</a>
+            <div class="d-flex justify-content-start flex-wrap">
+              <a class="btn btn-success" href="admin-add-candidate.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>"><i class="fa-solid fa-plus"></i> Add Candidate</a>
+
+              <a class="btn btn-outline-primary ms-2" href="admin-limit-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Limit Candidate Winner</a>
+            </div>
+
             <h5 class="text-center py-1">List of Candidate</h5>
           </div>
           <div class="table-responsive">
@@ -135,6 +134,12 @@ if (!isset($_GET['activeStudentOrg'])) {
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
+
+
+    var activeNav = document.getElementById('election')
+    activeNav.classList.add('bg-dark-gray2');
+
+
   </script>
 </body>
 

@@ -51,6 +51,7 @@ if (isset($_POST['login'])) {
       if (User::ifDeactivated($student->select('student', 'status', ['email' => $email_student_id, 'password' => $password]))) {
         $deactivated = "Your Account Had Been Deactivate";
       } else {
+        $_SESSION['id'] = $student->pullLastRowModified('student', 'id');
         $_SESSION['student_id'] = $student->pullLastRowModified('student', 'student_id');
         $_SESSION['student_name'] = $student->pullLastRowModified('student', 'first_name') . ' ' . $student->pullLastRowModified('student', 'last_name');
         $_SESSION['student-course'] = $student->pullLastRowModified('student', 'course');

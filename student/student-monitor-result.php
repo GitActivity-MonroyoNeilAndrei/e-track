@@ -23,6 +23,20 @@ $student_id = User::returnValueSession('student-id');
 User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
 
 
+$can_see_result = "";
+$can_monitor = "";
+
+$org_can_view_query = $student->select('student', '*', ['id'=>User::returnValueSession('id')]);
+
+while($row = mysqli_fetch_assoc($org_can_view_query)) {
+  $can_see_result = $row['can_see_result'];
+  $can_monitor = $row['can_monitor'];
+}
+
+
+
+
+
 ?>
 
 
@@ -115,7 +129,15 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
 
             <h4 class="text-center fw-semibold">Election Results for <?php echo $org['can_monitor']; ?></h4>
             <?php
-            $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+            $positions = array();
+
+            $result = $student->selectDistinct('candidate', 'position', ['org_name' => $can_monitor ]);
+            $j = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+              $positions[$j] = $row['position'];
+              $j++;
+            }
 
             foreach ($positions as $position) {
 
@@ -169,7 +191,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
           <?php
 
 
-          $result4 = $student->select('student', '*', ['student_id' => User::returnValueSession('student_id')]);
+          $result4 = $student->select('student', '*', ['id' => User::returnValueSession('id')]);
           $row2 = mysqli_fetch_assoc($result4);
 
 
@@ -190,13 +212,33 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
 
             <h4 class="text-center fw-semibold">Final Election Results for <?php echo $row2['can_see_result']; ?></h4>
             <?php
-            $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+            $candidateTwoWinners = ["", "", "", "", ""];
+
+            $result = $student->selectDistinct('candidate', 'position, max_winners', ['org_name' => "$can_see_result"]);
+            $i = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+              if($row['max_winners'] >= 2) {
+                $candidateTwoWinners[$i] = $row['position'];
+                $i++;
+              }
+            }
+
+            $positions = array();
+
+            $result = $student->selectDistinct('candidate', 'position', ['org_name' => $can_see_result ]);
+            $j = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+              $positions[$j] = $row['position'];
+              $j++;
+            }
 
             foreach ($positions as $position) {
               if (
-                $position == 'PIO' ||
-                $position == 'Project Manager' ||
-                $position == 'Sargeant at Arms'
+                $position == $candidateTwoWinners[0]  ||
+                $position == $candidateTwoWinners[1] ||
+                $position == $candidateTwoWinners[2] ||
+                $position == $candidateTwoWinners[3]
               ) {
                 $limit = 2;
               }
@@ -266,7 +308,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       // do nothing
     } else if ($row3['exp_date'] <= $date_time_now) {
 
-    $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
 
     foreach ($positions as $position) {
 
@@ -314,7 +356,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
 
               <?php } ?>
             ],
-          orientation: 'h',
+          orientation: 'v',
           type:"bar"
         }]
         , {title:"<?php echo $position; ?> Graph Representation"});

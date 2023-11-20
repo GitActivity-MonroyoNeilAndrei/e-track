@@ -197,6 +197,10 @@ if(isset($_POST['search_submit'])) {
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
+
+    var activeNav = document.getElementById('list-of-accomplishment-report')
+    activeNav.classList.add('bg-dark-gray2');
+
   </script>
 
 </body>

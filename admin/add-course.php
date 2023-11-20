@@ -96,6 +96,10 @@ if (isset($_POST['submit'])) {
 
   </div>
 
+  <script>
+    var activeNav = document.getElementById('list-of-users')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

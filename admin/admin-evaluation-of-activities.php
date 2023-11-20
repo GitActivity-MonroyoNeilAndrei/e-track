@@ -60,6 +60,11 @@ User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id' => $admin_id
     </div>
 
   </div>
+
+  <script>
+    var activeNav = document.getElementById('evaluation-of-activities')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

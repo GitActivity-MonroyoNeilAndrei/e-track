@@ -25,6 +25,8 @@ if (!isset($_GET['activeStudentOrg'])) {
   header("location: admin-monitor-election-result.php?activeStudentOrg=$row[name_of_org]");
 }
 
+
+
 ?>
 
 
@@ -99,7 +101,6 @@ if (!isset($_GET['activeStudentOrg'])) {
 
           <?php
 
-          $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
 
           $result2 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
           $row2 = mysqli_fetch_assoc($result2);
@@ -113,7 +114,16 @@ if (!isset($_GET['activeStudentOrg'])) {
           ?>
               <h4 class="text-center fw-semibold">Election Results for <?php User::printGet('activeStudentOrg'); ?></h4>
               <?php
-              $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+
+              $positions = array();
+
+              $result = $admin->selectDistinct('candidate', 'position', ['org_name' => User::returnValueGet('activeStudentOrg') ]);
+              $j = 0;
+              while ($row = mysqli_fetch_assoc($result)) {
+                $positions[$j] = $row['position'];
+                $j++;
+              }
 
               foreach ($positions as $position) {
               ?>
@@ -171,13 +181,33 @@ if (!isset($_GET['activeStudentOrg'])) {
 
             <h4 class="text-center fw-semibold">Final Election Results for <?php User::printGet('activeStudentOrg'); ?></h4>
             <?php
-            $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
+            $candidateTwoWinners = ["", "", "", "", ""];
+
+            $result = $admin->selectDistinct('candidate', 'position, max_winners', ['org_name' => User::returnValueGet('activeStudentOrg')]);
+            $i = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+              if($row['max_winners'] >= 2) {
+                $candidateTwoWinners[$i] = $row['position'];
+                $i++;
+              }
+            }
+
+            $positions = array();
+
+            $result = $admin->selectDistinct('candidate', 'position', ['org_name' => User::returnValueGet('activeStudentOrg') ]);
+            $j = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+              $positions[$j] = $row['position'];
+              $j++;
+            }
 
             foreach ($positions as $position) {
               if (
-                $position == 'PIO' ||
-                $position == 'Project Manager' ||
-                $position == 'Sargeant at Arms'
+                $position == $candidateTwoWinners[0]  ||
+                $position == $candidateTwoWinners[1] ||
+                $position == $candidateTwoWinners[2] ||
+                $position == $candidateTwoWinners[3]
               ) {
                 $limit = 2;
               }
@@ -256,7 +286,7 @@ if (!isset($_GET['activeStudentOrg'])) {
       // do nothing
     } else if ($row2['exp_date'] <= $date_time_now) {
 
-    $positions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'PIO', 'Project Manager', 'Sargeant at Arms', 'Muse', 'Escort'];
+
 
     foreach ($positions as $position) {
 
@@ -302,7 +332,7 @@ if (!isset($_GET['activeStudentOrg'])) {
 
               <?php } ?>
             ],
-          orientation: 'h',
+          orientation: 'v',
           type:"bar"
         }]
         , {title:"<?php echo $position; ?> Graph Representation"});
@@ -316,7 +346,10 @@ if (!isset($_GET['activeStudentOrg'])) {
 
 
 
-
+  <script>
+    var activeNav = document.getElementById('monitor-election-result')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>
