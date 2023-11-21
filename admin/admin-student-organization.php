@@ -74,43 +74,32 @@ if(isset($_POST['submit'])) {
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
 
   <style>
-    .candidate-image {
-      height: 100%;
+    img {
       width: 100%;
+      height: 100%;
+    }
+
+    .img {
+      border: 1px solid black;
+      border-radius: 50%;
+      width: 9rem;
+      height: 9rem;
+      margin-right: 2vw;
+      overflow: hidden;
     }
 
     .candidate-container {
-      border: 1px solid #888888;
-      width: 5rem;
-      height: 5rem;
-      border-radius: 35%;
-      overflow: hidden;
-      margin-bottom: .3rem;
-      box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    .container {
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      flex-direction: column;
+      border-radius: 14px;
+      padding: 1rem 0;
+      margin: 1rem 1.5rem;
+      border: 1px solid black;
     }
 
-    .container h5 {
-      text-align: center;
-      line-height: 1rem;
-    }
 
-    h6,
-    h5 {
-      line-height: .7rem;
-    }
-
-    .candidate-row {
-      display: flex;
-      justify-content: space-evenly;
-      max-width: 50rem;
-      margin: auto;
-    }
   </style>
 </head>
 
@@ -171,399 +160,25 @@ if(isset($_POST['submit'])) {
             <input class="btn btn-primary my-2" type="submit" name="submit" value="Select">
           </form>
 
-          
+
 
 
 
           <?php
-          $result = $admin->select('officers', '*', ['school_year' => User::returnValueGet('school_year'), 'org_name' => $org_name]);
-
-          $officers = array();
-          $images = array();
-
-          $PIO = 0;
-          $project_manager = 0;
-          $sargeant_at_arms = 0;
-
-          while ($row = mysqli_fetch_assoc($result)) {
-
-
-            if ($row['position'] == 'PIO') {
-              $PIO += 1;
-
-              $full_name = "$row[first_name]" . " " . "$row[last_name]";
-
-              $officers += ["$row[position]" . $PIO => $full_name];
-              $images += ["$row[position]" . $PIO => $row['photo_url']];
-            } else if ($row['position'] == 'Project Manager') {
-              $project_manager += 1;
-
-              $full_name = "$row[first_name]" . " " . "$row[last_name]";
-
-              $officers += ["$row[position]" . $project_manager => $full_name];
-              $images += ["$row[position]" . $project_manager => $row['photo_url']];
-            } else if ($row['position'] == 'Sargeant at Arms') {
-              $sargeant_at_arms += 1;
-
-              $full_name = "$row[first_name]" . " " . "$row[last_name]";
-
-              $officers += ["$row[position]" . $sargeant_at_arms => $full_name];
-              $images += ["$row[position]" . $sargeant_at_arms => $row['photo_url']];
-            } else {
-              $full_name = "$row[first_name]" . " " . "$row[last_name]";
-
-              $officers += ["$row[position]" => $full_name];
-              $images += ["$row[position]" => $row['photo_url']];
-            }
-          }
-
+            $result = $admin->select('officers', '*', ['school_year' => User::returnValueGet('school_year'), 'org_name' => $org_name]);
+            while ($row = mysqli_fetch_assoc($result)) {
           ?>
-          <div class="candidate-row">
-            <div class="container">
-
-              <?php
-
-              if (array_key_exists("President", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['President']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['President']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['President']; ?></h5>
-                <h6 class="fst-italic">President</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">President</h6>
-
-              <?php } ?>
-
+          
+          <section class="candidate-container shadow bg-secondary bg-gradient">
+            <h3 class="fw-bold"><?php echo $row['position']; ?></h3>
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="img"><img src="../uploads/<?php echo $row['photo_url']; ?>" alt=""></div>
+              <div><h4><?php echo $row['first_name'] . " " . $row['last_name']; ?></h4></div>
             </div>
-          </div>
-          <div class="candidate-row">
-            <div class="container">
-              <?php
+            
+          </section>
 
-              if (array_key_exists("Secretary", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Secretary']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Secretary']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Secretary']; ?></h5>
-                <h6 class="fst-italic">Secretary</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Secretary</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Vice President", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Vice President']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Vice President']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Vice President']; ?></h5>
-                <h6 class="fst-italic">Vice President</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Vice President</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Treasurer", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Treasurer']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Treasurer']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Treasurer']; ?></h5>
-                <h6 class="fst-italic">Treasurer</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Treasurer</h6>
-
-              <?php } ?>
-            </div>
-          </div>
-          <div class="candidate-row">
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Project Manager1", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Project Manager1']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Project Manager1']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Project Manager1']; ?></h5>
-                <h6 class="fst-italic">Project Manager</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Project Manager</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("PIO1", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['PIO1']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['PIO1']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['PIO1']; ?></h5>
-                <h6 class="fst-italic">PIO</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">PIO</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Auditor", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Auditor']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Auditor']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Auditor']; ?></h5>
-                <h6 class="fst-italic">Auditor</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Auditor</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("PIO2", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['PIO2']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['PIO2']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['PIO2']; ?></h5>
-                <h6 class="fst-italic">PIO</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">PIO</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Project Manager2", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Project Manager2']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Project Manager2']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Project Manager2']; ?></h5>
-                <h6 class="fst-italic">Project Manager</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Project Manager</h6>
-
-              <?php } ?>
-            </div>
-          </div>
-          <div class="candidate-row">
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Sargeant at Arms1", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Sargeant at Arms1']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms1']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Sargeant at Arms1']; ?></h5>
-                <h6 class="fst-italic">Sargeant at Arms</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Sargeant at Arms</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Muse", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Muse']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Muse']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Muse']; ?></h5>
-                <h6 class="fst-italic">Muse</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Muse</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Escort", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Escort']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Escort']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Escort']; ?></h5>
-                <h6 class="fst-italic">Escort</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Escort</h6>
-
-              <?php } ?>
-            </div>
-            <div class="container">
-              <?php
-
-              if (array_key_exists("Sargeant at Arms2", $officers)) {
-              ?>
-
-
-                <div class="candidate-container">
-                  <a href="../view-image.php?path=uploads/&imageUrl=<?php echo $images['Sargeant at Arms2']; ?>"><img class="candidate-image" src="../uploads/<?php echo $images['Sargeant at Arms2']; ?>" alt=""></a>
-                </div>
-
-                <h5 class="fw-medium"><?php echo $officers['Sargeant at Arms2']; ?></h5>
-                <h6 class="fst-italic">Sargeant at Arms</h6>
-
-              <?php } else { ?>
-
-                <div class="candidate-container">
-                  <img class="candidate-image" src="" alt="">
-                </div>
-
-                <h5 class="fw-medium"></h5>
-                <h6 class="fst-italic">Sargeant at Arms</h6>
-
-              <?php } ?>
-            </div>
-          </div>
-
-          <div class="candidate-row">
-            <div class="container">
-              <!-- <div class="candidate-container">
-                <img class="candidate-image" src="" alt="">
-              </div> -->
-              <h5 class="fw-medium">tanga ka</h5>
-              <h6 class="fst-italic">Adviser</h6>
-            </div>
-          </div>
-
+          <?php } ?>
           <?php if($admin->isExisted('officers', ['org_name'=>User::returnValueGet('activeStudentOrg')])){ ?>
           <div class="d-flex justify-content-center mt-4 mb-2">
             <a class="btn btn-primary" href="admin-edit-organization.php?studentOrg=<?php User::printGet('activeStudentOrg') ?>&latestSchoolYear=<?php User::printGet('school_year'); ?>">Edit Members</a>
