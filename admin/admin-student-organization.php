@@ -74,7 +74,7 @@ if(isset($_POST['submit'])) {
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
 
   <style>
-    img {
+    div.img img {
       width: 100%;
       height: 100%;
     }
@@ -143,6 +143,9 @@ if(isset($_POST['submit'])) {
 
           <h4 class="text-center">Officers of <?php User::printGet('activeStudentOrg') ?></h4>
 
+          <div class="text-center">
+            <a class="text-primary" href="admin-student-org-covered.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Course Covered?</a>
+          </div>
 
           <form method="post" class="mx-auto text-center" style="max-width: 10rem;">
             <select name="school_year" class="form-select">

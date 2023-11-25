@@ -195,8 +195,8 @@ if (!isset($_GET['page'])) {
                     <td><?php echo $row['status'] ?></td>
                     <td>
                       <a class="btn btn-success mb-3" href="admin-edit-users.php?id=<?php echo $row['id']; ?>&user=<?php User::printGet('user'); ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>"><i class="fa-solid fa-user"></i> Activate</a>
-                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>"><i class="fa-solid fa-user-slash"></i> Deactivate</a>
+                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>">Activate</a>
+                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>">Deactivate</a>
                     </td>
                   </tr>
 
@@ -213,8 +213,8 @@ if (!isset($_GET['page'])) {
                     <td><?php echo $row['status'] ?></td>
                     <td>
                       <a class="btn btn-success mb-3" href="admin-edit-users.php?id=<?php echo $row['id']; ?>&user=<?php User::printGet('user'); ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>"><i class="fa-solid fa-user"></i> Activate</a>
-                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>"><i class="fa-solid fa-user-slash"></i> Deactivate</a>
+                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>">Activate</a>
+                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>">Deactivate</a>
                     </td>
                   </tr>
 
@@ -228,8 +228,8 @@ if (!isset($_GET['page'])) {
                     <td><?php echo $row['status'] ?></td>
                     <td>
                       <a class="btn btn-success mb-3" href="admin-edit-users.php?id=<?php echo $row['id']; ?>&user=<?php User::printGet('user'); ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>"><i class="fa-solid fa-user"></i> Activate</a>
-                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>"><i class="fa-solid fa-user-slash"></i> Deactivate</a>
+                      <a class="btn btn-secondary mb-3 <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'activated'; ?>">Activate</a>
+                      <a class="btn btn-danger mb-3 <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="change-user-status.php?id=<?php echo $row['id'] ?>&user=<?php echo User::returnValueGet('user'); ?> &status=<?php echo 'deactivated'; ?>">Deactivate</a>
                     </td>
                   </tr>
 
