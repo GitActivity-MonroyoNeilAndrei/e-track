@@ -120,6 +120,10 @@ if(!isset($_SESSION['school-year'])){
 
   </div>
 
+  <?php
+    require 'student-org-footer.php';
+  ?>
+
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");
     activeLink.style.backgroundColor = "#3C9811";

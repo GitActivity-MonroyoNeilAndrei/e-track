@@ -200,6 +200,11 @@ $nameOfAct = returnNameOfAct();
       </div>
     </div>
   </div>
+
+  <?php
+    require 'student-footer.php';
+  ?>
+
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
     activeLink.style.backgroundColor = "#3C9811";

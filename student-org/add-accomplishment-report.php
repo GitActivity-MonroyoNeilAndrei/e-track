@@ -56,7 +56,7 @@ if(isset($_POST['submit'])) {
     
 
 
-    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$name_of_acitvity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now, 'school_year'=>$student_org_school_year, 'status'=>'accomplished', 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output]);
+    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$name_of_acitvity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now, 'school_year'=>$student_org_school_year, 'status'=>'submitted', 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output]);
 
     $student_org->insertPDF('liquidation', 'accomplishment_reports', 'liquidations', '../uploads/');
 
@@ -160,6 +160,10 @@ if(isset($_POST['submit'])) {
     </div>
 
   </div>
+
+  <?php
+    require 'student-org-footer.php';
+  ?>
 
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");

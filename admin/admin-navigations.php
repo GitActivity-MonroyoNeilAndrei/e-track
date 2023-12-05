@@ -30,7 +30,7 @@
         <span><i class="fa-solid fa-list-ul"></i></span>
       </li>
       <li onclick="window.location.href='admin-monitor-plan-of-activities.php'" class="mb-4 border-bottom border-dark" id="monitor-plan-of-activities">
-        <span>Monitor Plan of Activities</span>
+        <span>Monitor Activities</span>
         <span><i class="fa-solid fa-tv"></i></span>
       </li>
       <li onclick="window.location.href='admin-accomplishment-report.php'" id="accomplishment-report">
@@ -41,12 +41,8 @@
         <span>List of Accomplishment Report</span>
         <span><i class="fa-solid fa-list-ul"></i></span>
       </li>
-      <li onclick="window.location.href='admin-evaluation-of-activities.php'" id="evaluation-of-activities">
-        <span>Evaluation of Activities</span>
-        <span><i class="fa-solid fa-clipboard-check"></i></span>
-      </li>
       <li onclick="window.location.href='admin-report-to-ovpsas.php'" id="report-to-ovpsas">
-        <span>Report to OVPSAS</span>
+        <span>Generate Report</span>
         <span><i class="fa-solid fa-envelope-circle-check"></i></span>
       </li>
     </ul>

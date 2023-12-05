@@ -267,6 +267,10 @@ if (!isset($_GET['page'])) {
 
   </div>
 
+  <?php
+    require 'admin-footer.php';
+  ?>
+
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");
     activeLink.style.backgroundColor = "#3C9811";

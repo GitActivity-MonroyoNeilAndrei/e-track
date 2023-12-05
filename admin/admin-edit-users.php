@@ -235,6 +235,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
   </div>
 
+  <?php
+    require 'admin-footer.php';
+  ?>
+
   <script>
     var activeNav = document.getElementById('list-of-users')
     activeNav.classList.add('bg-dark-gray2');

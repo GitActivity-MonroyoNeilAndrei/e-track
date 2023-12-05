@@ -249,6 +249,10 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
   </div>
 
+  <?php
+    require 'student-org-footer.php';
+  ?>
+
 
   <?php 
     if (empty($row2)) {

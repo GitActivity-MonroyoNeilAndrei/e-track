@@ -127,6 +127,10 @@ if(isset($_POST['submit'])) {
     </div>
 
   </div>
+  
+  <?php
+    require 'student-org-footer.php';
+  ?>
 
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");

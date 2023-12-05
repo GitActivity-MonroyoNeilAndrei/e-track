@@ -168,6 +168,10 @@ $nameOfAct = returnNameOfAct();
 
   </div>
 
+  <?php
+    require 'admin-footer.php';
+  ?>
+
 
 
   <script defer>

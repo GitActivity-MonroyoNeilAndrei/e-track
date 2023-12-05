@@ -129,6 +129,10 @@ if (!isset($_GET['activeStudentOrg'])) {
     </div>
   </div>
 
+  <?php
+    require 'admin-footer.php';
+  ?>
+
 
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");

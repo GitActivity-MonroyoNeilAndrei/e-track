@@ -110,8 +110,8 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <td><?php echo $row['beneficiaries']; ?></td>
                   <td><?php echo $row['target_output']; ?></td>
                   <td>
-                    <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"><i class="fa-solid fa-check"></i> Accept</a>
-                    <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"><i class="fa-solid fa-xmark"></i> Reject</a>
+                    <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"> Accept</a>
+                    <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"> Reject</a>
                   </td>
                 </tr>
                 <?php } ?>
@@ -125,6 +125,10 @@ if (!isset($_GET['activeStudentOrg'])) {
     </div>
 
   </div>
+
+  <?php
+    require 'admin-footer.php';
+  ?>
 
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");

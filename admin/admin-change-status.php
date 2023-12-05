@@ -40,7 +40,7 @@ if(isset($_POST['yes'])) {
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time();?>">
 </head>
 <body>
-	<form method="post" class="border border-dark mt-5 mx-auto px-5 py-3" style="max-width: 500px;">
+	<form method="post" class="border border-dark rounded-3 shadow mt-5 mx-auto px-5 py-3" style="max-width: 500px;">
 		<h4 class="text-center">Are You Sure You want to change status of Plan Activity?</h4>
 		<div class="row">
 			<input class="btn btn-success mb-2" type="submit" name="yes" value="Yes">

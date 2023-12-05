@@ -302,6 +302,10 @@ while($row = mysqli_fetch_assoc($org_can_view_query)) {
     </div>
   </div>
 
+  <?php
+    require 'student-footer.php';
+  ?>
+
 
   <?php 
     if (empty($row3)) {

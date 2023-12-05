@@ -183,6 +183,10 @@ $to_validate_accomplishment_report = $admin->countSelect('accomplishment_reports
 
   </div>
 
+  <?php
+    require 'admin-footer.php';
+  ?>
+
   <script>
     var activeNav = document.getElementById('dashboard')
     activeNav.classList.add('bg-dark-gray2');

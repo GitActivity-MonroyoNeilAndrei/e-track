@@ -87,6 +87,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <th>Date Accomplished</th>
                   <th>Budget</th>
                   <th>Remarks</th>
+                  <th>Liquidations</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -102,9 +103,10 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <td><?php echo $row['date_accomplished']; ?></td>
                   <td><?php echo $row['budget']; ?></td>
                   <td><?php echo $row['remarks']; ?></td>
+                  <td><a class="btn btn-outline-secondary" target="_blank" href="../uploads/<?php echo $row['liquidations']; ?>">Open</a></td>
                   <td>
-                    <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=accomplishment_reports&path=admin-accomplishment-report.php"><i class="fa-solid fa-check"></i> Accept</a>
-                    <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=accomplishment_reports&path=admin-accomplishment-report.php"><i class="fa-solid fa-xmark"></i> Reject</a>
+                    <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=accomplishment_reports&path=admin-accomplishment-report.php"> Accept</a>
+                    <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=accomplishment_reports&path=admin-accomplishment-report.php"> Reject</a>
                   </td>
                 </tr>
                 <?php } ?>
@@ -115,6 +117,11 @@ if (!isset($_GET['activeStudentOrg'])) {
       </div>
     </div>
   </div>
+
+  <?php
+    require 'admin-footer.php';
+  ?>
+
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
     activeLink.style.backgroundColor = "#3C9811";

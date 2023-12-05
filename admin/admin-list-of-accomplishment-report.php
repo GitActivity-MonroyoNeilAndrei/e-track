@@ -146,6 +146,7 @@ if(isset($_POST['search_submit'])) {
                   <th>Date Accomplished</th>
                   <th>Budget</th>
                   <th>Remarks</th>
+                  <th>Liquidations</th>
                 </tr>
               </thead>
               <tbody>
@@ -153,10 +154,10 @@ if(isset($_POST['search_submit'])) {
                   $school_year2 = User::returnValueGet('schoolYear');
 
                   if(!isset($_GET['search'])) {
-                    $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'accomplished', 'school_year'=>$school_year2]);
+                    $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
                   } else if (isset($_GET['search'])) {
                     if($_GET['search'] == "") {
-                      $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'accomplished', 'school_year'=>$school_year2]);
+                      $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
                     }
                   }
 
@@ -164,7 +165,9 @@ if(isset($_POST['search_submit'])) {
                     if($_GET != '') {
                       $name_of_org = User::returnValueGet('activeStudentOrg');
                       $search = User::returnValueGet('search');
-                      $accomplishment_reports = $admin->modifiedSearch('accomplishment_reports', "name_of_org = '$name_of_org' AND status = 'accomplished' AND school_year = '$school_year2'", "name_of_activity", $search);
+
+
+                      $accomplishment_reports = $admin->modifiedSearch('accomplishment_reports', "name_of_org = '$name_of_org' AND status = 'ongoing' AND school_year = '$school_year2'", "planned_activity", $search);
                     }
                   }
 
@@ -177,6 +180,7 @@ if(isset($_POST['search_submit'])) {
                   <td><?php echo $row['date_accomplished']; ?></td>
                   <td><?php echo $row['budget']; ?></td>
                   <td><?php echo $row['remarks']; ?></td>
+                  <td><a class="btn btn-outline-secondary" target="_blank" href="../uploads/<?php echo $row['liquidations']; ?>">Generate</a></td>
 
                 </tr>
                 <?php } ?>
@@ -192,6 +196,10 @@ if(isset($_POST['search_submit'])) {
     </div>
 
   </div>
+
+  <?php
+    require 'admin-footer.php';
+  ?>
 
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");

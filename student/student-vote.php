@@ -124,6 +124,11 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       </div>
     </div>
   </div>
+
+  <?php
+    require 'student-footer.php';
+  ?>
+
 </body>
 
 </html>

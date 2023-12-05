@@ -115,6 +115,9 @@ if(isset($_POST['submit'])) {
     </div>
   </div>
 
+  <?php
+    require 'admin-footer.php';
+  ?>
 
   <script>
     var activeNav = document.getElementById('monitor-plan-of-activities')

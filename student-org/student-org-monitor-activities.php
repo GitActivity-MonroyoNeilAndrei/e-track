@@ -146,6 +146,11 @@ $nameOfAct = returnNameOfAct();
       </div>
     </div>
   </div>
+
+  <?php
+    require 'student-org-footer.php';
+  ?>
+  
   <script>
     let date = new Date();
     let year = date.getFullYear();

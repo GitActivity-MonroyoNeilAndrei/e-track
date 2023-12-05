@@ -167,6 +167,9 @@ if(isset($_POST['search_submit'])) {
                     if($_GET != '') {
                       $name_of_org = User::returnValueGet('activeStudentOrg');
                       $search = User::returnValueGet('search');
+
+                      
+
                       $plan_of_activity = $admin->modifiedSearch('plan_of_activities', "name_of_org = '$name_of_org' AND status = 'ongoing' AND school_year = '$school_year2'", "name_of_activity", $search);
                     }
                   }
@@ -199,6 +202,10 @@ if(isset($_POST['search_submit'])) {
     </div>
 
   </div>
+
+  <?php
+    require 'admin-footer.php';
+  ?>
 
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");

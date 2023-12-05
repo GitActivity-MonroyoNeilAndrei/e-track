@@ -85,7 +85,7 @@ a {
 
 .nav-links {
   /* min-width: 12rem; */
-  min-height: auto;
+  min-height: calc(100vh - 3rem);
   background-color: #364150;
   color: #EEEEEE;
 }
@@ -316,6 +316,13 @@ table {
   }
 }
 
+.footer {
+  padding: .1rem 2rem;
+  background-color: #364150;
+  color: white;
+  font-size: .8em;
+  border-top: 2px solid rgba(35, 35, 35, 0.583);
+}
 
 
 

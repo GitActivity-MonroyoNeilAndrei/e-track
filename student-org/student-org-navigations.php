@@ -18,7 +18,7 @@
         <span><i class="fa-solid fa-check-to-slot"></i></span>
       </li>
       <li onclick="window.location.href='student-org-monitor-activities.php'" id="monitor-activity">
-        <span>Monitor Plan of Activities</span>
+        <span>Monitor Activities</span>
         <span><i class="fa-solid fa-tv"></i></span>
       </li>
       <li onclick="window.location.href='student-org-accomplishment-report.php'" class="mb-4 border-bottom border-dark" id="accomplishment-report">

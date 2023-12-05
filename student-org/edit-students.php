@@ -139,6 +139,10 @@ if(isset($_POST['submit'])) {
 
   </div>
 
+  <?php
+    require 'student-org-footer.php';
+  ?>
+
   <script defer>
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");
     activeLink.style.backgroundColor = "#3C9811";
