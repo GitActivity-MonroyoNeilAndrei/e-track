@@ -56,7 +56,7 @@ if(isset($_POST['submit'])) {
     
 
 
-    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$name_of_acitvity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now, 'school_year'=>$student_org_school_year, 'status'=>'submitted', 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output]);
+    $student_org->insertData('accomplishment_reports', ['planned_activity'=>$name_of_acitvity, 'purpose'=>$purpose, 'date_accomplished'=>$date_accomplished, 'budget'=>$budget, 'remarks'=>$remarks, 'name_of_org'=>User::returnValueSession('name_of_org'), 'date_submitted'=>$date_now, 'school_year'=>$student_org_school_year, 'status'=>'draft', 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output]);
 
     $student_org->insertPDF('liquidation', 'accomplishment_reports', 'liquidations', '../uploads/');
 
@@ -95,7 +95,7 @@ if(isset($_POST['submit'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="student-org-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=student-org"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>

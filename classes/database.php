@@ -372,10 +372,10 @@ class database
   public function limitSelectAll($table, $limit = 0, $offset = 0)
   {
     if($limit == 0 && $offset == 0){
-      $sql = "SELECT * FROM $table";
+      $sql = "SELECT * FROM $table ORDER BY id DESC";
       return $this->mysqli->query($sql);
     }
-    $sql = "SELECT * FROM $table ORDER BY id LIMIT $limit OFFSET $offset";
+    $sql = "SELECT * FROM $table ORDER BY id DESC LIMIT $limit OFFSET $offset";
     return $this->mysqli->query($sql);
   }
 

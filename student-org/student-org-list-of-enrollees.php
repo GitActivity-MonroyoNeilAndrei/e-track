@@ -91,7 +91,7 @@ if(isset($_POST['add-student'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="student-org-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=student-org"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>

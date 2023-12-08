@@ -35,6 +35,8 @@ if (isset($_POST['login'])) {
       } else {
         $_SESSION['admin-username'] = $student->pullLastRowModified('admin', 'username');
         $_SESSION['admin-id'] = $student->pullLastRowModified('admin', 'id');
+        $_SESSION['admin_name'] = $student->pullLastRowModified('admin', 'first_name') . ' ' . $student->pullLastRowModified('admin', 'last_name');
+
         header("location: ../admin/admin-homepage.php");
       }
     } else if ($student->isExisted('student_org', ['email' => $email_student_id, 'password' => $password])) {
@@ -46,16 +48,16 @@ if (isset($_POST['login'])) {
           $_SESSION['school-year'] = getSchoolYear($student->pullLastRowModified('student_org', 'name_of_org'));
           header("location: ../student-org/student-org-homepage.php");
         }
-    } else if ($student->isExisted('student', ['email' => $email_student_id, 'password' => $password])) {
+    } else if ($student->isExisted('student', ['student_id' => $email_student_id, 'password' => $password])) {
 
-      if (User::ifDeactivated($student->select('student', 'status', ['email' => $email_student_id, 'password' => $password]))) {
+      if (User::ifDeactivated($student->select('student', 'status', ['student_id' => $email_student_id, 'password' => $password]))) {
         $deactivated = "Your Account Had Been Deactivate";
       } else {
         $_SESSION['id'] = $student->pullLastRowModified('student', 'id');
         $_SESSION['student_id'] = $student->pullLastRowModified('student', 'student_id');
         $_SESSION['student_name'] = $student->pullLastRowModified('student', 'first_name') . ' ' . $student->pullLastRowModified('student', 'last_name');
         $_SESSION['student-course'] = $student->pullLastRowModified('student', 'course');
-        $_SESSION['student-id'] = $student->pullLastRowModified('student', 'id');
+
   
         header("location: ../student/student-vote.php");
       }
@@ -67,10 +69,10 @@ if (isset($_POST['login'])) {
     if (User::ifDeactivated($student->select('student', 'status', ['student_id' => $email_student_id, 'password' => $password]))) {
       $deactivated = "Your Account Had Been Deactivate";
     } else {
+      $_SESSION['id'] = $student->pullLastRowModified('student', 'id');
       $_SESSION['student_id'] = $student->pullLastRowModified('student', 'student_id');
       $_SESSION['student_name'] = $student->pullLastRowModified('student', 'first_name') . ' ' . $student->pullLastRowModified('student', 'last_name');
       $_SESSION['student-course'] = $student->pullLastRowModified('student', 'course');
-      $_SESSION['student-id'] = $student->pullLastRowModified('student', 'id');
 
       header("location: ../student/student-vote.php");
     }

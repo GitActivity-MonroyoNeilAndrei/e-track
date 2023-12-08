@@ -36,6 +36,6 @@ while($row = mysqli_fetch_assoc($delete_candidate)) {
 
 
 // redirect to the admin-monitor-election-result page
-header("location: admin/admin-monitor-election-result.php?activeStudentOrg=$studentOrg");
+header("location: admin/admin-monitor-election-result.php?activeStudentOrg=$studentOrg&resultReleased");
 
 ?>

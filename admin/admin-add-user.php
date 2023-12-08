@@ -19,6 +19,19 @@ User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id])
 
 
 if (isset($_POST['submit'])) {
+
+  if (isset($_POST['password'])) {
+    $password = $_POST['password'];
+    $validPassword = User::isValidPassword($password);
+    $user = User::returnValueGet('user');
+
+    if ($validPassword == "") {
+      header("location: admin-add-user.php?user=$user&invalidPassword");
+      exit;
+    }
+  }
+
+
   if(User::returnValueGet('user') == 'admin') {
     $username = $_POST['username'];
     $first_name = $_POST['first-name'];
@@ -41,7 +54,7 @@ if (isset($_POST['submit'])) {
       ) {
         $admin->insertData('admin', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
-        header('location: admin-list-of-users.php?user=admin');
+        header('location: admin-list-of-users.php?user=admin&page=all&addSuccessful');
       } else {
         $admin_exist = true;
       }
@@ -77,7 +90,7 @@ if (isset($_POST['submit'])) {
       ) {
         $admin->insertData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
-        header('location: admin-list-of-users.php?user=student');
+        header('location: admin-list-of-users.php?user=student&page=all&addSuccessful');
       } else {
         $student_exist = true;
       }
@@ -109,7 +122,7 @@ if (isset($_POST['submit'])) {
       ) {
         $admin->insertData('student_org', ['name_of_org'=>$name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
-        header('location: admin-list-of-users.php?user=student_org');
+        header('location: admin-list-of-users.php?user=student_org&page=all&addSuccessful');
       } else {
         $student_org_exist = true;
       }
@@ -154,7 +167,7 @@ if (isset($_POST['submit'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
@@ -193,6 +206,15 @@ if (isset($_POST['submit'])) {
             <input class="form-control" type="number" name="contact-no" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" required>
+            <?php
+              if (isset($_GET['invalidPassword'])) {
+                echo '
+                <div class="alert alert-danger" role="alert">
+                  Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
+                </div>
+                ';
+              }
+            ?>
             <label class="form-label" for="password">Password: </label>
             <input class="form-control" type="password" name="password" required>
             <label class="form-label" for="confirm-password">Confirm Password: </label>
@@ -248,6 +270,15 @@ if (isset($_POST['submit'])) {
             <input class="form-control" type="number" name="contact-no" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" required>
+            <?php
+              if (isset($_GET['invalidPassword'])) {
+                echo '
+                <div class="alert alert-danger" role="alert">
+                  Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
+                </div>
+                ';
+              }
+            ?>
             <label class="form-label" for="password">Password: </label>
             <input class="form-control" type="password" name="password" required>
             <label class="form-label" for="confirm-password">Confirm Password: </label>
@@ -282,6 +313,15 @@ if (isset($_POST['submit'])) {
             <input class="form-control" type="number" name="contact-no" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" required>
+            <?php
+              if (isset($_GET['invalidPassword'])) {
+                echo '
+                <div class="alert alert-danger" role="alert">
+                  Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
+                </div>
+                ';
+              }
+            ?>
             <label class="form-label" for="password">Password: </label>
             <input class="form-control" type="password" name="password" required>
             <label class="form-label" for="confirm-password">Confirm Password: </label>

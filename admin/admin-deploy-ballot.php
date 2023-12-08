@@ -7,21 +7,31 @@
   
   $admin = new database();
 
+  date_default_timezone_set('Asia/Manila');
+  $date_time_now = date('Y-m-d') . 'T' . date('H:i');
+
+  $error_time;
+
   if(isset($_POST['deploy'])) {
     $school_year = mysqli_escape_string($admin->mysqli, $_POST['school-year']);
     $exp_date = mysqli_escape_string($admin->mysqli, $_POST['exp-date']);
     $can_vote = mysqli_escape_string($admin->mysqli, $_POST['can-vote']);
 
-    $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], ['org_name'=>User::returnValueGet('orgName')]);
-    
-    $courses = explode(' ', $can_vote);
+    if ($date_time_now > $exp_date) {
+      $error_time = "Expiry Date Must be Greater than the Date Now";
+    } else {
+      $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], ['org_name'=>User::returnValueGet('orgName')]);
+      
+      $courses = explode(' ', $can_vote);
 
-    foreach($courses as $course) {
-      $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
+      foreach($courses as $course) {
+        $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
+      }
+
+      $active_student_org = User::returnValueGet('orgName');
+      header("location: admin-election.php?activeStudentOrg=$active_student_org&ballotDeployed");
     }
 
-    $active_student_org = User::returnValueGet('orgName');
-    header("location: admin-election.php?activeStudentOrg=$active_student_org");
   }
 
 ?>
@@ -47,9 +57,16 @@
 </head>
 
 <body style="background-color: #EEEEEE;">
-
   <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; " method="post">
     <h5 class="text-center">Deploy Ballot for <?php User::printGet('orgName') ?></h5>
+    <?php
+      if (isset($error_time)) {
+        echo '
+        <div class="alert alert-danger" role="alert">
+          ' . $error_time . '
+        </div>';
+      }
+    ?>
     <label class="form-label" for="school-year">School Year:</label>
     <input class="form-control" type="text" name="school-year" required>
     <label class="form-label" for="exp-date">Expiration Date:</label>

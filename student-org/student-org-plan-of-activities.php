@@ -49,7 +49,7 @@ if(!isset($_SESSION['school-year'])){
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="student-org-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=student-org"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
@@ -85,7 +85,7 @@ if(!isset($_SESSION['school-year'])){
                 <?php
                 $name_of_org = User::returnValueSession('name_of_org');
 
-                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned')");
+                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted')");
 
                  while ($row = mysqli_fetch_assoc($plan_of_activities)) {
                 ?>

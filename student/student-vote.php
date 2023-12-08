@@ -15,7 +15,7 @@ if (!isset($_SESSION['student_id'])) {
   header('location: ../login-account/login-user.php');
 }
 
-$student_id = User::returnValueSession('student-id');
+$student_id = User::returnValueSession('id');
 
 User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
 ?>
@@ -43,7 +43,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('student_name'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="student-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=student"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>

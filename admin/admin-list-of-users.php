@@ -57,7 +57,7 @@ if (!isset($_GET['page'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
@@ -95,6 +95,16 @@ if (!isset($_GET['page'])) {
             </form>
           </div>
           
+          <?php
+            if (isset($_GET['addSuccessful'])) {
+              echo '
+              <div class="alert alert-success" role="alert">
+                User Added Successfully
+              </div>
+              ';
+            }
+          ?>
+
           <nav class="mt-3">
             <ul class="pagination d-flex justify-content-center">
               <li class="page-item"><a class="page-link" href="admin-list-of-users.php?user=<?php echo $user; ?>&page=<?php echo 'all'; ?>" id="<?php echo 'all'; ?>">all</a></li>

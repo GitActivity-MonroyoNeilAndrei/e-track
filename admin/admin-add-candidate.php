@@ -24,14 +24,14 @@ if (isset($_POST['add-candidate'])) {
   $introduce_yourself = mysqli_escape_string($admin->mysqli, $_POST['introduce-yourself']);
 
 
-  if ($admin->isExisted('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'org_name' => User::returnValueGet('studentOrg'),])) {
+  if ($admin->isExisted('candidate', ['first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'org_name' => User::returnValueGet('studentOrg'),])) {
     $candidateExist = true;
   } else {
 
     $admin->insertData('candidate', ['position' => $position, 'first_name' => $first_name, 'last_name' => $last_name, 'year' => $year, 'partylist' => $partylist, 'introduce_yourself' => $introduce_yourself, 'org_name' => User::returnValueGet('studentOrg')]);
 
     if ($admin->insertImage('candidate-image', 'candidate', 'photo_url', '../uploads/')) {
-      header("location: admin-election.php?addCandidateSuccess&activeStudentOrg=" . User::returnValueGet('studentOrg'));
+      header("location: admin-election.php?addCandidateSuccess&activeStudentOrg=" . User::returnValueGet('studentOrg') . "&addSuccessful");
     } else {
       $wrong_file = "jpg, jpeg and png files only";
     }
@@ -65,7 +65,11 @@ if (isset($_POST['add-candidate'])) {
   <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; " method="post" enctype="multipart/form-data">
     <h5 class="text-center">Add Candidate for <?php User::printGet('studentOrg') ?></h5>
     <?php if ($candidateExist) {
-      Message::userAlreadyExist();
+      echo '
+      <div class="alert alert-danger" role="alert">
+        Candidate Already Exist
+      </div>
+      ';
     } ?>
 
     <label class="form-label">Position</label>

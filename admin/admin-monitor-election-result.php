@@ -66,7 +66,7 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
@@ -93,7 +93,15 @@ if (!isset($_GET['activeStudentOrg'])) {
             </ul>
           </nav>
 
-
+          <?php
+            if (isset($_GET['resultReleased'])) {
+              echo '
+              <div class="alert alert-success" role="alert">
+                Election Result has been Released
+              </div>
+              ';
+            }
+          ?>
 
 
           <!-- Monitors and Displays the deployed ballot to all users  -->

@@ -20,8 +20,17 @@ $name_of_org = User::returnValueGet('studentOrg');
 $path = User::returnValueGet('path');
 
 if(isset($_POST['yes'])) {
-  $admin->updateData(User::returnValueGet('type'), ['status'=>$status], ['id'=>$id, 'name_of_org'=>$name_of_org]);
-  header("location: $path?activeStudentOrg=$name_of_org");
+	$admin->updateData(User::returnValueGet('type'), ['status'=>$status], ['id'=>$id, 'name_of_org'=>$name_of_org]);
+
+	if ($path == "admin-plan-of-activities.php" || $path == "admin-accomplishment-report.php") {
+		if ($status == "ongoing") {
+		  header("location: $path?activeStudentOrg=$name_of_org&accept");
+		} else if ($status = "returned") {
+  		header("location: $path?activeStudentOrg=$name_of_org&reject");
+		}
+	} else {
+		header("location: $path?activeStudentOrg=$name_of_org");
+	}
 
 } else if (isset($_POST['no'])) {
   header("location: $path?activeStudentOrg=$name_of_org");

@@ -51,7 +51,7 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
@@ -78,6 +78,21 @@ if (!isset($_GET['activeStudentOrg'])) {
             </ul>
           </nav>
 
+          <?php
+            if (isset($_GET['accept'])) {
+              echo '
+              <div class="alert alert-success" role="alert">
+                Accept Successfully
+              </div>';
+            } else if (isset($_GET['reject'])) {
+              echo'
+              <div class="alert alert-success" role="alert">
+                Returned Successfully
+              </div>
+              ';
+            }
+          ?>
+
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
@@ -90,6 +105,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <th>Purpose</th>
                   <th>Beneficiaries</th>
                   <th>Target Output</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -109,6 +125,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['beneficiaries']; ?></td>
                   <td><?php echo $row['target_output']; ?></td>
+                  <td>Pending</td>
                   <td>
                     <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"> Accept</a>
                     <a class="btn btn-danger mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=returned&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"> Reject</a>

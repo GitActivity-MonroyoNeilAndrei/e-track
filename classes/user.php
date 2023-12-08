@@ -77,5 +77,25 @@
       session_start();
       unset($_SESSION["$name"]);
     }
-  
+
+    public static function isValidPassword($password) {
+      if (strlen($password) <= 5) {
+        return "";
+      }else if (!preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $password)) {
+        return "";
+      } else if (!preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $password)) {
+        return "";
+      } else if (!preg_match('/[A-Z]/', $password) == 1) {
+        return "";
+      } else if (!preg_match('/[a-z]/', $password) == 1) {
+        return "";
+      } else {
+        return $password;
+      }
+       
+        
+        
+        
+    }
   }
+?>

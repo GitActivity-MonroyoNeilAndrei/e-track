@@ -47,7 +47,7 @@ if (!isset($_GET['activeStudentOrg'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="#"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
@@ -87,6 +87,18 @@ if (!isset($_GET['activeStudentOrg'])) {
 
             <h5 class="text-center py-1">List of Candidate</h5>
           </div>
+
+          <?php
+            if (isset($_GET['ballotDeployed'])) {
+              echo '
+              <div class="alert alert-success" role="alert">
+                Ballot Deployed
+              </div>
+              ';
+            }
+          ?>
+
+
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
