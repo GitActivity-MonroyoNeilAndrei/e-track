@@ -69,7 +69,7 @@
     ?>
     <label class="form-label" for="school-year">School Year:</label>
     <input class="form-control" type="text" name="school-year" required>
-    <label class="form-label" for="exp-date">Expiration Date:</label>
+    <label class="form-label" for="exp-date">End of Election:</label>
     <input class="form-control" type="datetime-local" name="exp-date" required>
 
     <label class="form-label" for="can-vote">Who can Vote?:</label>

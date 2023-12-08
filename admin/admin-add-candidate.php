@@ -110,7 +110,7 @@ if (isset($_POST['add-candidate'])) {
     <label class="form-label" for="partylist">Partylist</label>
     <input class="form-control" type="text" name="partylist" required>
 
-    <label class="form-label" for="introduce-yourself">Intoduce Yourself</label>
+    <label class="form-label" for="introduce-yourself">Description</label>
     <textarea class="form-control" style="font-size: .85rem;" type="text" name="introduce-yourself" rows="6"> </textarea>
 
     <div class="d-flex justify-content-center align-items-center mt-3">

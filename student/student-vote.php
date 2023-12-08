@@ -90,7 +90,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
               <thead>
                 <tr>
                   <th>Organization Name</th>
-                  <th>Expiration Date</th>
+                  <th>End of Election</th>
                   <th>Action</th>
                 </tr>
               </thead>

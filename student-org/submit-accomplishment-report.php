@@ -11,7 +11,7 @@ $date_now = date('Y-m-d');
 
 $student_org = new database();
 
-User::ifNotLogin('name_of_org', '../login-account/login-user.php');
+// User::ifNotLogin('name_of_org', '../login-account/login-user.php');
 
 $student_org_id = User::returnValueSession('student-org-id');
 

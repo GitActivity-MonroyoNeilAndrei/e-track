@@ -29,6 +29,9 @@ if (!isset($_GET['page'])) {
   header("location: admin-list-of-users.php?user=$user&page=all");
 }
 
+
+
+
 ?>
 
 
@@ -162,6 +165,7 @@ if (!isset($_GET['page'])) {
                   <th>Adviser</th>
                   <th>Contact Number</th>
                   <th>Email</th>
+                  <th>Enrolled Students</th>
                   <th>status</th>
                   <th>Action</th>
                 </tr>
@@ -235,6 +239,25 @@ if (!isset($_GET['page'])) {
                     <td><?php echo $row['adviser']; ?></td>
                     <td><?php echo $row['contact_no']; ?></td>
                     <td><?php echo $row['email']; ?></td>
+
+                    <?php
+                    if (User::returnValueGet('user') == 'student_org')
+                    {
+                      $course_covered = explode(",", $row['course_covered']);
+
+                      array_push($course_covered, "");
+                      array_push($course_covered, "");
+                      array_push($course_covered, "");
+                      array_push($course_covered, "");
+
+                      $number_of_enrollees = $admin->countSelect('student', "*", "course = '$course_covered[0]' OR course = '$course_covered[1]' OR course = '$course_covered[2]' OR course = '$course_covered[3]' OR course = '$course_covered[4]'");
+                    }
+
+                    ?>
+
+
+
+                    <td><?php echo $number_of_enrollees ?></td>
                     <td><?php echo $row['status'] ?></td>
                     <td>
                       <a class="btn btn-success mb-3" href="admin-edit-users.php?id=<?php echo $row['id']; ?>&user=<?php User::printGet('user'); ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
