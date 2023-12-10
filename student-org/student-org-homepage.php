@@ -165,6 +165,11 @@ $drafted_accomplishment_reports = $student_org->countSelect('accomplishment_repo
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
   </script>
+
+<script>
+    var activeNav = document.getElementById('dashboard')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

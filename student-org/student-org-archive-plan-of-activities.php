@@ -21,9 +21,9 @@ if(!isset($_SESSION['school-year'])){
   header("location: ../logout.php?logout=student-org");
 }
 
-if (isset($_GET['archive'])){
+if (isset($_GET['unarchive'])){
   if(isset($_GET['id'])) {
-    $student_org->updateData('plan_of_activities', ['status'=>'archive'], ['id'=>User::returnValueGet('id')]);
+    $student_org->updateData('plan_of_activities', ['status'=>'draft'], ['id'=>User::returnValueGet('id')]);
   }
 }
 
@@ -69,19 +69,17 @@ if (isset($_GET['archive'])){
           <div class="content-header">
             <h5>Submit Plan of Activity</h5>
           </div>
-          <h3 class="text-center">Plan of Activities</h3>
+          <h3 class="text-center">Archive Plan of Activities</h3>
 
-          <div class="d-flex justify-content-between">
-            <a class="btn btn-primary mb-3" href="add-plan-of-activity.php"><i class="fa-solid fa-plus"></i> Add Plan</a>
-            <a class="btn btn-outline-danger mb-3" href="student-org-archive-plan-of-activities.php">Archives</a>
+          <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-primary mb-3" href="student-org-plan-of-activities.php">Drafts and Returned</a>
           </div>
 
-
           <?php
-            if(isset($_GET['archive'])) {
+            if(isset($_GET['unarchive'])) {
               echo '
               <div class="alert alert-success" role="alert">
-                Accomplishment Report Succesfully Added to Archive
+                Accomplishment Report Succesfully Added to Draft
               </div>
               ';
             }
@@ -108,7 +106,7 @@ if (isset($_GET['archive'])){
                 <?php
                 $name_of_org = User::returnValueSession('name_of_org');
 
-                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted')");
+                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'archive')");
 
                 if ($plan_of_activities->num_rows == 0 ) {
                   echo '
@@ -135,12 +133,11 @@ if (isset($_GET['archive'])){
                   <td><?php echo $row['status']; ?></td>
                   <td><?php echo $row['remark']; ?></td>
                   <td>
-                    <a class="btn btn-secondary mb-2" href="edit-plan-of-activity.php?id=<?php echo $row['id']; ?>"> Edit</a>
+                    <a class="btn btn-secondary mb-2" href="student-org-archive-plan-of-activities.php?id=<?php echo $row['id'];?>&unarchive"> Unarchive</a>
 
-                    <a class="btn btn-danger mb-2" href="student-org-plan-of-activities.php?id=<?php echo $row['id'];?>&archive">Archive</a>
+                    <!-- <a class="btn btn-danger mb-2" href="delete-plan-of-activity.php?id=<?php // echo $row['id']; ?>">Delete</a> -->
 
 
-                    <!-- <a class="btn btn-danger mb-2" href="delete-plan-of-activity.php?id=<?php // echo $row['id']; ?>">Archive</a> -->
                   </td>
                 </tr>
 

@@ -25,6 +25,8 @@ if (!isset($_GET['activeStudentOrg'])) {
   header("location: admin-plan-of-activities.php?activeStudentOrg=$row[name_of_org]");
 }
 
+
+
 ?>
 
 
@@ -90,6 +92,18 @@ if (!isset($_GET['activeStudentOrg'])) {
                 Returned Successfully
               </div>
               ';
+            }  else if (isset($_GET['returnedAll'])) {
+              echo'
+              <div class="alert alert-success" role="alert">
+                All Returned Successfully
+              </div>
+              ';
+            }  else if (isset($_GET['acceptAll'])) {
+              echo'
+              <div class="alert alert-success" role="alert">
+                All Accepted Successfully
+              </div>
+              ';
             }
           ?>
 
@@ -112,6 +126,16 @@ if (!isset($_GET['activeStudentOrg'])) {
               <tbody>
                 <?php 
                   $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
+
+                  if ($plan_of_activity->num_rows == 0 ) {
+                    echo '
+                      <tr>
+                        <td colspan="10">
+                          <h3 class="text-center">No Activities has been Submitted</h3>
+                        </td>
+                      </tr>
+                    ';
+                  }
 
                   while ($row = mysqli_fetch_assoc($plan_of_activity)) {
 
@@ -136,6 +160,11 @@ if (!isset($_GET['activeStudentOrg'])) {
             </table>
           </div>
 
+          <div class="text-center">
+            <a class="btn btn-success" href="accept-reject.php?acceptActivity&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Accept All</a>
+            <a class="btn btn-danger" href="accept-reject.php?rejectActivity&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Reject All</a>
+          </div>
+
 
         </div>
       </div>
@@ -152,9 +181,13 @@ if (!isset($_GET['activeStudentOrg'])) {
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
 
-    
+
     var activeNav = document.getElementById('plan-of-activities')
     activeNav.classList.add('bg-dark-gray2');
+
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
   
 
   </script>

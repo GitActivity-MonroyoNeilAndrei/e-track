@@ -18,6 +18,8 @@ if (!isset($_SESSION['student_id'])) {
 $student_id = User::returnValueSession('id');
 
 User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$student_id]), '../logout.php?logout=student');
+
+
 ?>
 
 <!DOCTYPE html>
@@ -102,20 +104,25 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
 
                 $result2 = $student->select('candidate', '*', ['org_name'=>$row['can_vote']]);
                 $row2 = mysqli_fetch_assoc($result2);
-                // var_dump($row);
+
                 if ($row['can_vote'] == NULL || $row['can_vote'] == "") {
                   echo "<h4 class='text-center'>No Election Available</h4>";
                 }else if ($row2) {
 
-                  $row2['exp_date'] > $date_time_now;
+                  if($row2['exp_date'] > $date_time_now) {
 
                 ?>
 
                 <td><?php echo $row['can_vote']; ?></td>
                 <td><?php echo $row2['exp_date']; ?></td>
+
                 <td><a href="student-vote-homepage.php?can_vote=<?php echo $row['can_vote']; ?>" class="btn btn-primary"><i class="fa-solid fa-file-import"></i> Vote</a></td>
                   
-                <?php } ?>
+                <?php } else {
+                  $student->updateData('student', ['can_vote'=>""], ['course'=>User::returnValueSession('student-course')]);
+                }
+
+                } ?>
               </tbody>
             </table>
           </div>
@@ -128,6 +135,12 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
   <?php
     require 'student-footer.php';
   ?>
+
+<script>
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
+</script>
 
 </body>
 

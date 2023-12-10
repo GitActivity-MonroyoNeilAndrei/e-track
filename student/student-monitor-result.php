@@ -267,6 +267,9 @@ while($row = mysqli_fetch_assoc($org_can_view_query)) {
 
                     // $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
 
+                    $candidate_count = $student->countSelect('candidate', "*", " org_name = '$org_name' && position = '$position'");
+
+
                     while ($row = mysqli_fetch_assoc($result3)) {
 
                     ?>
@@ -280,7 +283,9 @@ while($row = mysqli_fetch_assoc($org_can_view_query)) {
                 </table>
               </div>
 
-              <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+              <div class="mx-auto" style="width: <?php echo ($candidate_count * 15) + 30; ?>%;">
+                <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+              </div>
 
 
             <?php } ?>
@@ -371,6 +376,11 @@ while($row = mysqli_fetch_assoc($org_can_view_query)) {
 
   }
   ?>
+  <script>
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
+  </script>
 </body>
 
 </html>

@@ -21,6 +21,12 @@ if(!isset($_SESSION['school-year'])){
   header("location: ../logout.php?logout=student-org");
 }
 
+if (isset($_GET['archive'])){
+  if(isset($_GET['id'])) {
+    $student_org->updateData('accomplishment_reports', ['status'=>'archive'], ['id'=>User::returnValueGet('id')]);
+  }
+}
+
 ?>
 
 
@@ -64,7 +70,22 @@ if(!isset($_SESSION['school-year'])){
             <h5>Submit Accomplishment Report</h5>
           </div>
           <h3 class="text-center">Accomplishment Reports</h3>
-          <a class="btn btn-primary mb-3" href="add-accomplishment-report.php"><i class="fa-solid fa-plus"></i> Add Report</a>
+          
+          <div class="d-flex justify-content-between">
+            <a class="btn btn-primary mb-3" href="add-accomplishment-report.php"><i class="fa-solid fa-plus"></i> Add Report</a>
+            <a class="btn btn-outline-danger mb-3" href="student-org-archive-accomplishment-report.php">Archives</a>
+          </div>
+
+          <?php
+            if(isset($_GET['archive'])) {
+              echo '
+              <div class="alert alert-success" role="alert">
+                Accomplishment Report Succesfully Added to Archive
+              </div>
+              ';
+            }
+          ?>
+
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
@@ -73,8 +94,10 @@ if(!isset($_SESSION['school-year'])){
                   <th>Purpose</th>
                   <th>Date Accomplished</th>
                   <th>Budget</th>
-                  <th>Liquidations</th>
+                  <th>Reports & Liquidations</th>
                   <th>Remarks</th>
+                  <th>Status</th>
+                  <th>Remark</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -82,8 +105,17 @@ if(!isset($_SESSION['school-year'])){
                 <?php
                 $name_of_org = User::returnValueSession('name_of_org');
 
-                $accomplishment_reports = $student_org->advanceSelect('accomplishment_reports', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned')");
+                $accomplishment_reports = $student_org->advanceSelect('accomplishment_reports', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted')");
 
+                if ($accomplishment_reports->num_rows == 0 ) {
+                  echo '
+                    <tr>
+                      <td colspan="9">
+                        <h3 class="text-center">No Activities has been Uploaded</h3>
+                      </td>
+                    </tr>
+                  ';
+                }
                  while ($row = mysqli_fetch_assoc($accomplishment_reports)) {
                 ?>
                 <tr>
@@ -93,9 +125,14 @@ if(!isset($_SESSION['school-year'])){
                   <td><?php echo $row['budget']; ?></td>
                   <td><a class="btn btn-outline-primary" href="../uploads/<?php echo $row['liquidations']; ?>" target="_blank">View</a></td>
                   <td><?php echo $row['remarks']; ?></td>
+                  <td> <?php echo $row['status'] ?></td>
+                  <td><?php echo $row['remark']; ?></td>
                   <td>
-                    <a class="btn btn-secondary mb-2" href="edit-accomplishment-report.php?id=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                    <a class="btn btn-danger mb-2" href="delete-accomplishment-report.php?id=<?php echo $row['id']; ?>"><i class="fa-solid fa-trash"></i> Delete</a>
+                    <a class="btn btn-secondary mb-2" href="edit-accomplishment-report.php?id=<?php echo $row['id']; ?>"> Edit</a>
+                    <a class="btn btn-danger mb-2" href="student-org-accomplishment-report.php?id=<?php echo $row['id'];?>&archive">Archive</a>
+
+                    <!-- <a class="btn btn-danger mb-2" href="delete-accomplishment-report.php?id=<?php // echo $row['id']; ?>">Delete</a> -->
+
                   </td>
                 </tr>
 
@@ -122,6 +159,15 @@ if(!isset($_SESSION['school-year'])){
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
+
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
+  </script>
+
+<script>
+    var activeNav = document.getElementById('accomplishment-report')
+    activeNav.classList.add('bg-dark-gray2');
   </script>
 </body>
 

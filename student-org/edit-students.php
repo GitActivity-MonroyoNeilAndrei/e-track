@@ -148,6 +148,11 @@ if(isset($_POST['submit'])) {
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
   </script>
+
+<script>
+    var activeNav = document.getElementById('list-of-enrollees')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

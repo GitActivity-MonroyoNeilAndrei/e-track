@@ -156,6 +156,9 @@ $nameOfAct = returnNameOfAct();
     let year = date.getFullYear();
     let month = date.getMonth();
 
+    var activeNav = document.getElementById('monitor-activity')
+    activeNav.classList.add('bg-dark-gray2');
+
     function addZeroToNum(month) {
       if(month <= 9){
         return '0' + month.toString();
@@ -302,6 +305,11 @@ $nameOfAct = returnNameOfAct();
 
   </script>
   <link rel="stylesheet" href="../css/calendar.css?<?php echo time(); ?>">
+
+  <script>
+    var activeNav = document.getElementById('monitor-activity')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

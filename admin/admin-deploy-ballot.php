@@ -15,15 +15,13 @@
   if(isset($_POST['deploy'])) {
     $school_year = mysqli_escape_string($admin->mysqli, $_POST['school-year']);
     $exp_date = mysqli_escape_string($admin->mysqli, $_POST['exp-date']);
-    $can_vote = mysqli_escape_string($admin->mysqli, $_POST['can-vote']);
+    $courses = $_POST['can-vote'];
 
     if ($date_time_now > $exp_date) {
       $error_time = "Expiry Date Must be Greater than the Date Now";
     } else {
       $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], ['org_name'=>User::returnValueGet('orgName')]);
       
-      $courses = explode(' ', $can_vote);
-
       foreach($courses as $course) {
         $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
       }
@@ -73,7 +71,20 @@
     <input class="form-control" type="datetime-local" name="exp-date" required>
 
     <label class="form-label" for="can-vote">Who can Vote?:</label>
-    <input class="form-control" type="text" name="can-vote" required>
+    <select class="form-select" name="can-vote[]" multiple="multiple">
+      <?php
+        $courses = $admin->select('courses', 'course');
+
+        while ($row = mysqli_fetch_assoc($courses)) {
+      ?>
+        <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
+      <?php
+        }
+      ?>
+    </select>
+
+    <!-- <input class="form-control d-none" type="text" name="can-vote" required> -->
+
     <div class="d-flex justify-content-center align-items-center mt-3">
       <input class="btn btn-success me-3" type="submit" name="deploy" value="Deploy" required>
       <a class="btn btn-danger" href="admin-election.php?activeStudentOrg=<?php User::printGet('orgName'); ?>">Cancel</a>

@@ -90,7 +90,19 @@ if (!isset($_GET['activeStudentOrg'])) {
                 Returned Successfully
               </div>
               ';
-            }
+            } else if (isset($_GET['returnedAll'])) {
+              echo'
+              <div class="alert alert-success" role="alert">
+                All Returned Successfully
+              </div>
+              ';
+            }  else if (isset($_GET['acceptAll'])) {
+              echo'
+              <div class="alert alert-success" role="alert">
+                All Accepted Successfully
+              </div>
+              ';
+            } 
           ?>
 
           <div class="table-responsive">
@@ -102,7 +114,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <th>Date Accomplished</th>
                   <th>Budget</th>
                   <th>Remarks</th>
-                  <th>Liquidations</th>
+                  <th>Reports & Liquidations</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -110,6 +122,17 @@ if (!isset($_GET['activeStudentOrg'])) {
               <tbody>
                 <?php 
                   $accomplishment_report = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
+
+                  if ($accomplishment_report->num_rows == 0 ) {
+                    echo '
+                      <tr>
+                        <td colspan="8">
+                          <h3 class="text-center">No Activities has been Submitted</h3>
+                        </td>
+                      </tr>
+                    ';
+                  }
+
 
                   while ($row = mysqli_fetch_assoc($accomplishment_report)) {
                 ?>
@@ -130,6 +153,13 @@ if (!isset($_GET['activeStudentOrg'])) {
               </tbody>
             </table>
           </div>
+
+          <div class="text-center">
+            <a class="btn btn-success" href="accept-reject.php?acceptReport&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Accept All</a>
+            <a class="btn btn-danger" href="accept-reject.php?rejectReport&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Reject All</a>
+          </div>
+
+
         </div>
       </div>
     </div>
@@ -147,6 +177,10 @@ if (!isset($_GET['activeStudentOrg'])) {
 
     var activeNav = document.getElementById('accomplishment-report')
     activeNav.classList.add('bg-dark-gray2');
+
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
 
 
   </script>

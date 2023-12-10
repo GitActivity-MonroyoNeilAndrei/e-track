@@ -244,6 +244,9 @@ if (!isset($_GET['activeStudentOrg'])) {
 
                     // $result3 = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
 
+                    $candidate_count = $admin->countSelect('candidate', "*", " org_name = '$org_name' && position = '$position'");
+
+
                     while ($row = mysqli_fetch_assoc($result3)) {
 
                       $admin->updateData('candidate', ['status'=>'winner'], ['id'=>$row['id']]);
@@ -259,12 +262,14 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </table>
               </div>
 
-              <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+              <div class="mx-auto" style="width: <?php echo ($candidate_count * 15) + 30; ?>%;">
+                <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+              </div>
 
             <?php } ?>
 
             <div class="text-center">
-              <a class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>"> <i class="fa-solid fa-arrow-up"></i> Release</a>
+              <a target="_blank" class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>"> <i class="fa-solid fa-arrow-up"></i> Release & Print</a>
             </div>
             
 
@@ -361,6 +366,10 @@ if (!isset($_GET['activeStudentOrg'])) {
   <script>
     var activeNav = document.getElementById('monitor-election-result')
     activeNav.classList.add('bg-dark-gray2');
+
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
   </script>
 </body>
 

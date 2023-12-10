@@ -146,7 +146,7 @@ if(isset($_POST['submit'])) {
 
             <label class="form-label" for="budget">Budget: </label>
             <input class="form-control" type="number" name="budget" required>
-            <label class="form-label" for="liquidation">Liquidation</label>
+            <label class="form-label" for="liquidation">Reports & Liquidation</label>
             <input class="form-control" type="file" name="liquidation" required>
             <label class="form-label" for="remarks">Remarks: </label>
             <input class="form-control" type="text" name="remarks" required>
@@ -169,6 +169,11 @@ if(isset($_POST['submit'])) {
     let activeLink = document.getElementById("<?php User::printGet('user'); ?>");
     activeLink.style.backgroundColor = "#3C9811";
     activeLink.style.color = "white";
+  </script>
+
+  <script>
+    var activeNav = document.getElementById('accomplishment-report')
+    activeNav.classList.add('bg-dark-gray2');
   </script>
 </body>
 

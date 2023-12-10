@@ -233,6 +233,10 @@ if  (isset($_POST['edit-password'])) {
   <?php
     require 'student-org-footer.php';
   ?>
+  <script>
+    var activeNav = document.getElementById('dashboard')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

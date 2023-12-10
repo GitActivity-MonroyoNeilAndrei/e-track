@@ -11,7 +11,7 @@ session_start();
 
 $student_org = new database();
 
-// User::ifNotLogin('name_of_org', '../login-account/login-user.php');
+User::ifNotLogin('name_of_org', '../login-account/login-user.php');
 
 $student_org_id = User::returnValueSession('student-org-id');
 
@@ -21,9 +21,9 @@ if(!isset($_SESSION['school-year'])){
   header("location: ../logout.php?logout=student-org");
 }
 
-if (isset($_GET['archive'])){
+if (isset($_GET['unarchive'])){
   if(isset($_GET['id'])) {
-    $student_org->updateData('plan_of_activities', ['status'=>'archive'], ['id'=>User::returnValueGet('id')]);
+    $student_org->updateData('accomplishment_reports', ['status'=>'draft'], ['id'=>User::returnValueGet('id')]);
   }
 }
 
@@ -67,21 +67,20 @@ if (isset($_GET['archive'])){
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
-            <h5>Submit Plan of Activity</h5>
+            <h5>Submit Accomplishment Report</h5>
           </div>
-          <h3 class="text-center">Plan of Activities</h3>
+          <h3 class="text-center">Archive Accomplishment Reports</h3>
 
-          <div class="d-flex justify-content-between">
-            <a class="btn btn-primary mb-3" href="add-plan-of-activity.php"><i class="fa-solid fa-plus"></i> Add Plan</a>
-            <a class="btn btn-outline-danger mb-3" href="student-org-archive-plan-of-activities.php">Archives</a>
+          <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-primary mb-3" href="student-org-accomplishment-report.php">Drafts and Returned</a>
           </div>
 
 
           <?php
-            if(isset($_GET['archive'])) {
+            if(isset($_GET['unarchive'])) {
               echo '
               <div class="alert alert-success" role="alert">
-                Accomplishment Report Succesfully Added to Archive
+                Accomplishment Report Succesfully Added to Draft
               </div>
               ';
             }
@@ -91,14 +90,12 @@ if (isset($_GET['archive'])){
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th>Name of Activity</th>
-                  <th>Date</th>
-                  <th>Venue</th>
-                  <th>Sponsor's/Collaborators</th>
-                  <th>Nature of Activity</th>
+                  <th>Planned Activity</th>
                   <th>Purpose</th>
-                  <th>Beneficiaries</th>
-                  <th>Target Output</th>
+                  <th>Date Accomplished</th>
+                  <th>Budget</th>
+                  <th>Reports & Liquidations</th>
+                  <th>Remarks</th>
                   <th>Status</th>
                   <th>Remark</th>
                   <th>Action</th>
@@ -108,39 +105,34 @@ if (isset($_GET['archive'])){
                 <?php
                 $name_of_org = User::returnValueSession('name_of_org');
 
-                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted')");
+                $accomplishment_reports = $student_org->advanceSelect('accomplishment_reports', '*', "name_of_org = '$name_of_org' AND (status = 'archive')");
 
-                if ($plan_of_activities->num_rows == 0 ) {
+                if ($accomplishment_reports->num_rows == 0 ) {
                   echo '
                     <tr>
-                      <td colspan="11">
-                        <h3 class="text-center">No Activities has been Uploaded</h3>
+                      <td colspan="9">
+                        <h3 class="text-center">No Archives</h3>
                       </td>
                     </tr>
                   ';
                 }
-
-
-                 while ($row = mysqli_fetch_assoc($plan_of_activities)) {
+                 while ($row = mysqli_fetch_assoc($accomplishment_reports)) {
                 ?>
                 <tr>
-                  <td><?php echo $row['name_of_activity']; ?></td>
-                  <td><?php echo $row['date']; ?></td>
-                  <td><?php echo $row['venue']; ?></td>
-                  <td><?php echo $row['sponsors']; ?></td>
-                  <td><?php echo $row['nature_of_activity']; ?></td>
+                  <td><?php echo $row['planned_activity']; ?></td>
                   <td><?php echo $row['purpose']; ?></td>
-                  <td><?php echo $row['beneficiaries']; ?></td>
-                  <td><?php echo $row['target_output']; ?></td>
-                  <td><?php echo $row['status']; ?></td>
+                  <td><?php echo $row['date_accomplished']; ?></td>
+                  <td><?php echo $row['budget']; ?></td>
+                  <td><a class="btn btn-outline-primary" href="../uploads/<?php echo $row['liquidations']; ?>" target="_blank">View</a></td>
+                  <td><?php echo $row['remarks']; ?></td>
+                  <td> <?php echo $row['status'] ?></td>
                   <td><?php echo $row['remark']; ?></td>
                   <td>
-                    <a class="btn btn-secondary mb-2" href="edit-plan-of-activity.php?id=<?php echo $row['id']; ?>"> Edit</a>
+                    <a class="btn btn-secondary mb-2" href="student-org-archive-accomplishment-report.php?id=<?php echo $row['id'];?>&unarchive"> Unarchive</a>
+                    <!-- <a class="btn btn-danger mb-2" href="student-org-accomplishment-report.php?id=<?php // echo $row['id'];?>&archive">Archive</a> -->
 
-                    <a class="btn btn-danger mb-2" href="student-org-plan-of-activities.php?id=<?php echo $row['id'];?>&archive">Archive</a>
+                    <!-- <a class="btn btn-danger mb-2" href="delete-accomplishment-report.php?id=<?php // echo $row['id']; ?>">Delete</a> -->
 
-
-                    <!-- <a class="btn btn-danger mb-2" href="delete-plan-of-activity.php?id=<?php // echo $row['id']; ?>">Archive</a> -->
                   </td>
                 </tr>
 
@@ -149,9 +141,6 @@ if (isset($_GET['archive'])){
             </table>
           </div> <!-- table responsive -->
 
-          <div class="d-flex justify-content-center">
-            <a class="btn btn-success" href="submit-plan-of-activity.php"><i class="fa-solid fa-arrow-right"></i> Submit All</a>
-          </div>
 
         </div>
       </div>
@@ -173,7 +162,7 @@ if (isset($_GET['archive'])){
     });
   </script>
   <script>
-    var activeNav = document.getElementById('plan-of-activity')
+    var activeNav = document.getElementById('accomplishment-report')
     activeNav.classList.add('bg-dark-gray2');
   </script>
 </body>

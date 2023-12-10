@@ -20,7 +20,13 @@ $name_of_org = User::returnValueGet('studentOrg');
 $path = User::returnValueGet('path');
 
 if(isset($_POST['yes'])) {
-	$admin->updateData(User::returnValueGet('type'), ['status'=>$status], ['id'=>$id, 'name_of_org'=>$name_of_org]);
+
+	if(isset($_POST['remark'])) {
+		$admin->updateData(User::returnValueGet('type'), ['status'=>$status, 'remark'=>$_POST['remark']], ['id'=>$id, 'name_of_org'=>$name_of_org]);
+	} else {
+		$admin->updateData(User::returnValueGet('type'), ['status'=>$status], ['id'=>$id, 'name_of_org'=>$name_of_org]);
+	}
+
 
 	if ($path == "admin-plan-of-activities.php" || $path == "admin-accomplishment-report.php") {
 		if ($status == "ongoing") {
@@ -52,6 +58,16 @@ if(isset($_POST['yes'])) {
 	<form method="post" class="border border-dark rounded-3 shadow mt-5 mx-auto px-5 py-3" style="max-width: 500px;">
 		<h4 class="text-center">Are You Sure You want to change status of Plan Activity?</h4>
 		<div class="row">
+			<?php
+				if ($_GET['status'] == 'returned') {
+					echo '
+						<label class="form-label">Remarks:</label>
+						<input class="form-control mb-3" type="text" name="remark" required>
+					';
+				}
+			?>
+			
+
 			<input class="btn btn-success mb-2" type="submit" name="yes" value="Yes">
 			<input class="btn btn-danger" type="submit" name="no" value="No" >
 		</div>

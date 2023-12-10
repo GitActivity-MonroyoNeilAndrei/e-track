@@ -18,8 +18,16 @@
 
   if (mysqli_num_rows($accomplishment_reports) < 1) {
     header("location: ../admin/admin-report-to-ovpsas.php?activeStudentOrg=$activeStudentOrg&schoolYear=$schoolYear&noReport");
-
   }
+
+  $full_name_of_org = "";
+
+  $org = $admin->select('student_org', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+
+  while ($row = mysqli_fetch_assoc($org)) {
+    $full_name_of_org = $row['full_name_of_org'];
+  }
+
 
 
 ?>
@@ -67,13 +75,19 @@
 
     img {
       width: 100px;
-      position: absolute;
-      left: 180px;
+    }
+
+    .header {
+      width: 60%;
+      margin: auto;
+      position: relative;
+      right: 5%;
     }
 
     .header-text h4 {
       text-align: center;
       font-weight: 100;
+      line-height: 20px;
     }
 
     table {
@@ -112,7 +126,7 @@
         <img src="../images/msc_logo.png" alt="">
         <div class="header-text">
           <h4>MARINDUQUE STATE COLLEGE</h4>
-          <h4><?php User::printGet('activeStudentOrg'); ?></h4>
+          <h4><?php echo $full_name_of_org; ?></h4>
         </div>
       </div>
 
@@ -139,10 +153,10 @@
           ?>
         <tr>
             <td><?php echo $row['planned_activity']; ?></td>
-            <th><?php echo $row['purpose']; ?></th>
-            <th><?php echo $row['date_accomplished']; ?></th>
-            <th><?php echo $row['budget']; ?></th>
-            <th><?php echo $row['remarks']; ?></th>
+            <td><?php echo $row['purpose']; ?></td>
+            <td><?php echo $row['date_accomplished']; ?></td>
+            <td><?php echo $row['budget']; ?></td>
+            <td><?php echo $row['remarks']; ?></td>
           </tr>
           <?php } ?>
         </tbody>

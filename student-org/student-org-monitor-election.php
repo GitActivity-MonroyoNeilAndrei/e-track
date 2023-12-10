@@ -214,6 +214,9 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
                     // $result3 = $student_org->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg'), 'position' => $position]);
 
+                    $candidate_count = $student_org->countSelect('candidate', "*", " org_name = '$org_name' && position = '$position'");
+
+
                     while ($row = mysqli_fetch_assoc($result3)) {
 
                       $student_org->updateData('candidate', ['status'=>'winner'], ['id'=>$row['id']]);
@@ -229,7 +232,9 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
                 </table>
               </div>
 
-              <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+              <div class="mx-auto" style="width: <?php echo ($candidate_count * 15) + 30; ?>%;">
+                <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+              </div>
 
 
             <?php } ?>
@@ -313,6 +318,16 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
   }
   ?>
+
+  <script>
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
+  </script>
+  <script>
+    var activeNav = document.getElementById('monitor-election')
+    activeNav.classList.add('bg-dark-gray2');
+  </script>
 </body>
 
 </html>

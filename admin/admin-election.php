@@ -113,7 +113,19 @@ if (!isset($_GET['activeStudentOrg'])) {
                 </tr>
               </thead>
               <tbody>
-                <?php $result = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
+                <?php
+                $result = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
+
+                if ($result->num_rows == 0 ) {
+                  echo '
+                    <tr>
+                      <td colspan="7">
+                        <h3 class="text-center">No Candidate has been Added</h3>
+                      </td>
+                    </tr>
+                  ';
+                }
+
 
                 while ($row = mysqli_fetch_assoc($result)) {
                 ?>
@@ -123,11 +135,11 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><?php echo $row['first_name']; ?></td>
                     <td><?php echo $row['last_name']; ?></td>
                     <td><?php echo $row['year']; ?></td>
-                    <td><a class="btn btn-secondary" href="../view-image.php?path=uploads/&imageUrl=<?php echo $row['photo_url']; ?>"><i class="fa-regular fa-eye"></i> View</a></td>
+                    <td><a class="btn btn-secondary" href="../view-image.php?path=uploads/&imageUrl=<?php echo $row['photo_url']; ?>"> View</a></td>
                     <td><?php echo $row['partylist']; ?></td>
                     <td>
-                      <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>"><i class="fa-solid fa-user-minus"></i>Delete</a>
+                      <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>"> Edit</a>
+                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>">Delete</a>
 
                     </td>
                   </tr>

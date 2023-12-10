@@ -19,6 +19,27 @@ $admin_id = User::returnValueSession('admin-id');
 
 User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
 
+$school_years = array();
+
+$school_year_accomplishment_report = $admin->selectDistinct('accomplishment_reports', 'school_year', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+
+while ($row = mysqli_fetch_assoc($school_year_accomplishment_report)) {
+  array_push($school_years, $row['school_year']);
+}
+
+$school_year_plan_of_activity = $admin->selectDistinct('plan_of_activities', 'school_year', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+
+while ($row = mysqli_fetch_assoc($school_year_plan_of_activity)) {
+  if(!in_array($row['school_year'], $school_years)) {
+    array_push($school_years, $row['school_year']);
+  }
+  
+}
+
+
+
+
+
 
 if (!isset($_GET['activeStudentOrg'])) {
   $result = $admin->selectDistinct('student_org', 'name_of_org');
@@ -98,15 +119,14 @@ if (!isset($_GET['activeStudentOrg'])) {
 
           <form method="post" class="mx-auto text-center" style="max-width: 10rem;">
             <select class="form-select" name="school-year">
-              <?php 
-                $school_year = $admin->selectDistinct('accomplishment_reports', 'school_year', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
-
-                while ($row = mysqli_fetch_assoc($school_year)) {
+              
+              <?php
+                foreach ($school_years as $school_year) {
               ?>
-
-              <option value="<?php echo $row['school_year'] ?>" <?php if($school_year2 == $row['school_year']) {echo 'selected';} ?>><?php echo $row['school_year'] ?></option>
+              <option value="<?php echo $school_year ?>" <?php if($school_year2 == $school_year) {echo 'selected';} ?>><?php echo $school_year ?></option>
 
               <?php } ?>
+
             </select>
             <input class="btn btn-secondary mt-2" type="submit" name="submit" value="Select">
           </form>
@@ -120,11 +140,18 @@ if (!isset($_GET['activeStudentOrg'])) {
                 Couldn\'t Generate Report
               </div>
               ';
+            } else if (isset($_GET['noReport2'])) {
+              echo '
+              <div class="alert alert-danger" role="alert">
+                Couldn\'t Generate Plan of Activity
+              </div>
+              ';
             }
           ?>
           <div class="d-flex flex-column  mt-4">
             <!-- <a class="btn btn-primary mx-auto mb-3" href="../generate-report/plan-of-activity-report.php">Plan of Acitivity</a> -->
             <a class="btn btn-primary mx-auto mb-3" href="../generate-report/accomplishment-report.php?activeStudentOrg=<?php User::printGet('activeStudentOrg') ?>&schoolYear=<?php echo $school_year2; ?>">Accomplishment Report</a>
+            <a class="btn btn-primary mx-auto mb-3" href="../generate-report/plan-of-activity-report.php?activeStudentOrg=<?php User::printGet('activeStudentOrg') ?>&schoolYear=<?php echo $school_year2; ?>">Plan of Activity</a>
           </div>
 
         </div>

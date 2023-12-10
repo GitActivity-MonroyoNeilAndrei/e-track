@@ -146,7 +146,7 @@ if(isset($_POST['search_submit'])) {
                   <th>Date Accomplished</th>
                   <th>Budget</th>
                   <th>Remarks</th>
-                  <th>Liquidations</th>
+                  <th>Reports & Liquidations</th>
                 </tr>
               </thead>
               <tbody>

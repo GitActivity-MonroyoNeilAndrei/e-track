@@ -103,6 +103,7 @@ if (isset($_POST['submit'])) {
 
   }else if (User::returnValueGet('user') == 'student_org') {
     $name_of_org = $_POST['name-of-org'];
+    $full_name_of_org = $_POST['full-name-of-org'];
     $college_of = $_POST['college-of'];
     $adviser = $_POST['adviser'];
     $contact_no = $_POST['contact-no'];
@@ -120,7 +121,7 @@ if (isset($_POST['submit'])) {
         !$admin->isExisted('student_org', ['email' => $email, 'password' => $password]) &&
         !$admin->isExisted('admin', ['email' => $email, 'password' => $password])
       ) {
-        $admin->insertData('student_org', ['name_of_org'=>$name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
+        $admin->insertData('student_org', ['name_of_org'=>$name_of_org, 'full_name_of_org'=>$full_name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
         header('location: admin-list-of-users.php?user=student_org&page=all&addSuccessful');
       } else {
@@ -303,8 +304,10 @@ if (isset($_POST['submit'])) {
                 Message::userAlreadyExist();
               }
             ?>
-            <label class="form-label" for="name-of-org">Name of Org:</label>
+            <label class="form-label" for="name-of-org">Name of Org "Abbr.":</label>
             <input class="form-control" type="text" name="name-of-org" required>
+            <label class="form-label" for="full-name-of-org">Full Name of Org:</label>
+            <input class="form-control" type="text" name="full-name-of-org" required>
             <label class="form-label" for="college-of">College of:</label>
             <input class="form-control" type="text" name="college-of" required>
             <label class="form-label" for="adviser">Adviser:</label>
