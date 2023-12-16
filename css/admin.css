@@ -101,10 +101,11 @@ div.nav-links nav ul {
 }
 
 div.nav-links nav ul li {
-  text-align: center;
-  padding: .3rem 0;
+  text-align: left;
+  padding: .3rem 0 .3rem 1rem;
   margin: 0;
 }
+
 
 div.nav-links nav ul li:hover {
   background-color: #293545;
@@ -122,6 +123,12 @@ li span:nth-child(2) {
 @media (max-width: 450px) {
   li span:first-child {
     display: none;
+  }
+
+  div.nav-links nav ul li {
+    text-align: center;
+    padding: .3rem 0;
+    margin: 0;
   }
   
   li span:nth-child(2) {
@@ -327,9 +334,10 @@ table {
   border-top: 2px solid rgba(35, 35, 35, 0.583);
 }
 
-
-
-
+td .btn {
+  font-size: 0.83em;
+  padding: 1px 10px;
+}
 
 
 

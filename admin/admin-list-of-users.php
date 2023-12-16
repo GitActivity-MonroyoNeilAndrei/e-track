@@ -96,6 +96,20 @@ if (!isset($_GET['page'])) {
               <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit" name="submit">Search</button>
             </form>
+
+            <form method="post" class="d-flex flex-row <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" >
+              <select class="form-select" name="course">
+                <?php
+                  $courses = $admin->selectDistinct('student', 'course');
+                  while ($row = mysqli_fetch_assoc($courses)) {
+                ?>
+
+                    <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
+
+                <?php } ?>
+              </select>
+              <input class="btn btn-secondary" type="submit" name="filter-course" value="Filter">
+            </form>
           </div>
           
           <?php
@@ -144,7 +158,6 @@ if (!isset($_GET['page'])) {
                 </tr>
 
                 <tr class="<?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>">
-                  <th>Username</th>
                   <th>Full Name</th>
                   <th>Address</th>
                   <th>Student ID</th>
@@ -172,10 +185,16 @@ if (!isset($_GET['page'])) {
                 <tbody>
 
                 <?php
+
                   if(isset($_POST['submit'])) {
                     $search = $_POST['search'];
                     if($user == 'student_org'){
                       $result = $admin->search($user, 'name_of_org', 'college_of', $search);
+                    } else if ($user == 'student') {
+
+                      $result = $admin->advanceSelect($user, '*', " first_name LIKE '%$search%' OR  last_name LIKE '%$search%' OR  student_id LIKE '%$search%' ");
+
+                      // $result = $admin->search($user, 'first_name', 'last_name', $search);
                     } else {
                       $result = $admin->search($user, 'first_name', 'last_name', $search);
                     }
@@ -191,6 +210,10 @@ if (!isset($_GET['page'])) {
                   }
                   }
 
+
+                  if (isset($_POST['filter-course'])) {
+                    $result = $admin->select('student', '*', ['course'=>$_POST['course']]);
+                  }
 
                   while($row = mysqli_fetch_assoc($result)) {
 
@@ -211,7 +234,6 @@ if (!isset($_GET['page'])) {
                   </tr>
 
                   <tr class="<?php if (User::returnValueGet('user') != 'student') { echo 'd-none' ;}  ?>">
-                    <td><?php echo $row['username']; ?></td>
                     <td><?php echo $row['first_name'] .' '.  $row['last_name']; ?></td>
                     <td><?php echo $row['address']; ?></td>
                     <td><?php echo $row['student_id']; ?></td>

@@ -27,6 +27,10 @@ if (!isset($_GET['activeStudentOrg'])) {
 
 
 
+
+
+
+
 ?>
 
 
@@ -270,6 +274,7 @@ if (!isset($_GET['activeStudentOrg'])) {
 
             <div class="text-center">
               <a target="_blank" class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>"> <i class="fa-solid fa-arrow-up"></i> Release & Print</a>
+              <a class="btn btn-secondary" href="admin-deploy-ballot.php?orgName=<?php User::printGet('activeStudentOrg'); ?>">Extend Election</a>
             </div>
             
 

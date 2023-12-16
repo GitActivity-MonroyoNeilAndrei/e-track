@@ -20,9 +20,16 @@ while ($row = mysqli_fetch_assoc($org)) {
   $full_name_of_org = $row['full_name_of_org'];
 }
 
+$activeStudentOrg = User::returnValueGet('activeStudentOrg');
+
+$admin->advanceUpdateData('student', ['can_vote'=>'', 'voted'=>'', 'can_see_result'=>'', 'can_monitor'=>''], " can_vote = '$activeStudentOrg'");
+$admin->advanceUpdateData('student', ['can_vote'=>'', 'voted'=>'', 'can_see_result'=>'', 'can_monitor'=>''], " voted = '$activeStudentOrg' AND can_monitor = '$activeStudentOrg'");
+
+
+
 ?>
 
-
+ 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -250,10 +257,13 @@ while ($row = mysqli_fetch_assoc($org)) {
                 </table>
               </div>
               
-              
-              <div class="mx-auto" style="width: <?php echo ($candidate_count * 15) + 25; ?>%;">
-                <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+              <div class="d-flex justify-content-center">
+                <div  style="width: <?php echo ($candidate_count * 15) + 25; ?>%; position: relative; right 300px;">
+                  <div class="graph mx-auto" id="<?php echo $position; ?>"></div>
+                </div>
               </div>
+
+              
 
             <?php } ?>
 

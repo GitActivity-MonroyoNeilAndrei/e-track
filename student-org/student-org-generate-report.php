@@ -9,25 +9,27 @@ $date_time_now = date('Y-m-d') . 'T' . date('H:i');
 
 session_start();
 
-$admin = new database();
+$student_org = new database();
 
-User::ifNotLogin('admin-username', '../login-account/login-user.php');
+User::ifNotLogin('name_of_org', '../login-account/login-user.php');
 
+$student_org_id = User::returnValueSession('student-org-id');
+
+User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
+
+
+$current_school_year = mysqli_fetch_assoc($student_org->selectDistinct('admin', 'current_school_year'))['current_school_year'];
 $school_year2 = User::returnValueGet('schoolYear');
-
-$admin_id = User::returnValueSession('admin-id');
-
-User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
 
 $school_years = array();
 
-$school_year_accomplishment_report = $admin->selectDistinct('accomplishment_reports', 'school_year', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+$school_year_accomplishment_report = $student_org->selectDistinct('accomplishment_reports', 'school_year', ['name_of_org'=>User::returnValueSession('name_of_org')]);
 
 while ($row = mysqli_fetch_assoc($school_year_accomplishment_report)) {
   array_push($school_years, $row['school_year']);
 }
 
-$school_year_plan_of_activity = $admin->selectDistinct('plan_of_activities', 'school_year', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+$school_year_plan_of_activity = $student_org->selectDistinct('plan_of_activities', 'school_year', ['name_of_org'=>User::returnValueSession('name_of_org')]);
 
 while ($row = mysqli_fetch_assoc($school_year_plan_of_activity)) {
   if(!in_array($row['school_year'], $school_years)) {
@@ -37,22 +39,26 @@ while ($row = mysqli_fetch_assoc($school_year_plan_of_activity)) {
 }
 
 
+
+
+
+
 if (!isset($_GET['activeStudentOrg'])) {
-  $result = $admin->selectDistinct('student_org', 'name_of_org');
+  $result = $student_org->selectDistinct('student_org', 'name_of_org');
 
   $row = mysqli_fetch_assoc($result);
-  header("location: admin-report-to-ovpsas.php?activeStudentOrg=$row[name_of_org]");
+  header("location: student-org-generate-report.php?activeStudentOrg=$row[name_of_org]");
 } else {
   if(!isset($_GET['schoolYear'])) {
-    $result = $admin->selectDistinct('accomplishment_reports', 'school_year');
+    $result = $student_org->selectDistinct('accomplishment_reports', 'school_year');
     $row = mysqli_fetch_assoc($result);
 
     $school_year = $row['school_year'];
     if($activeStudentOrg == "") {
       $activeStudentOrg = User::returnValueGet('activeStudentOrg');
-      header("location: admin-report-to-ovpsas.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+      header("location: student-org-generate-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
     } else {
-      header("location: admin-report-to-ovpsas.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+      header("location: student-org-generate-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
 
     }
 
@@ -61,9 +67,9 @@ if (!isset($_GET['activeStudentOrg'])) {
 
 if(isset($_POST['submit'])) {
   $school_year3 = $_POST['school-year'];
-  $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+  $activeStudentOrg = User::returnValueSession('name_of_org');
 
-  header("location: admin-report-to-ovpsas.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year3");
+  header("location: student-org-generate-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year3");
 
 }
 
@@ -77,7 +83,7 @@ if(isset($_POST['submit'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Home Page</title>
+  <title>Generate Report</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
@@ -91,16 +97,16 @@ if(isset($_POST['submit'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
-          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
-          <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+          <a href="student-org-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=studentOrg"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>
     <div class="page-content">
       <?php
-        require 'admin-navigations.php';
+        require 'student-org-navigations.php';
        ?>
       <div class="content border border-primary">
         <div class="content-container">
@@ -108,26 +114,13 @@ if(isset($_POST['submit'])) {
             <h5>Generate Report</h5>
           </div>
 
-          <nav class="org-list-nav">
-            <ul>
-              <?php
-              $result = $admin->selectDistinct('student_org', 'name_of_org');
-              while ($row = mysqli_fetch_assoc($result)) {
-              ?>
-
-                <li id="<?php echo $row['name_of_org']; ?>" onclick="window.location.href = 'admin-report-to-ovpsas.php?activeStudentOrg=<?php echo $row['name_of_org'] ?>';"><?php echo $row['name_of_org']; ?></li>
-
-              <?php } ?>
-            </ul>
-          </nav>
-
           <form method="post" class="mx-auto text-center" style="max-width: 10rem;">
             <select class="form-select" name="school-year">
               
               <?php
                 foreach ($school_years as $school_year) {
               ?>
-              <option value="<?php echo $school_year ?>" <?php if($school_year2 == $school_year) {echo 'selected';} ?>><?php echo $school_year ?></option>
+              <option value="<?php echo $school_year ?>" <?php if($current_school_year == $school_year) {echo 'selected';} ?>><?php echo $school_year ?></option>
 
               <?php } ?>
 
@@ -154,8 +147,8 @@ if(isset($_POST['submit'])) {
           ?>
           <div class="d-flex flex-column  mt-4">
             <!-- <a class="btn btn-primary mx-auto mb-3" href="../generate-report/plan-of-activity-report.php">Plan of Acitivity</a> -->
-            <a class="btn btn-primary mx-auto mb-3" href="../generate-report/accomplishment-report.php?activeStudentOrg=<?php User::printGet('activeStudentOrg') ?>&schoolYear=<?php echo $school_year2; ?>">Accomplishment Report</a>
-            <a class="btn btn-primary mx-auto mb-3" href="../generate-report/plan-of-activity-report.php?activeStudentOrg=<?php User::printGet('activeStudentOrg') ?>&schoolYear=<?php echo $school_year2; ?>">Plan of Activity</a>
+            <a class="btn btn-primary mx-auto mb-3" href="../generate-report/accomplishment-report.php?activeStudentOrg=<?php User::printSession('name_of_org') ?>&schoolYear=<?php echo $school_year2; ?>">Accomplishment Report</a>
+            <a class="btn btn-primary mx-auto mb-3" href="../generate-report/plan-of-activity-report.php?activeStudentOrg=<?php User::printSession('name_of_org') ?>&schoolYear=<?php echo $school_year2; ?>">Plan of Activity</a>
           </div>
 
         </div>
@@ -163,17 +156,15 @@ if(isset($_POST['submit'])) {
     </div>
 
     <?php
-    require 'admin-footer.php';
+    require 'student-org-footer.php';
   ?>
 
   </div>
   <script defer>
-    let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
-    activeLink.style.backgroundColor = "#3C9811";
-    activeLink.style.color = "white";
+
 
     
-    var activeNav = document.getElementById('report-to-ovpsas')
+    var activeNav = document.getElementById('generate-report')
     activeNav.classList.add('bg-dark-gray2');
   
 

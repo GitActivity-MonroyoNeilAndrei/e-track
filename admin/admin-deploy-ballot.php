@@ -12,25 +12,45 @@
 
   $error_time;
 
+
+  $list_of_voters = array();
+
+  $voters = $admin->select('student_org', '*', ['name_of_org'=>User::returnValueGet('orgName')]);
+
+  while ($row = mysqli_fetch_assoc($voters)) {
+    $array_of_voters = explode(",", $row['course_covered']);
+
+    foreach ($array_of_voters as $voters1) {
+      if (!in_array($voters1, $list_of_voters)) {
+        array_push($list_of_voters, $voters1);
+      }
+    }
+    
+  }
+
+
   if(isset($_POST['deploy'])) {
-    $school_year = mysqli_escape_string($admin->mysqli, $_POST['school-year']);
+    
+    $school_year = mysqli_fetch_assoc($admin->selectDistinct('admin', 'current_school_year'))['current_school_year'];
     $exp_date = mysqli_escape_string($admin->mysqli, $_POST['exp-date']);
-    $courses = $_POST['can-vote'];
 
     if ($date_time_now > $exp_date) {
       $error_time = "Expiry Date Must be Greater than the Date Now";
     } else {
       $admin->updateData('candidate', ['school_year'=>$school_year, 'status'=>'deployed', 'exp_date'=>$exp_date], ['org_name'=>User::returnValueGet('orgName')]);
       
-      foreach($courses as $course) {
-        $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
+      foreach($list_of_voters as $course) {
+        $activeStudentOrg = User::returnValueGet('orgName');
+        $admin->advanceUpdateData('student', ['can_vote'=>User::returnValueGet('orgName')], " course = '$course' AND voted != '$activeStudentOrg'");
+        // $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
       }
 
       $active_student_org = User::returnValueGet('orgName');
       header("location: admin-election.php?activeStudentOrg=$active_student_org&ballotDeployed");
     }
-
   }
+
+
 
 ?>
 
@@ -65,23 +85,17 @@
         </div>';
       }
     ?>
-    <label class="form-label" for="school-year">School Year:</label>
-    <input class="form-control" type="text" name="school-year" required>
     <label class="form-label" for="exp-date">End of Election:</label>
     <input class="form-control" type="datetime-local" name="exp-date" required>
 
-    <label class="form-label" for="can-vote">Who can Vote?:</label>
-    <select class="form-select" name="can-vote[]" multiple="multiple">
-      <?php
-        $courses = $admin->select('courses', 'course');
+    <label class="form-label">Courses that can Vote: </label>
 
-        while ($row = mysqli_fetch_assoc($courses)) {
-      ?>
-        <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
-      <?php
-        }
-      ?>
-    </select>
+    <?php 
+      foreach($list_of_voters as $voters1) {
+    ?>
+      <h6 class="ms-3"><?php echo $voters1; ?></h6>
+    <?php } ?>
+
 
     <!-- <input class="form-control d-none" type="text" name="can-vote" required> -->
 

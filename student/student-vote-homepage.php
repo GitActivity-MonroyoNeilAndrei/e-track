@@ -65,11 +65,15 @@ if (isset($_POST['submit'])) {
       }
     }
   }
-  $result = $student->updateData('student', ['can_vote' => '', 'can_monitor' => User::returnValueGet('can_vote')], ['student_id' => User::returnValueSession('student_id')]);
+  $result = $student->updateData('student', ['can_vote' => '', 'voted'=>User::returnValueGet('can_vote'), 'can_monitor' => User::returnValueGet('can_vote')], ['student_id' => User::returnValueSession('student_id')]);
 
 
   header('location: student-vote.php?voteSuccessfully');
 }
+
+
+
+
 ?>
 
 

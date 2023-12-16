@@ -18,4 +18,8 @@ switch ($_GET['logout']) {
     User::logout('name_of_org');
     header('location: login-account/login-user.php');
     break;
+  case 'studentOrg':
+    User::logout('name_of_org');
+    header('location: login-account/login-user.php');
+    break;
 }

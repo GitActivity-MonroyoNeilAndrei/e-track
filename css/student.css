@@ -82,6 +82,7 @@ a {
 
 .page-content {
   display: flex;
+  background-color: #e1e1e1;
 }
 
 .nav-links {
@@ -99,8 +100,8 @@ a {
 }
 
 .nav-links nav ul li {
-  text-align: center;
-  padding: 0.3rem 0;
+  text-align: left;
+  padding: .3rem 1rem .3rem 1rem;
   margin: 0;
 }
 
@@ -120,6 +121,12 @@ li span:nth-child(2) {
 @media (max-width: 450px) {
   li span:first-child {
     display: none;
+  }
+
+  div.nav-links nav ul li {
+    text-align: center;
+    padding: .3rem 0;
+    margin: 0;
   }
   
   li span:nth-child(2) {
@@ -348,7 +355,9 @@ button.dropbtn {
 .candidate-description {
   border-radius: 0.5rem;
   padding: 1.4rem;
-  background-color: #3fc200;
+  /* background-color: #3fc200; */
+  background-color: #8dc8ff;
+
   width: 60%;
 }
 

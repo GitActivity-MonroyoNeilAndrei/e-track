@@ -61,6 +61,14 @@ if  (isset($_POST['edit-password'])) {
     header("location: admin-edit-profile.php?editPasswordSuccessfully");
   }
   
+} else if (isset($_POST['set-school-year'])){
+  
+  $current_school_year = $_POST['current-school-year'];
+
+  $admin->updateData('admin', ['current_school_year'=>$current_school_year]);
+
+  $school_year_set = "School Year Set";
+
 }
 
 
@@ -174,6 +182,9 @@ if  (isset($_POST['edit-password'])) {
             </form>
 
 
+            <div class="d-flex flex-row m-auto" style="max-width: 40rem;">
+
+            
             <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; " method="post">
             
 
@@ -215,7 +226,33 @@ if  (isset($_POST['edit-password'])) {
             </div>
           </form>
 
+          <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; "  method="post">
+            <h4>Set School Year</h4>
 
+            <?php
+              if (isset($school_year_set)) {
+                echo '
+                <div class="alert alert-success" role="alert">
+                  '. $school_year_set .'
+                </div>
+                ';
+              }
+
+            ?>
+
+            <label class="form-label">School Year:</label>
+            <?php
+              $current_school_year = $admin->selectDistinct('admin', 'current_school_year');
+              
+              while($row = mysqli_fetch_assoc($current_school_year)) {
+            ?>
+            <input class="form-control" type="text" name="current-school-year" value="<?php echo $row['current_school_year']; ?>">
+
+            <?php } ?>
+            <input class="btn btn-primary mt-2 mx-auto" type="submit" name="set-school-year" value="Set">
+          </form>
+
+          </div>
 
 
 

@@ -5,53 +5,31 @@ include "../classes/user.php";
 
 session_start();
 
-$admin = new database();
+$student_org = new database();
 
-User::ifNotLogin('admin-username', '../login-account/login-user.php');
+User::ifNotLogin('name_of_org', '../login-account/login-user.php');
 
-$admin_id = User::returnValueSession('admin-id');
+$student_org_id = User::returnValueSession('student-org-id');
 
-User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
-
-
-if (!isset($_GET['activeStudentOrg'])) {
-  $result = $admin->selectDistinct('student_org', 'name_of_org');
-
-  $row = mysqli_fetch_assoc($result);
-  header("location: admin-student-organization.php?activeStudentOrg=$row[name_of_org]");
-}
-
-$org_name = User::returnValueGet('activeStudentOrg');
+$org_name = User::returnValueSession('name_of_org');
 
 if(!isset($_GET['school_year'])) {
-  $connection = new mysqli('localhost', 'root', '', 'etrack');
+  $current_school_year = $student_org->selectDistinct('admin', 'current_school_year');
+  $row = mysqli_fetch_assoc($current_school_year);
 
+  header("location: student-org-list.php?school_year=$row[current_school_year]");
 
-  $sql = "SELECT DISTINCT school_year FROM officers WHERE org_name = '$org_name' ORDER BY school_year DESC LIMIT 2;";
-
-  $result = $connection->query($sql);
-  $row = mysqli_fetch_assoc($result);
-
-  $latest_school_year = "";
-  if($row){
-    $latest_school_year = $row['school_year'];
-  }
-
-  $activeStudentOrg = User::returnValueGet('activeStudentOrg');
-
-  if($latest_school_year != "") {
-    header("location: admin-student-organization.php?activeStudentOrg=$activeStudentOrg&school_year=$latest_school_year");
-  }
 
 }
 
 if(isset($_POST['submit'])) {
   $school_year = $_POST['school_year'];
 
-  $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+  $activeStudentOrg = User::returnValueSession('name_of_org');
 
-  header("location: admin-student-organization.php?activeStudentOrg=$activeStudentOrg&school_year=$school_year");
+  header("location: student-org-list.php?activeStudentOrg=$activeStudentOrg&school_year=$school_year");
 }
 
 
@@ -110,16 +88,16 @@ if(isset($_POST['submit'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
-          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
-          <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+          <a href="student-org-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=studentOrg"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>
     <div class="page-content">
       <?php
-        require 'admin-navigations.php';
+        require 'student-org-navigations.php';
        ?>
       <div class="content border border-primary">
         <div class="content-container">
@@ -128,30 +106,14 @@ if(isset($_POST['submit'])) {
           </div>
 
 
-          <nav class="org-list-nav mb-3">
-            <ul>
-              <?php
-              $result = $admin->selectDistinct('student_org', 'name_of_org');
-              while ($row = mysqli_fetch_assoc($result)) {
-              ?>
+          <h4 class="text-center">Officers of <?php User::printSession("name_of_org") ?></h4>
 
-                <li id="<?php echo $row['name_of_org']; ?>" onclick="window.location.href = 'admin-student-organization.php?activeStudentOrg=<?php echo $row['name_of_org'] ?>';"><?php echo $row['name_of_org']; ?></li>
-
-              <?php } ?>
-            </ul>
-          </nav>
-
-          <h3 class="text-center fw-bold">Officers of <?php User::printGet('activeStudentOrg') ?></h3>
-
-          <div class="text-center">
-            <a class="text-primary" href="admin-student-org-covered.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Course Covered?</a>
-          </div>
 
           <form method="post" class="mx-auto text-center" style="max-width: 10rem;">
             <select name="school_year" class="form-select">
               <?php 
                 $sql = "SELECT DISTINCT school_year FROM officers WHERE org_name = '$org_name' ORDER BY school_year DESC";
-                $school_years = $admin->mysqli->query($sql);
+                $school_years = $student_org->mysqli->query($sql);
                 
                 while($row = mysqli_fetch_assoc($school_years)) {
               ?>
@@ -168,7 +130,7 @@ if(isset($_POST['submit'])) {
 
 
           <?php
-            $result = $admin->select('officers', '*', ['school_year' => User::returnValueGet('school_year'), 'org_name' => $org_name]);
+            $result = $student_org->select('officers', '*', ['school_year' => User::returnValueGet('school_year'), 'org_name' => User::returnValueSession('name_of_org')]);
             while ($row = mysqli_fetch_assoc($result)) {
           ?>
           
@@ -182,12 +144,6 @@ if(isset($_POST['submit'])) {
           </section>
 
           <?php } ?>
-          <?php if($admin->isExisted('officers', ['org_name'=>User::returnValueGet('activeStudentOrg')])){ ?>
-          <div class="d-flex justify-content-center mt-4 mb-2">
-            <a class="btn btn-primary" href="admin-edit-organization.php?studentOrg=<?php User::printGet('activeStudentOrg') ?>&latestSchoolYear=<?php User::printGet('school_year'); ?>">Edit Members</a>
-
-          </div>
-          <?php } ?>
 
         </div>
       </div>
@@ -195,7 +151,7 @@ if(isset($_POST['submit'])) {
   </div>
 
   <?php
-    require 'admin-footer.php';
+    require 'student-org-footer.php';
   ?>
 
   <script defer>
@@ -204,7 +160,7 @@ if(isset($_POST['submit'])) {
     activeLink.style.color = "white";
 
 
-    var activeNav = document.getElementById('student-organization')
+    var activeNav = document.getElementById('list')
     activeNav.classList.add('bg-dark-gray2');
 
   </script>

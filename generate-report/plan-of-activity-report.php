@@ -155,7 +155,7 @@
           ?>
           <tr>
             <td><?php echo $row['name_of_activity']; ?></td>
-            <td><?php echo $row['date']; ?></td>
+            <td style="word-wrap: break-word;"><?php echo $row['date']; ?></td>
             <td><?php echo $row['venue']; ?></td>
             <td><?php echo $row['sponsors']; ?></td>
             <td><?php echo $row['nature_of_activity']; ?></td>

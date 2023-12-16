@@ -54,7 +54,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
       <div class="nav-links">
         <nav style="position: sticky; top: 4vh;">
           <ul>
-            <li onclick="window.location.href='student-vote.php'" class="bg-dark-gray2">
+            <li onclick="window.location.href='student-vote.php'">
               <span>Vote</span>
               <span><i class="fa-solid fa-check-to-slot"></i></span>
             </li>
@@ -66,7 +66,7 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
               <span>Monitor Activities</span>
               <span><i class="fa-regular fa-file"></i></span>
             </li>
-            <li onclick="window.location.href='student-evaluate-activities.php'">
+            <li onclick="window.location.href='student-evaluate-activities.php'" class="bg-dark-gray2">
               <span>Evaluate Activities</span>
               <span><i class="fa-regular fa-file"></i></span>
             </li>
@@ -86,17 +86,33 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
           </nav>
 
           <div class="container-add-candidate">
-            <h5 class="text-center fw-bold py-1">Available Election</h5>
+            <h5 class="text-center fw-bold py-1">Available Evaluation</h5>
           </div>
 
-          <?php if(isset($_REQUEST['voteSuccessfully'])) {Message::voteSuccessfully();} ?>
+          <?php
+          
+          if(isset($_GET['evaluated'])) {
+            echo '
+            <div class="alert alert-success" role="alert">
+              Evaluated Successfully
+            </div>
+            ';
+          }
+
+          
+          if(isset($_REQUEST['voteSuccessfully'])) {Message::voteSuccessfully();} 
+          ?>
+
+
+          
 
           <div class="table-responsive m-auto" style="max-width: 30rem;">
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th>Organization Name</th>
-                  <th>End of Election</th>
+                  <th>Name of Activity</th>
+                  <th>End of Evaluation</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -106,30 +122,26 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
                 $result = $student->select('student', '*', ['student_id' => User::returnValueSession('student_id')]);
                 $row = mysqli_fetch_assoc($result);
 
-                $result2 = $student->select('candidate', '*', ['org_name'=>$row['can_vote']]);
+                $result2 = $student->select('evaluation_of_activities', '*', ['name_of_org'=>$row['can_evaluate']]);
                 $row2 = mysqli_fetch_assoc($result2);
 
-                if ($row['can_vote'] == NULL || $row['can_vote'] == "") {
-                  echo "<h4 class='text-center'>No Election Available</h4>";
+                if ($row['can_evaluate'] == NULL || $row['can_evaluate'] == "") {
+                  echo "<h4 class='text-center'>No Evaluation Available</h4>";
                 }else if ($row2) {
 
                   if($row2['exp_date'] > $date_time_now) {
 
                 ?>
 
-                <td><?php echo $row['can_vote']; ?></td>
+                <td><?php echo $row['can_evaluate']; ?></td>
+                <td><?php echo $row2['name_of_activity']; ?></td>
                 <td><?php echo $row2['exp_date']; ?></td>
 
-                <td><a href="student-vote-homepage.php?can_vote=<?php echo $row['can_vote']; ?>" class="btn btn-primary"><i class="fa-solid fa-file-import"></i> Vote</a></td>
+                <td><a href="student-evaluate-activities-homepage.php?can_evaluate=<?php echo $row['can_evaluate']; ?>" class="btn btn-primary"><i class="fa-solid fa-file-import"></i> Evaluate</a></td>
                   
                 <?php } else {
+                  $student->updateData('student', ['can_evaluate'=>""], ['course'=>User::returnValueSession('student-course')]);
 
-                  
-
-                  $course = User::returnValueSession('student-course');
-                  $student->advanceUpdateData('student', ['can_vote'=>''], " course = '$course'");
-
-                  // $student->updateData('student', ['can_vote'=>""], ['course'=>User::returnValueSession('student-course')]);
                 }
 
                 } ?>

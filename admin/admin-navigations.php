@@ -38,8 +38,16 @@
         <span><i class="fa-solid fa-check-to-slot"></i></span>
       </li>
       <li onclick="window.location.href='admin-list-of-accomplishment-report.php'" class="mb-4 border-bottom border-dark" id="list-of-accomplishment-report">
-        <span>List of Accomplishment Report</span>
+        <span style="word-wrap: none;">List of Accomplishment Report</span>
         <span><i class="fa-solid fa-list-ul"></i></span>
+      </li>
+      <li onclick="window.location.href='admin-evaluation-of-activities.php'" id="evaluation-of-activities">
+        <span>Evaluation of Activities</span>
+        <span><i class="fa-solid fa-envelope-circle-check"></i></span>
+      </li>
+      <li onclick="window.location.href='admin-monitor-evaluation.php'" id="monitor-evaluation">
+        <span>Monitor Evaluation</span>
+        <span><i class="fa-solid fa-envelope-circle-check"></i></span>
       </li>
       <li onclick="window.location.href='admin-report-to-ovpsas.php'" id="report-to-ovpsas">
         <span>Generate Report</span>

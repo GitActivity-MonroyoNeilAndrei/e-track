@@ -98,6 +98,10 @@ while($row = mysqli_fetch_assoc($org_can_view_query)) {
               <span>Monitor Activities</span>
               <span><i class="fa-regular fa-file"></i></span>
             </li>
+            <li onclick="window.location.href='student-evaluate-activities.php'">
+              <span>Evaluate Activities</span>
+              <span><i class="fa-regular fa-file"></i></span>
+            </li>
 
           </ul>
         </nav>

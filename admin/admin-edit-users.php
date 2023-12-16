@@ -15,7 +15,7 @@ User::ifNotLogin('admin-username', '../login-account/login-user.php');
 
 $admin_id = User::returnValueSession('admin-id');
 
-User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id'=>$admin_id]), '../logout.php?logout=admin');
+User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id' => $admin_id]), '../logout.php?logout=admin');
 
 $username = '';
 $first_name = '';
@@ -31,9 +31,9 @@ $college_of = '';
 $adviser = '';
 
 
-if($_SERVER['REQUEST_METHOD'] == 'GET') {
-  if(User::returnValueGet('user') == 'admin') {
-    $user = $admin->select('admin', '*', ['id'=>User::returnValueGet('id')]);
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  if (User::returnValueGet('user') == 'admin') {
+    $user = $admin->select('admin', '*', ['id' => User::returnValueGet('id')]);
     $row = mysqli_fetch_assoc($user);
 
     $username = $row['username'];
@@ -42,12 +42,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $address = $row['address'];
     $contact_no = $row['contact_no'];
     $email = $row['email'];
-
   } else if (User::returnValueGet('user') == 'student') {
-    $user = $admin->select('student', '*', ['id'=>User::returnValueGet('id')]);
+    $user = $admin->select('student', '*', ['id' => User::returnValueGet('id')]);
     $row = mysqli_fetch_assoc($user);
 
-    $username = $row['username'];
     $first_name = $row['first_name'];
     $last_name = $row['last_name'];
     $address = $row['address'];
@@ -56,9 +54,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $year = $row['year_and_section'];
     $contact_no = $row['contact_no'];
     $email = $row['email'];
-
   } else if (User::returnValueGet('user') == 'student_org') {
-    $user = $admin->select('student_org', '*', ['id'=>User::returnValueGet('id')]);
+    $user = $admin->select('student_org', '*', ['id' => User::returnValueGet('id')]);
     $row = mysqli_fetch_assoc($user);
 
     $name_of_org = $row['name_of_org'];
@@ -67,8 +64,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $contact_no = $row['contact_no'];
     $email = $row['email'];
   }
- } else if (isset($_POST['submit'])) {
-  if(User::returnValueGet('user') == 'admin') {
+} else if (isset($_POST['submit'])) {
+  if (User::returnValueGet('user') == 'admin') {
     $username = $_POST['username'];
     $first_name = $_POST['first-name'];
     $last_name = $_POST['last-name'];
@@ -76,13 +73,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $contact_no = $_POST['contact-no'];
     $email = $_POST['email'];
 
-    $admin->updateData('admin', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueGet('id')]);
+    $admin->updateData('admin', ['username' => $username, 'first_name' => $first_name, 'last_name' => $last_name, 'address' => $address, 'contact_no' => $contact_no, 'email' => $email], ['id' => User::returnValueGet('id')]);
 
     header('location: admin-list-of-users.php?user=admin');
-
-
-  }else if (User::returnValueGet('user') == 'student') {
-    $username = $_POST['username'];
+  } else if (User::returnValueGet('user') == 'student') {
     $first_name = $_POST['first-name'];
     $last_name = $_POST['last-name'];
     $address = $_POST['address'];
@@ -92,25 +86,20 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $contact_no = $_POST['contact-no'];
     $email = $_POST['email'];
 
-    $admin->updateData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueGet('id')]);
+    $admin->updateData('student', ['first_name' => $first_name, 'last_name' => $last_name, 'address' => $address, 'student_id' => $student_id, 'course' => $course, 'year_and_section' => $year, 'contact_no' => $contact_no, 'email' => $email], ['id' => User::returnValueGet('id')]);
 
     header('location: admin-list-of-users.php?user=student');
-
-
-  }else if (User::returnValueGet('user') == 'student_org') {
-    $name_of_org = $_POST['name-of-org'];
+  } else if (User::returnValueGet('user') == 'student_org') {
     $college_of = $_POST['college-of'];
     $adviser = $_POST['adviser'];
     $contact_no = $_POST['contact-no'];
     $email = $_POST['email'];
 
-    $admin->updateData('student_org', ['name_of_org'=>$name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueGet('id')]);
+    $admin->updateData('student_org', ['college_of' => $college_of, 'adviser' => $adviser, 'contact_no' => $contact_no, 'email' => $email], ['id' => User::returnValueGet('id')]);
 
     header('location: admin-list-of-users.php?user=student_org');
-
-
   }
- }
+}
 
 
 
@@ -152,15 +141,17 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     </div>
     <div class="page-content">
       <?php
-        require 'admin-navigations.php';
-       ?>
+      require 'admin-navigations.php';
+      ?>
       <div class="content border border-primary">
         <div class="content-container">
           <div class="content-header">
             <h5>List of Users > Edit User</h5>
           </div>
-          <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if(User::returnValueGet('user') != 'admin') {echo 'd-none';} ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
-          <h4 class="text-center">Change Admin Details</h4>
+          <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if (User::returnValueGet('user') != 'admin') {
+              echo 'd-none';
+            } ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
+            <h4 class="text-center">Change Admin Details</h4>
             <label class="form-label" for="username">Username:</label>
             <input class="form-control" type="text" name="username" value="<?php echo $username; ?>" required>
             <label class="form-label" for="first-name">First Name:</label>
@@ -173,13 +164,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
             <input class="form-control" type="number" name="contact-no" value="<?php echo $contact_no; ?>" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" value="<?php echo $email; ?>" required>
-            <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Edit">
+            <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Save Changes">
           </form>
 
-          <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
-          <h4 class="text-center">Change Student Details</h4>
-            <label class="form-label" for="username">Username:</label>
-            <input class="form-control" type="text" name="username" value="<?php echo $username; ?>" required>
+          <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if (User::returnValueGet('user') != 'student') {
+              echo 'd-none';
+            } ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
+            <h4 class="text-center">Change Student Details</h4>
             <label class="form-label" for="first-name">First Name:</label>
             <input class="form-control" type="text" name="first-name" value="<?php echo $first_name; ?>" required>
             <label class="form-label" for="last-name">Last Name:</label>
@@ -191,32 +182,39 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div style="width: 100%;">
               <label for="course">Course:</label>
               <select class="form-select" name="course">
-                <?php 
-                  $course = $admin->select('courses', '*');
+                <?php
+                $course = $admin->select('courses', '*');
 
-                  while ($row = mysqli_fetch_assoc($course)) {
+                while ($row = mysqli_fetch_assoc($course)) {
                 ?>
-              
 
-                <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
 
-              <?php } ?>
+                  <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
+
+                <?php } ?>
               </select>
               <!-- <input class="form-control" type="text" name="course" required> -->
             </div>
             <label class="form-label" for="year-and-section">Year and Section:</label>
-            <input class="form-control" type="text" name="year" value="<?php echo $year; ?>" required>
+            <select class="form-select" name="year" required>
+                <option value="1st" <?php if ($year == '1st') {echo 'selected';} ?>>1st</option>
+                <option value="2nd" <?php if ($year == '2nd') {echo 'selected';} ?>>2nd</option>
+                <option value="3rd" <?php if ($year == '3rd') {echo 'selected';} ?>>3rd</option>
+                <option value="4th" <?php if ($year == '4th') {echo 'selected';} ?>>4th</option>
+              </select>
             <label class="form-label" for="contact-no">Contact No.:</label>
             <input class="form-control" type="number" name="contact-no" value="<?php echo $contact_no; ?>" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" value="<?php echo $email; ?>" required>
-            <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Edit">
+            <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Save Changes">
           </form>
 
-          <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
-          <h4 class="text-center">Change Student Org. Details</h4>
+          <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if (User::returnValueGet('user') != 'student_org') {
+              echo 'd-none';
+            } ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
+            <h4 class="text-center">Change Student Org. Details</h4>
             <label class="form-label" for="name-of-org">Name of Org:</label>
-            <input class="form-control" type="text" name="name-of-org" value="<?php echo $name_of_org; ?>" required>
+            <input class="form-control" type="text" name="name-of-org" value="<?php echo $name_of_org; ?>" disabled>
             <label class="form-label" for="college-of">College of:</label>
             <input class="form-control" type="text" name="college-of" value="<?php echo $college_of; ?>" required>
             <label class="form-label" for="adviser">Adviser:</label>
@@ -225,7 +223,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
             <input class="form-control" type="number" name="contact-no" value="<?php echo $contact_no; ?>" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" value="<?php echo $email; ?>" required>
-            <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Edit">
+            <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Save Changes">
           </form>
 
 
@@ -236,7 +234,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
   </div>
 
   <?php
-    require 'admin-footer.php';
+  require 'admin-footer.php';
   ?>
 
   <script>

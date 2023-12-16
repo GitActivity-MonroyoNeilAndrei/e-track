@@ -4,24 +4,16 @@ include '../classes/message.php';
 include '../classes/user.php';
 session_start();
 
-$admin = new database();
+$student_org = new database();
 
+User::ifNotLogin('name_of_org', '../login-account/login-user.php');
 
-User::ifNotLogin('admin-username', '../login-account/login-user.php');
+$student_org_id = User::returnValueSession('student-org-id');
 
-$admin_id = User::returnValueSession('admin-id');
-
-User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id' => $admin_id]), '../logout.php?logout=admin');
+User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
 $activeStudentOrg = "";
 
-if (!isset($_GET['activeStudentOrg'])) {
-  $result = $admin->selectDistinct('student_org', 'name_of_org');
-
-  $row = mysqli_fetch_assoc($result);
-  $activeStudentOrg = $row['name_of_org'];
-  header("location: admin-list-of-accomplishment-report.php?activeStudentOrg=$row[name_of_org]");
-}
 
 $school_year2 = User::returnValueGet('schoolYear');
 
@@ -30,22 +22,22 @@ if(isset($_POST['submit'])) {
   $school_year = $_POST['school-year'];
   if($activeStudentOrg == ""){
     $activeStudentOrg = User::returnValueGet('activeStudentOrg');
-    header("location: admin-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+    header("location: student-org-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
   } else {
-    header("location: admin-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+    header("location: student-org-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
   }
 
 } else {
   if(!isset($_GET['schoolYear'])) {
-    $result = $admin->selectDistinct('accomplishment_reports', 'school_year');
+    $result = $student_org->selectDistinct('accomplishment_reports', 'school_year');
     $row = mysqli_fetch_assoc($result);
 
     $school_year = $row['school_year'];
     if($activeStudentOrg == "") {
       $activeStudentOrg = User::returnValueGet('activeStudentOrg');
-      header("location: admin-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+      header("location: student-org-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
     } else {
-      header("location: admin-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
+      header("location: student-org-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year");
 
     }
 
@@ -53,12 +45,12 @@ if(isset($_POST['submit'])) {
 }
 
 if(isset($_POST['search_submit'])) {
-  $search = mysqli_escape_string($admin->mysqli, $_POST['search']);
+  $search = mysqli_escape_string($student_org->mysqli, $_POST['search']);
 
   $activeStudentOrg = User::returnValueGet('activeStudentOrg');
   $school_year1 = User::returnValueGet('schoolYear');
 
-  header("location: admin-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year1&search=$search");
+  header("location: student-org-list-of-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&schoolYear=$school_year1&search=$search");
 
 
 }
@@ -73,7 +65,7 @@ if(isset($_POST['search_submit'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Home Page</title>
+  <title>List of Accomplishment Report</title>
   <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
@@ -89,14 +81,14 @@ if(isset($_POST['search_submit'])) {
       <div class="dropdown">
         <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
         <div class="dropdown-content">
-          <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
-          <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+          <a href="student-org-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
+          <a href="../logout.php?logout=studentOrg"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
       </div>
     </div>
     <div class="page-content">
       <?php
-        require 'admin-navigations.php';
+        require 'student-org-navigations.php';
        ?>
       <div class="content border border-primary">
         <div class="content-container">
@@ -104,22 +96,10 @@ if(isset($_POST['search_submit'])) {
             <h5>List of Plan of Activities</h5>
           </div>
 
-          <nav class="org-list-nav">
-            <ul>
-              <?php
-              $result = $admin->selectDistinct('student_org', 'name_of_org');
-              while ($row = mysqli_fetch_assoc($result)) {
-              ?>
-
-                <li id="<?php echo $row['name_of_org']; ?>" onclick="window.location.href = 'admin-list-of-accomplishment-report.php?activeStudentOrg=<?php echo $row['name_of_org'] ?>';"><?php echo $row['name_of_org']; ?></li>
-
-              <?php } ?>
-            </ul>
-          </nav>
           <form method="post" class="mx-auto text-center" style="max-width: 10rem;">
             <select class="form-select" name="school-year">
               <?php 
-                $school_year = $admin->selectDistinct('accomplishment_reports', 'school_year', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+                $school_year = $student_org->selectDistinct('accomplishment_reports', 'school_year', ['name_of_org'=>User::returnValueSession('name_of_org')]);
 
                 while ($row = mysqli_fetch_assoc($school_year)) {
               ?>
@@ -154,20 +134,20 @@ if(isset($_POST['search_submit'])) {
                   $school_year2 = User::returnValueGet('schoolYear');
 
                   if(!isset($_GET['search'])) {
-                    $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                    $accomplishment_reports = $student_org->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
                   } else if (isset($_GET['search'])) {
                     if($_GET['search'] == "") {
-                      $accomplishment_reports = $admin->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                      $accomplishment_reports = $student_org->select('accomplishment_reports', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
                     }
                   }
 
                   if (isset($_GET['search'])) {
                     if($_GET != '') {
-                      $name_of_org = User::returnValueGet('activeStudentOrg');
+                      $name_of_org = User::returnValueSession('name_of_org');
                       $search = User::returnValueGet('search');
 
 
-                      $accomplishment_reports = $admin->modifiedSearch('accomplishment_reports', "name_of_org = '$name_of_org' AND status = 'ongoing' AND school_year = '$school_year2'", "planned_activity", $search);
+                      $accomplishment_reports = $student_org->modifiedSearch('accomplishment_reports', "name_of_org = '$name_of_org' AND status = 'ongoing' AND school_year = '$school_year2'", "planned_activity", $search);
                     }
                   }
 
@@ -198,13 +178,10 @@ if(isset($_POST['search_submit'])) {
   </div>
 
   <?php
-    require 'admin-footer.php';
+    require 'student-org-footer.php';
   ?>
 
   <script defer>
-    let activeLink = document.getElementById("<?php User::printGet('activeStudentOrg') ?>");
-    activeLink.style.backgroundColor = "#3C9811";
-    activeLink.style.color = "white";
 
     var activeNav = document.getElementById('list-of-accomplishment-report')
     activeNav.classList.add('bg-dark-gray2');

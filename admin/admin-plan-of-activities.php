@@ -114,7 +114,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <th>Name of Activity</th>
                   <th>Date</th>
                   <th>Venue</th>
-                  <th>Sponsor's/Collaborators</th>
+                  <th>Sponsors</th>
                   <th>Nature of Activity</th>
                   <th>Purpose</th>
                   <th>Beneficiaries</th>

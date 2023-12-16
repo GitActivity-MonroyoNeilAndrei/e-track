@@ -44,6 +44,13 @@ if (isset($_GET['archive'])){
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
 
 
+  <style>
+        .disabled {
+            pointer-events: none;
+            color: gray;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -73,7 +80,6 @@ if (isset($_GET['archive'])){
           
           <div class="d-flex justify-content-between">
             <a class="btn btn-primary mb-3" href="add-accomplishment-report.php"><i class="fa-solid fa-plus"></i> Add Report</a>
-            <a class="btn btn-outline-danger mb-3" href="student-org-archive-accomplishment-report.php">Archives</a>
           </div>
 
           <?php
@@ -81,6 +87,12 @@ if (isset($_GET['archive'])){
               echo '
               <div class="alert alert-success" role="alert">
                 Accomplishment Report Succesfully Added to Archive
+              </div>
+              ';
+            } else if (isset($_GET['success'])) {
+              echo '
+              <div class="alert alert-success" role="alert">
+                Accomplishment Report Added Succcessfully
               </div>
               ';
             }
@@ -128,10 +140,9 @@ if (isset($_GET['archive'])){
                   <td> <?php echo $row['status'] ?></td>
                   <td><?php echo $row['remark']; ?></td>
                   <td>
-                    <a class="btn btn-secondary mb-2" href="edit-accomplishment-report.php?id=<?php echo $row['id']; ?>"> Edit</a>
-                    <a class="btn btn-danger mb-2" href="student-org-accomplishment-report.php?id=<?php echo $row['id'];?>&archive">Archive</a>
+                    <a class="btn btn-secondary mb-2  <?php if($row['status'] == 'submitted'){ echo 'disabled';} ?> " href="edit-accomplishment-report.php?id=<?php echo $row['id']; ?>"> Edit</a>
 
-                    <!-- <a class="btn btn-danger mb-2" href="delete-accomplishment-report.php?id=<?php // echo $row['id']; ?>">Delete</a> -->
+                    <a class="btn btn-danger mb-2  <?php if($row['status'] == 'submitted'){ echo 'disabled';} ?> " href="delete-accomplishment-report.php?id=<?php echo $row['id']; ?>">Delete</a>
 
                   </td>
                 </tr>

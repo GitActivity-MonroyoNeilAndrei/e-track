@@ -45,10 +45,11 @@ if (isset($_POST['submit'])) {
 
     if($password != $confirm_password) {
       $error_password = "Password doesn't Match";
+    } else if (strlen($contact_no) != 11) {
+      $contact_no_error = "Contact No. Needs to be 11 digits";
     } else {
 
       if(
-        !$admin->isExisted('student', ['email' => $email, 'password' => $password]) &&
         !$admin->isExisted('student_org', ['email' => $email, 'password' => $password]) &&
         !$admin->isExisted('admin', ['email' => $email, 'password' => $password])
       ) {
@@ -66,7 +67,6 @@ if (isset($_POST['submit'])) {
 
 
   }else if (User::returnValueGet('user') == 'student') {
-    $username = $_POST['username'];
     $first_name = $_POST['first-name'];
     $last_name = $_POST['last-name'];
     $address = $_POST['address'];
@@ -81,14 +81,14 @@ if (isset($_POST['submit'])) {
 
     if($password != $confirm_password) {
       $error_password = "Password doesn't Match";
-    } else {
+    } else if (strlen($contact_no) != 11) {
+      $contact_no_error = "Contact No. Needs to be 11 digits";
+    }  else {
 
       if(
-        !$admin->isExisted('student', ['student_id' => $student_id, 'email' => $email, 'password' => $password]) &&
-        !$admin->isExisted('student_org', ['email' => $email, 'password' => $password]) &&
-        !$admin->isExisted('admin', ['email' => $email, 'password' => $password])
+        !$admin->isExisted('student', ['student_id' => $student_id])
       ) {
-        $admin->insertData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
+        $admin->insertData('student', ['first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
         header('location: admin-list-of-users.php?user=student&page=all&addSuccessful');
       } else {
@@ -114,12 +114,13 @@ if (isset($_POST['submit'])) {
 
     if($password != $confirm_password) {
       $error_password = "Password doesn't Match";
-    } else {
+    } else if (strlen($contact_no) != 11) {
+      $contact_no_error = "Contact No. Needs to be 11 digits";
+    }  else {
 
       if(
-        !$admin->isExisted('student', ['email' => $email, 'password' => $password]) &&
-        !$admin->isExisted('student_org', ['email' => $email, 'password' => $password]) &&
-        !$admin->isExisted('admin', ['email' => $email, 'password' => $password])
+        !$admin->isExisted('student_org', ['name_of_org'=>$name_of_org ,'email' => $email]) &&
+        !$admin->isExisted('admin', ['email' => $email])
       ) {
         $admin->insertData('student_org', ['name_of_org'=>$name_of_org, 'full_name_of_org'=>$full_name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
@@ -191,6 +192,18 @@ if (isset($_POST['submit'])) {
                     $error_password
                   </div>
                 ";
+              }else if(isset($contact_no_error)) {
+                echo "
+                  <div class='alert alert-danger' role='alert'>
+                    $contact_no_error
+                  </div>
+                ";
+              } else if (isset($_GET['invalidPassword'])) {
+                echo '
+                <div class="alert alert-danger" role="alert">
+                  Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
+                </div>
+                ';
               } else if (isset($admin_exist)) {
                 Message::userAlreadyExist();
               }
@@ -207,15 +220,7 @@ if (isset($_POST['submit'])) {
             <input class="form-control" type="number" name="contact-no" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" required>
-            <?php
-              if (isset($_GET['invalidPassword'])) {
-                echo '
-                <div class="alert alert-danger" role="alert">
-                  Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
-                </div>
-                ';
-              }
-            ?>
+
             <label class="form-label" for="password">Password: </label>
             <input class="form-control" type="password" name="password" required>
             <label class="form-label" for="confirm-password">Confirm Password: </label>
@@ -227,8 +232,10 @@ if (isset($_POST['submit'])) {
             
           </form>
 
-          <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
+          <div class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>">
           <h4 class="text-center">Add Student</h4>
+          <form method="post" class='d-flex justify-content-center flex-row mb-4'>
+            
             <?php
               if(isset($error_password)) {
                 echo "
@@ -236,60 +243,83 @@ if (isset($_POST['submit'])) {
                   $error_password
                 </div>
                 ";
-              } else if (isset($student_exist)) {
-                Message::userAlreadyExist();
-              }
-            ?>
-            <label class="form-label" for="username">Username:</label>
-            <input class="form-control" type="text" name="username" required>
-            <label class="form-label" for="first-name">First Name:</label>
-            <input class="form-control" type="text" name="first-name" required>
-            <label class="form-label" for="last-name">Last Name:</label>
-            <input class="form-control" type="text" name="last-name" required>
-            <label class="form-label" for="address">Address:</label>
-            <input class="form-control" type="text" name="address" required>
-            <label class="form-label" for="student-id">Student ID:</label>
-            <input class="form-control" type="text" name="student-id" required>
-            <div style="width: 100%;">
-              <label for="course">Course:</label>
-              <select class="form-select" name="course"> 
-                <?php 
-                  $course = $admin->select('courses', '*');
-
-                  while ($row = mysqli_fetch_assoc($course)) {
-                ?>
-
-                <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
-
-              <?php } ?>
-              </select>
-              <!-- <input class="form-control" type="text" name="course" required> -->
-            </div>
-            <label class="form-label" for="year">Year and Section:</label>
-            <input class="form-control" type="text" name="year" required>
-            <label class="form-label" for="contact-no">Contact No.:</label>
-            <input class="form-control" type="number" name="contact-no" required>
-            <label class="form-label" for="email">Email:</label>
-            <input class="form-control" type="email" name="email" required>
-            <?php
-              if (isset($_GET['invalidPassword'])) {
+              }else if(isset($contact_no_error)) {
+                echo "
+                  <div class='alert alert-danger' role='alert'>
+                    $contact_no_error
+                  </div>
+                ";
+              } else if (isset($_GET['invalidPassword'])) {
                 echo '
                 <div class="alert alert-danger" role="alert">
                   Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
                 </div>
                 ';
+              } else if (isset($student_exist)) {
+                Message::userAlreadyExist();
               }
             ?>
-            <label class="form-label" for="password">Password: </label>
-            <input class="form-control" type="password" name="password" required>
-            <label class="form-label" for="confirm-password">Confirm Password: </label>
-            <input class="form-control" type="password" name="confirm-password" required>
-            <div class="text-center">
-              <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Add">
-              <a class="btn btn-danger" href="admin-list-of-users.php?user=<?php User::printGet('user'); ?>">Cancel</a>
+            <div style="max-width: 17rem; padding: 1rem 1rem 0;">
+              <label class="form-label" for="first-name">First Name:</label>
+              <input class="form-control" type="text" name="first-name" required>
+              <label class="form-label" for="last-name">Last Name:</label>
+              <input class="form-control" type="text" name="last-name" required>
+              <label class="form-label" for="address">Address:</label>
+              <input class="form-control" type="text" name="address" required>
+              <label class="form-label" for="student-id">Student ID:</label>
+              <input class="form-control" type="text" name="student-id" required>
+              <div style="width: 100%;">
+                <label for="course">Course:</label>
+                <select class="form-select" name="course"> 
+                  <?php 
+                    $course = $admin->select('courses', '*');
+
+                    while ($row = mysqli_fetch_assoc($course)) {
+                  ?>
+
+                  <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
+
+                <?php } ?>
+                </select>
+                <!-- <input class="form-control" type="text" name="course" required> -->
+              </div>
+              <label class="form-label" for="year">Year and Section:</label>
+              <select class="form-select" name="year" required>
+                <option value="1st">1st</option>
+                <option value="2nd">2nd</option>
+                <option value="3rd">3rd</option>
+                <option value="4th">4th</option>
+              </select>
             </div>
-            
+
+            <div style="max-width: 17rem; padding: 1rem 1rem 0;">
+              <label class="form-label" for="contact-no">Contact No.:</label>
+              <input class="form-control" type="number" name="contact-no" required>
+              <label class="form-label" for="email">Email:</label>
+              <input class="form-control" type="email" name="email" required>
+
+              <label class="form-label" for="password">Password: </label>
+              <input class="form-control" type="password" name="password" required>
+              <label class="form-label" for="confirm-password">Confirm Password: </label>
+              <input class="form-control" type="password" name="confirm-password" required>
+              <div class="text-center">
+                <input class="btn btn-primary mx-auto mt-3 mb-3" type="submit" name="submit" value="Add">
+                <a class="btn btn-danger" href="admin-list-of-users.php?user=<?php User::printGet('user'); ?>">Cancel</a>
+              </div>
+
+
+            </div>
           </form>
+          <h4 class="text-center">Or</h4>
+          <form method="post" enctype="multipart/form-data" class="d-flex flex-column justify-content-center border shadow p-2 rounded-3 mx-auto" style="max-width: 20rem;">
+            <label for="">Import Students using Excel</label>
+            <input class="form-control" type="file" name="excel" required value="">
+            <button class="btn btn-secondary" type="submit" name="import">Import</button>
+          </form>
+          </div>
+
+          
+
 
           <form method="post" class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if(User::returnValueGet('user') != 'student_org') {echo 'd-none';} ?>" style="max-width: 17rem; padding: 1rem 1rem 0;">
           <h4 class="text-center">Add Student Org.</h4>
@@ -300,6 +330,18 @@ if (isset($_POST['submit'])) {
                   $error_password
                 </div>
                 ";
+              }else if(isset($contact_no_error)) {
+                echo "
+                  <div class='alert alert-danger' role='alert'>
+                    $contact_no_error
+                  </div>
+                ";
+              } else if (isset($_GET['invalidPassword'])) {
+                echo '
+                <div class="alert alert-danger" role="alert">
+                  Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
+                </div>
+                ';
               } else if (isset($student_org_exist)) {
                 Message::userAlreadyExist();
               }
@@ -316,15 +358,7 @@ if (isset($_POST['submit'])) {
             <input class="form-control" type="number" name="contact-no" required>
             <label class="form-label" for="email">Email:</label>
             <input class="form-control" type="email" name="email" required>
-            <?php
-              if (isset($_GET['invalidPassword'])) {
-                echo '
-                <div class="alert alert-danger" role="alert">
-                  Password must have atlease 5 Characters atleast 1 Uppercase, Lowercase, special characters and number;
-                </div>
-                ';
-              }
-            ?>
+
             <label class="form-label" for="password">Password: </label>
             <input class="form-control" type="password" name="password" required>
             <label class="form-label" for="confirm-password">Confirm Password: </label>
@@ -351,6 +385,53 @@ if (isset($_POST['submit'])) {
     var activeNav = document.getElementById('list-of-users')
     activeNav.classList.add('bg-dark-gray2');
   </script>
+
+
+
+<?php 
+    $conn = mysqli_connect("localhost", "root", "", "etrack");
+
+    if (isset($_POST["import"])) {
+      $fileName = $_FILES["excel"]["name"];
+      $fileExtension = explode('.', $fileName);
+      $fileExtension = strtolower(end($fileExtension));
+
+      $newFileName = date("Y.m.d") . " - " . date("h.i.sa") . "." . $fileExtension;
+
+      $targetDirectory = "uploads/" . $newFileName;
+      move_uploaded_file($_FILES["excel"]["tmp_name"], $targetDirectory);
+
+      error_reporting(0);
+
+      ini_set('display_errors', 0);
+
+      require "excelReader/excel_reader2.php";
+      require "excelReader/SpreadsheetReader.php";
+
+      $reader = new SpreadsheetReader($targetDirectory);
+
+      $password = md5('Student@123');
+
+      foreach($reader as $key => $row) {
+        $first_name = $row[0];
+        $last_name = $row[1];
+        $student_id = $row[2];
+        $course = $row[3];
+
+        mysqli_query($conn, "INSERT INTO student (first_name, last_name, student_id, course, password) VALUES('$first_name', '$last_name', '$student_id', '$course', '$password')");
+      }
+
+      echo 
+      "
+        <script>
+          alert('successfully imported');
+          documentation.location.href = '';
+        </script>
+      ";
+    }
+?>
+
+
 </body>
 
 </html>

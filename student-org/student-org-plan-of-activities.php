@@ -43,7 +43,13 @@ if (isset($_GET['archive'])){
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
 
-
+  <style>
+        .disabled {
+            pointer-events: none;
+            color: gray;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -73,7 +79,6 @@ if (isset($_GET['archive'])){
 
           <div class="d-flex justify-content-between">
             <a class="btn btn-primary mb-3" href="add-plan-of-activity.php"><i class="fa-solid fa-plus"></i> Add Plan</a>
-            <a class="btn btn-outline-danger mb-3" href="student-org-archive-plan-of-activities.php">Archives</a>
           </div>
 
 
@@ -82,6 +87,12 @@ if (isset($_GET['archive'])){
               echo '
               <div class="alert alert-success" role="alert">
                 Accomplishment Report Succesfully Added to Archive
+              </div>
+              ';
+            } else if (isset($_GET['success'])) {
+              echo '
+              <div class="alert alert-success" role="alert">
+                Plan of Activity Added Succcessfully
               </div>
               ';
             }
@@ -94,7 +105,7 @@ if (isset($_GET['archive'])){
                   <th>Name of Activity</th>
                   <th>Date</th>
                   <th>Venue</th>
-                  <th>Sponsor's/Collaborators</th>
+                  <th>Sponsors</th>
                   <th>Nature of Activity</th>
                   <th>Purpose</th>
                   <th>Beneficiaries</th>
@@ -135,12 +146,11 @@ if (isset($_GET['archive'])){
                   <td><?php echo $row['status']; ?></td>
                   <td><?php echo $row['remark']; ?></td>
                   <td>
-                    <a class="btn btn-secondary mb-2" href="edit-plan-of-activity.php?id=<?php echo $row['id']; ?>"> Edit</a>
-
-                    <a class="btn btn-danger mb-2" href="student-org-plan-of-activities.php?id=<?php echo $row['id'];?>&archive">Archive</a>
+                    <a class="btn btn-secondary mb-2 <?php if($row['status'] == 'submitted'){ echo 'disabled';} ?> " href="edit-plan-of-activity.php?id=<?php echo $row['id']; ?>"> Edit</a>
 
 
-                    <!-- <a class="btn btn-danger mb-2" href="delete-plan-of-activity.php?id=<?php // echo $row['id']; ?>">Archive</a> -->
+
+                    <a class="btn btn-danger mb-2 <?php if($row['status'] == 'submitted'){ echo 'disabled';} ?> " href="delete-plan-of-activity.php?id=<?php  echo $row['id']; ?>">Delete</a>
                   </td>
                 </tr>
 

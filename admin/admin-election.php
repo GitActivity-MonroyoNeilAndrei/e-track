@@ -21,7 +21,7 @@ if (!isset($_GET['activeStudentOrg'])) {
   header("location: admin-election.php?activeStudentOrg=$row[name_of_org]");
 }
 
-
+$status;
 ?>
 
 <!DOCTYPE html>
@@ -36,6 +36,13 @@ if (!isset($_GET['activeStudentOrg'])) {
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.css?<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
+  <style>
+    .disabled {
+      pointer-events: none;
+      color: gray;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -128,6 +135,7 @@ if (!isset($_GET['activeStudentOrg'])) {
 
 
                 while ($row = mysqli_fetch_assoc($result)) {
+                  $status = $row['status'];
                 ?>
 
                   <tr>
@@ -138,8 +146,8 @@ if (!isset($_GET['activeStudentOrg'])) {
                     <td><a class="btn btn-secondary" href="../view-image.php?path=uploads/&imageUrl=<?php echo $row['photo_url']; ?>"> View</a></td>
                     <td><?php echo $row['partylist']; ?></td>
                     <td>
-                      <a class="btn btn-success" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>"> Edit</a>
-                      <a class="btn btn-danger" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>">Delete</a>
+                      <a class="btn btn-success <?php if ($row['status'] == 'deployed' || $row['status'] == "winner") {echo 'disabled';} ?>" href="admin-edit-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>"> Edit</a>
+                      <a class="btn btn-danger <?php if ($row['status'] == 'deployed' || $row['status' == "winner"]) {echo 'disabled';} ?>" href="admin-delete-candidate.php?studentOrg=<?php echo User::printGet('activeStudentOrg'); ?>&candidateId=<?php echo $row['id']; ?>&photoUrl=<?php echo $row['photo_url']; ?>">Delete</a>
 
                     </td>
                   </tr>
@@ -147,7 +155,7 @@ if (!isset($_GET['activeStudentOrg'])) {
               </tbody>
             </table>
           </div>
-          <button class="btn btn-primary d-block mx-auto" onclick="window.location.href='admin-deploy-ballot.php?orgName=<?php User::printGet('activeStudentOrg') ?>'">Deploy Ballot</button>
+          <button class="btn btn-primary d-block mx-auto <?php if ($status == 'deployed' || $status == "winner") {echo 'disabled';} ?> " onclick="window.location.href='admin-deploy-ballot.php?orgName=<?php User::printGet('activeStudentOrg') ?>'">Deploy Ballot</button>
         </div>
       </div>
     </div>

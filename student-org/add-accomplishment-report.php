@@ -25,6 +25,7 @@ $student_org_school_year = User::returnValueSession('school-year');
 // new code
 if(isset($_POST['submit'])) {
 
+
   if(!$student_org->checkIfPDF('liquidation')) {
     $error_file = "Upload PDF file only";
   } else {
@@ -62,7 +63,7 @@ if(isset($_POST['submit'])) {
 
     $student_org->updateData('plan_of_activities', ['status'=>'accomplished'], ['id'=>$plan_of_activity_id]);
 
-    header('location: student-org-accomplishment-report.php');
+    header('location: student-org-accomplishment-report.php?success');
   }
 }
 

@@ -82,7 +82,7 @@ if (isset($_POST['edit-candidate'])) {
     <h5 class="text-center">Edit Candidate for <?php User::printGet('studentOrg') ?></h5>
     
     <label class="form-label" for="position">Position</label>
-    <select class="form-select" name="position">
+    <select class="form-select" name="position" >
       <option selected value="President">President</option>
       <option value="Vice President">Vice President</option>
       <option value="Secretary">Secretary</option>
@@ -115,7 +115,7 @@ if (isset($_POST['edit-candidate'])) {
     <label class="form-label" for="introduce-yourself">Intoduce Yourself</label>
     <textarea class="form-control" style="font-size: .85rem;" type="text" name="introduce-yourself" rows="6" ><?php echo $introduce_yourself; ?> </textarea>
     <div class="d-flex justify-content-center align-items-center mt-3">
-      <input class="btn btn-success me-3" type="submit" name="edit-candidate" value="Edit" required>
+      <input class="btn btn-success me-3" type="submit" name="edit-candidate" value="Save" required>
       <a class="btn btn-danger" href="admin-election.php?activeStudentOrg=<?php User::printGet('studentOrg') ?>">Cancel</a>
     </div>
   </form>

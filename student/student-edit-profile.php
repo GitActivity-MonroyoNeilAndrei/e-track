@@ -21,8 +21,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 if (isset($_POST['edit-profile'])) {
 
-
-  $username = mysqli_escape_string($student->mysqli, $_POST['username']);
   $first_name = mysqli_escape_string($student->mysqli, $_POST['first-name']);
   $last_name = mysqli_escape_string($student->mysqli, $_POST['last-name']);
   $address = mysqli_escape_string($student->mysqli, $_POST['address']);
@@ -31,7 +29,7 @@ if (isset($_POST['edit-profile'])) {
   $email = mysqli_escape_string($student->mysqli, $_POST['email']);
 
 
-  $student->updateData('student', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'year_and_section'=>$year_and_section, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueSession('id')]);
+  $student->updateData('student', ['first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'year_and_section'=>$year_and_section, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueSession('id')]);
 
   header("location: student-edit-profile.php?editSuccessful");
   
@@ -131,6 +129,10 @@ if  (isset($_POST['edit-password'])) {
               <span>Monitor Activities</span>
               <span><i class="fa-regular fa-file"></i></span>
             </li>
+            <li onclick="window.location.href='student-evaluate-activities.php'">
+              <span>Evaluate Activities</span>
+              <span><i class="fa-regular fa-file"></i></span>
+            </li>
 
           </ul>
         </nav>
@@ -164,8 +166,6 @@ if  (isset($_POST['edit-password'])) {
                 <div>
                   <label class="form-label">Student ID: </label>
                   <input class="form-control" type="text" name="student-id" value="<?php echo $row['student_id']; ?>" disabled>
-                  <label class="form-label">UserName: </label>
-                  <input class="form-control" type="text" name="username" value="<?php echo $row['username']; ?>" required>
                   <label class="form-label">First Name: </label>
                   <input class="form-control" type="text" name="first-name" value="<?php echo $row['first_name']; ?>" required>
                   <label class="form-label">Last Name</label>

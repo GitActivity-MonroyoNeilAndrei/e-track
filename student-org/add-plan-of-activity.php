@@ -4,7 +4,9 @@ include "../classes/message.php";
 include "../classes/user.php";
 
 date_default_timezone_set('Asia/Manila');
-$date_time_now = date('Y-m-d') . 'T' . date('H:i');
+$date_time_now = date('Y-m-d');
+
+
 
 
 session_start();
@@ -19,6 +21,8 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
 $student_org_school_year = User::returnValueSession('school-year');
 
+$error_time;
+
 if(isset($_POST['submit'])) {
   $name_of_activity = mysqli_escape_string($student_org->mysqli, $_POST['name-of-activity']);
   $date = mysqli_escape_string($student_org->mysqli, $_POST['date']);
@@ -29,7 +33,10 @@ if(isset($_POST['submit'])) {
   $beneficiaries = mysqli_escape_string($student_org->mysqli, $_POST['beneficiaries']);
   $target_output = mysqli_escape_string($student_org->mysqli, $_POST['target-output']);
 
-  if($student_org->isExisted('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org')])) {
+
+  if ($date_time_now > $date) {
+    $error_time = "Expiry Date Must be Greater than the Date Now";
+  } else if($student_org->isExisted('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org')])) {
 
     $plan_of_activity_exist = 'Plan of Activity already Exist';
 
@@ -37,7 +44,7 @@ if(isset($_POST['submit'])) {
 
     $student_org->insertData('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org'), 'school_year'=>$student_org_school_year]);
 
-    header('location: student-org-plan-of-activities.php');
+    header('location: student-org-plan-of-activities.php?success');
 
   }
 
@@ -98,6 +105,11 @@ if(isset($_POST['submit'])) {
                   $plan_of_activity_exist
                 </div>
                 ";
+              } else if (isset($error_time)) {
+                echo '
+                <div class="alert alert-danger" role="alert">
+                  ' . $error_time . '
+                </div>';
               }
             ?>
             <label class="form-label" for="name-of-activity">Name of Activity: </label>
