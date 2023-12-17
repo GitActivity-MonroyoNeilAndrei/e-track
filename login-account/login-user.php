@@ -116,6 +116,7 @@ if (isset($_POST['login'])) {
       <input class="form-control" type="password" name="password" required>
     </div>
     <input class="btn btn-success" type="submit" value="Login" name="login">
+    <a href="forgot-password.php">Forgot Password?</a>
   </form>
 </body>
 

@@ -50,8 +50,8 @@ if (isset($_POST['submit'])) {
     } else {
 
       if(
-        !$admin->isExisted('student_org', ['email' => $email, 'password' => $password]) &&
-        !$admin->isExisted('admin', ['email' => $email, 'password' => $password])
+        !$admin->isExisted('student_org', ['email' => $email]) &&
+        !$admin->isExisted('admin', ['email' => $email])
       ) {
         $admin->insertData('admin', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
@@ -86,7 +86,10 @@ if (isset($_POST['submit'])) {
     }  else {
 
       if(
-        !$admin->isExisted('student', ['student_id' => $student_id])
+        !$admin->isExisted('student', ['student_id' => $student_id]) &&
+        !$admin->isExisted('student', ['email'=>$email]) &&
+        !$admin->isExisted('student_org', ['email'=>$email]) &&
+        !$admin->isExisted('admin', ['email'=>$email]) 
       ) {
         $admin->insertData('student', ['first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'student_id'=>$student_id, 'course'=>$course, 'year_and_section'=>$year, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
@@ -120,7 +123,8 @@ if (isset($_POST['submit'])) {
 
       if(
         !$admin->isExisted('student_org', ['name_of_org'=>$name_of_org ,'email' => $email]) &&
-        !$admin->isExisted('admin', ['email' => $email])
+        !$admin->isExisted('admin', ['email' => $email]) &&
+        !$admin->isExisted('student', ['email'=>$email])
       ) {
         $admin->insertData('student_org', ['name_of_org'=>$name_of_org, 'full_name_of_org'=>$full_name_of_org, 'college_of'=>$college_of, 'adviser'=>$adviser, 'contact_no'=>$contact_no, 'email'=>$email, 'password'=>$password]);
 
@@ -234,9 +238,8 @@ if (isset($_POST['submit'])) {
 
           <div class="d-flex justify-content-center flex-column mx-auto shadow rounded-2 mt-3 mb-3 <?php if(User::returnValueGet('user') != 'student') {echo 'd-none';} ?>">
           <h4 class="text-center">Add Student</h4>
-          <form method="post" class='d-flex justify-content-center flex-row mb-4'>
-            
-            <?php
+                      
+          <?php
               if(isset($error_password)) {
                 echo "
                 <div class='alert alert-danger' role='alert'>
@@ -259,6 +262,8 @@ if (isset($_POST['submit'])) {
                 Message::userAlreadyExist();
               }
             ?>
+          <form method="post" class='d-flex justify-content-center flex-row mb-4'>
+
             <div style="max-width: 17rem; padding: 1rem 1rem 0;">
               <label class="form-label" for="first-name">First Name:</label>
               <input class="form-control" type="text" name="first-name" required>
