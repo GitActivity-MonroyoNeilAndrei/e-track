@@ -119,15 +119,17 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
               <tbody>
 
                 <?php
+                $student_org = "";
                 $result = $student->select('student', '*', ['student_id' => User::returnValueSession('student_id')]);
                 $row = mysqli_fetch_assoc($result);
 
-                $result2 = $student->select('evaluation_of_activities', '*', ['name_of_org'=>$row['can_evaluate']]);
+                $result2 = $student->select('evaluation_of_activities', '*', ['name_of_org'=>$row['can_evaluate'], 'draft'=>'draft']);
                 $row2 = mysqli_fetch_assoc($result2);
 
                 if ($row['can_evaluate'] == NULL || $row['can_evaluate'] == "") {
                   echo "<h4 class='text-center'>No Evaluation Available</h4>";
                 }else if ($row2) {
+                  $student_org = $row['can_evaluate'];
 
                   if($row2['exp_date'] > $date_time_now) {
 
@@ -141,6 +143,11 @@ User::ifDeactivatedReturnTo($student->select('student', 'status', ['id'=>$studen
                   
                 <?php } else {
                   $student->updateData('student', ['can_evaluate'=>""], ['course'=>User::returnValueSession('student-course')]);
+
+                  // $student->updateData('evaluation_of_activities', ['status'=>'evaluated'], ['name_of_org'=>$student_org, 'status'=>'deployed']);
+
+                  $student->advanceUpdateData('evaluation_of_activities', ['status'=>'evaluated'], " name_of_org = '$student_org' AND status = 'deployed' AND draft = ''");
+
 
                 }
 

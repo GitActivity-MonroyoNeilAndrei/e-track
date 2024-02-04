@@ -25,6 +25,20 @@ if (!isset($_GET['activeStudentOrg'])) {
   header("location: admin-accomplishment-report.php?activeStudentOrg=$row[name_of_org]");
 }
 
+if (isset($_POST['acceptAll'])) {
+  $selectedActivities = $_POST['activities'];
+
+  foreach ($selectedActivities as $activity) {
+      $admin->updateData("accomplishment_reports", ['status'=>'ongoing'], ['id'=>$activity, 'name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+  }
+} else if (isset($_POST['rejectAll'])) {
+  $selectedActivities = $_POST['activities'];
+
+  foreach ($selectedActivities as $activity) {
+      $admin->updateData("accomplishment_reports", ['status'=>'returned'], ['id'=>$activity, 'name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+  }
+}
+
 ?>
 
 
@@ -104,11 +118,12 @@ if (!isset($_GET['activeStudentOrg'])) {
               ';
             } 
           ?>
-
+          <form method="post">
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
+                  <th></th>
                   <th>Planned Activity</th>
                   <th>Purpose</th>
                   <th>Date Accomplished</th>
@@ -137,6 +152,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   while ($row = mysqli_fetch_assoc($accomplishment_report)) {
                 ?>
                 <tr>
+                  <td><input class="form-check-input" type="checkbox" name="activities[]" value="<?php echo $row['id']; ?>"></td>
                   <td><?php echo $row['planned_activity']; ?></td>
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['date_accomplished']; ?></td>
@@ -155,9 +171,14 @@ if (!isset($_GET['activeStudentOrg'])) {
           </div>
 
           <div class="text-center">
-            <a class="btn btn-success" href="accept-reject.php?acceptReport&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Accept All</a>
-            <a class="btn btn-danger" href="accept-reject.php?rejectReport&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Reject All</a>
+            <!-- <a class="btn btn-success" href="accept-reject.php?acceptReport&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Accept All</a>
+            <a class="btn btn-danger" href="accept-reject.php?rejectReport&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Reject All</a> -->
+
+            <input class="btn btn-success" type="submit" name="acceptAll" value="Accept All">
+            <input class="btn btn-danger" type="submit" name="rejectAll" value="Reject All">
+
           </div>
+          </form>
 
 
         </div>

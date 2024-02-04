@@ -26,6 +26,20 @@ if (!isset($_GET['activeStudentOrg'])) {
 }
 
 
+if (isset($_POST['acceptAll'])) {
+  $selectedActivities = $_POST['activities'];
+
+  foreach ($selectedActivities as $activity) {
+      $admin->updateData("plan_of_activities", ['status'=>'ongoing'], ['id'=>$activity, 'name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+  }
+} else if (isset($_POST['rejectAll'])) {
+  $selectedActivities = $_POST['activities'];
+
+  foreach ($selectedActivities as $activity) {
+      $admin->updateData("plan_of_activities", ['status'=>'returned'], ['id'=>$activity, 'name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+  }
+}
+
 
 ?>
 
@@ -106,11 +120,13 @@ if (!isset($_GET['activeStudentOrg'])) {
               ';
             }
           ?>
-
+          <form method="post">
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
+                  <th></th>
+                  <th>Activity Code</th>
                   <th>Name of Activity</th>
                   <th>Date</th>
                   <th>Venue</th>
@@ -119,11 +135,14 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <th>Purpose</th>
                   <th>Beneficiaries</th>
                   <th>Target Output</th>
+                  <th>Budget</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
+              
+
                 <?php 
                   $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
 
@@ -141,6 +160,8 @@ if (!isset($_GET['activeStudentOrg'])) {
 
                 ?>
                 <tr>
+                  <td><input class="form-check-input" type="checkbox" name="activities[]" value="<?php echo $row['id']; ?>"></td>
+                  <td><?php echo $row['activity_code']; ?></td>
                   <td><?php echo $row['name_of_activity']; ?></td>
                   <td><?php echo $row['date']; ?></td>
                   <td><?php echo $row['venue']; ?></td>
@@ -149,6 +170,7 @@ if (!isset($_GET['activeStudentOrg'])) {
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['beneficiaries']; ?></td>
                   <td><?php echo $row['target_output']; ?></td>
+                  <td><?php echo $row['budget']; ?></td>
                   <td>Pending</td>
                   <td>
                     <a class="btn btn-success mb-2" href="admin-change-status.php?id=<?php echo $row['id']; ?>&status=ongoing&studentOrg=<?php User::printGet('activeStudentOrg') ?>&type=plan_of_activities&path=admin-plan-of-activities.php"> Accept</a>
@@ -156,15 +178,21 @@ if (!isset($_GET['activeStudentOrg'])) {
                   </td>
                 </tr>
                 <?php } ?>
+              
               </tbody>
             </table>
           </div>
 
           <div class="text-center">
-            <a class="btn btn-success" href="accept-reject.php?acceptActivity&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Accept All</a>
-            <a class="btn btn-danger" href="accept-reject.php?rejectActivity&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Reject All</a>
-          </div>
+            <!-- <a class="btn btn-success" href="accept-reject.php?acceptActivity&activeStudentOrg=<?php // User::printGet('activeStudentOrg');?>">Accept All</a>
+            <a class="btn btn-danger" href="accept-reject.php?rejectActivity&activeStudentOrg=<?php // User::printGet('activeStudentOrg'); ?>">Reject All</a> -->
 
+            <input class="btn btn-success" type="submit" name="acceptAll" value="Accept All">
+            <input class="btn btn-danger" type="submit" name="rejectAll" value="Reject All">
+
+
+          </div>
+          </form>
 
         </div>
       </div>

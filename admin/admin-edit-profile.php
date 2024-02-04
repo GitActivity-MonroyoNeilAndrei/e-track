@@ -12,10 +12,27 @@ $admin = new database();
 
 $password;
 
-$result = $admin->select('admin', '*', ['id'=>User::returnValueSession('admin-id')]);
+$result = $admin->select('admin', '*', ['id' => User::returnValueSession('admin-id')]);
 
 while ($row = mysqli_fetch_assoc($result)) {
   $password = $row['password'];
+}
+
+function incrementYear($bool)
+{
+  $admin = new database();
+
+  if ($bool) {
+    $admin->deleteRow("student", "year_and_section = '4th'");
+    $admin->updateData("student", ['year_and_section' => "4th"], ['year_and_section' => '3rd']);
+    $admin->updateData("student", ['year_and_section' => "3rd"], ['year_and_section' => '2nd']);
+    $admin->updateData("student", ['year_and_section' => "2nd"], ['year_and_section' => '1st']);
+  } else {
+    $admin->deleteRow("student", "year_and_section = '1st'");
+    $admin->updateData("student", ['year_and_section' => "1st"], ['year_and_section' => '2nd']);
+    $admin->updateData("student", ['year_and_section' => "2nd"], ['year_and_section' => '3rd']);
+    $admin->updateData("student", ['year_and_section' => "3rd"], ['year_and_section' => '4th']);
+  }
 }
 
 
@@ -30,13 +47,12 @@ if (isset($_POST['edit-profile'])) {
   $email = mysqli_escape_string($admin->mysqli, $_POST['email']);
 
 
-  $admin->updateData('admin', ['username'=>$username, 'first_name'=>$first_name, 'last_name'=>$last_name, 'address'=>$address, 'contact_no'=>$contact_no, 'email'=>$email], ['id'=>User::returnValueSession('admin-id')]);
+  $admin->updateData('admin', ['username' => $username, 'first_name' => $first_name, 'last_name' => $last_name, 'address' => $address, 'contact_no' => $contact_no, 'email' => $email], ['id' => User::returnValueSession('admin-id')]);
 
   header("location: admin-edit-profile.php?editSuccessful");
-  
 }
 
-if  (isset($_POST['edit-password'])) {
+if (isset($_POST['edit-password'])) {
 
   if (isset($_POST['new-password'])) {
     $password1 = $_POST['new-password'];
@@ -56,21 +72,35 @@ if  (isset($_POST['edit-password'])) {
   if ($old_password != $password) {
     header("location: admin-edit-profile.php?doesntMatch");
   } else if ($old_password == $password) {
-    $admin->updateData('admin', ['password'=>$new_password], ['id'=>User::returnValueSession('admin-id')]);
-    
+    $admin->updateData('admin', ['password' => $new_password], ['id' => User::returnValueSession('admin-id')]);
+
     header("location: admin-edit-profile.php?editPasswordSuccessfully");
   }
-  
-} else if (isset($_POST['set-school-year'])){
-  
+} else if (isset($_POST['set-school-year'])) {
+
   $current_school_year = $_POST['current-school-year'];
 
-  $admin->updateData('admin', ['current_school_year'=>$current_school_year]);
+  $year1 = substr($_SESSION['school_year'], 0, 4);
+  $year2 = substr($current_school_year, 0, 4);
+  $ans = $year2 - $year1;
+
+  $_SESSION['school_year'] = $current_school_year;
+
+  $admin->updateData('admin', ['current_school_year' => $current_school_year]);
 
   $school_year_set = "School Year Set";
 
-}
 
+  if ($ans > 0) {
+    for ($i = 1; $i <= $ans; $i++) {
+      incrementYear(true);
+    }
+  } else if ($ans < 0) {
+    for ($i = 1; $i <= abs($ans); $i++) {
+      incrementYear(false);
+    }
+  }
+}
 
 ?>
 
@@ -110,7 +140,7 @@ if  (isset($_POST['edit-password'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-      <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin_name'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin_name'); ?></button>
         <div class="dropdown-content">
           <a href="admin-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=admin"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
@@ -119,10 +149,10 @@ if  (isset($_POST['edit-password'])) {
     </div>
     <div class="page-content">
       <div class="nav-links">
-      
-      <?php
+
+        <?php
         require 'admin-navigations.php';
-       ?>
+        ?>
 
       </div>
       <div class="content border border-primary">
@@ -131,24 +161,24 @@ if  (isset($_POST['edit-password'])) {
             <h5 class="text-start">My Profile</h5>
           </div>
 
-            <h4 class="text-center fw-semibold">Edit Profile</h4>
+          <h4 class="text-center fw-semibold">Edit Profile</h4>
 
-            <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 35rem; " method="post">
+          <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 35rem; " method="post">
 
 
-              <?php
-              if (isset($_GET['editSuccessful'])) {
-                echo '
+            <?php
+            if (isset($_GET['editSuccessful'])) {
+              echo '
                 <div class="alert alert-success" role="alert">
                   Edit Successfully
                 </div>
                 ';
-              }
+            }
 
-                $admin_user = $admin->select('admin', '*', ['id'=>User::returnValueSession('admin-id')]);
+            $admin_user = $admin->select('admin', '*', ['id' => User::returnValueSession('admin-id')]);
 
-                while ($row = mysqli_fetch_assoc($admin_user)) {
-              ?>
+            while ($row = mysqli_fetch_assoc($admin_user)) {
+            ?>
 
               <div class="d-flex flex-row justify-content-between">
                 <div>
@@ -161,7 +191,7 @@ if  (isset($_POST['edit-password'])) {
                   <label class="form-label">Address</label>
                   <input class="form-control" type="text" name="address" value="<?php echo $row['address']; ?>" required>
                 </div>
-                
+
                 <div>
                   <label class="form-label">Contact No.:</label>
                   <input class="form-control" type="text" name="contact-no" value="<?php echo $row['contact_no']; ?>" required>
@@ -171,24 +201,24 @@ if  (isset($_POST['edit-password'])) {
               </div>
 
 
-              
-
-              <?php } ?>
-
-              <div class="d-flex justify-content-center align-items-center mt-3">
-                <input class="btn btn-success me-3" type="submit" name="edit-profile" value="Change" required>
-                <a class="btn btn-danger" href="admin-homepage.php">Cancel</a>
-              </div>
-            </form>
 
 
-            <div class="d-flex flex-row m-auto" style="max-width: 40rem;">
+            <?php } ?>
 
-            
+            <div class="d-flex justify-content-center align-items-center mt-3">
+              <input class="btn btn-success me-3" type="submit" name="edit-profile" value="Change" required>
+              <a class="btn btn-danger" href="admin-homepage.php">Cancel</a>
+            </div>
+          </form>
+
+
+          <div class="d-flex flex-row m-auto" style="max-width: 40rem;">
+
+
             <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; " method="post">
-            
 
-            <?php
+
+              <?php
               if (isset($_GET['doesntMatch'])) {
                 echo '
                 <div class="alert alert-success" role="alert">
@@ -201,13 +231,13 @@ if  (isset($_POST['edit-password'])) {
                   Old Password Change
                 </div>
                 ';
-              } 
-            ?>
+              }
+              ?>
 
-            <label class="form-label">Old Password</label>
-            <input class="form-control" type="password" name="old-password" value="" required>
+              <label class="form-label">Old Password</label>
+              <input class="form-control" type="password" name="old-password" value="" required>
 
-            <?php
+              <?php
               if (isset($_GET['invalidPassword'])) {
                 echo '
                 <div class="alert alert-danger" role="alert">
@@ -215,42 +245,42 @@ if  (isset($_POST['edit-password'])) {
                 </div>
                 ';
               }
-            ?>
+              ?>
 
-            <label class="form-label">New Password</label>
-            <input class="form-control" type="password" name="new-password" value="" required>
+              <label class="form-label">New Password</label>
+              <input class="form-control" type="password" name="new-password" value="" required>
 
 
-            <div class="d-flex justify-content-center align-items-center mt-3">
-              <input class="btn btn-success me-3" type="submit" name="edit-password" value="Change Password" required>
-            </div>
-          </form>
+              <div class="d-flex justify-content-center align-items-center mt-3">
+                <input class="btn btn-success me-3" type="submit" name="edit-password" value="Change Password" required>
+              </div>
+            </form>
 
-          <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; "  method="post">
-            <h4>Set School Year</h4>
+            <form class="d-flex flex-column mx-auto mt-5 p-3 border rounded-3" style="max-width: 15rem; " method="post">
+              <h4>Set School Year</h4>
 
-            <?php
+              <?php
               if (isset($school_year_set)) {
                 echo '
                 <div class="alert alert-success" role="alert">
-                  '. $school_year_set .'
+                  ' . $school_year_set . '
                 </div>
                 ';
               }
 
-            ?>
+              ?>
 
-            <label class="form-label">School Year:</label>
-            <?php
+              <label class="form-label">School Year:</label>
+              <?php
               $current_school_year = $admin->selectDistinct('admin', 'current_school_year');
-              
-              while($row = mysqli_fetch_assoc($current_school_year)) {
-            ?>
-            <input class="form-control" type="text" name="current-school-year" value="<?php echo $row['current_school_year']; ?>">
 
-            <?php } ?>
-            <input class="btn btn-primary mt-2 mx-auto" type="submit" name="set-school-year" value="Set">
-          </form>
+              while ($row = mysqli_fetch_assoc($current_school_year)) {
+              ?>
+                <input class="form-control" type="text" name="current-school-year" value="<?php echo $row['current_school_year']; ?>">
+
+              <?php } ?>
+              <input class="btn btn-primary mt-2 mx-auto" type="submit" name="set-school-year" value="Set">
+            </form>
 
           </div>
 
@@ -262,7 +292,7 @@ if  (isset($_POST['edit-password'])) {
   </div>
 
   <?php
-    require 'admin-footer.php';
+  require 'admin-footer.php';
   ?>
 </body>
 

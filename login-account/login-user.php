@@ -36,6 +36,7 @@ if (isset($_POST['login'])) {
         $_SESSION['admin-username'] = $student->pullLastRowModified('admin', 'username');
         $_SESSION['admin-id'] = $student->pullLastRowModified('admin', 'id');
         $_SESSION['admin_name'] = $student->pullLastRowModified('admin', 'first_name') . ' ' . $student->pullLastRowModified('admin', 'last_name');
+        $_SESSION['school_year'] = $student->pullLastRowModified('admin', 'current_school_year');
 
         header("location: ../admin/admin-homepage.php");
       }

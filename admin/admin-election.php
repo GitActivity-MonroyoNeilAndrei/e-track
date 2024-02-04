@@ -121,7 +121,12 @@ $status;
               </thead>
               <tbody>
                 <?php
-                $result = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
+                // $result = $admin->select('candidate', '*', ['org_name' => User::returnValueGet('activeStudentOrg')]);
+
+                $activeStudentOrg = User::returnValueGet('activeStudentOrg');
+
+                $result = $admin->advanceSelect('candidate', '*', " org_name = '$activeStudentOrg' ORDER BY id DESC");
+
 
                 if ($result->num_rows == 0 ) {
                   echo '

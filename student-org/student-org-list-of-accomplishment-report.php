@@ -79,7 +79,7 @@ if(isset($_POST['search_submit'])) {
         <h3 class=" header-texts">MARINDUQUE STATE COLLEGE</h3>
       </div>
       <div class="dropdown">
-        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('admin-username'); ?></button>
+        <button class="dropbtn"><i class="fa-solid fa-user"></i> <?php User::printSession('name_of_org'); ?></button>
         <div class="dropdown-content">
           <a href="student-org-edit-profile.php"><i class="fa-solid fa-address-card"></i> My Profile</a>
           <a href="../logout.php?logout=studentOrg"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>

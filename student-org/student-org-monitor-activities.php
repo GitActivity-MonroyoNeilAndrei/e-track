@@ -127,6 +127,20 @@ $nameOfAct = returnNameOfAct();
                 </span>
               </div>
             </header>
+            <div class="calendar-legend">
+              <div class="current-date">
+                <div class="current-date-color">
+
+                </div>
+                <div>Current Date</div>
+              </div>
+              <div class="activities">
+                <div class="activities-color">
+
+                </div>
+                <div>Activities</div>
+              </div>
+            </div>
 
             <div class="calendar-body">
               <ul class="calendar-weekdays mx-2 mb-0">

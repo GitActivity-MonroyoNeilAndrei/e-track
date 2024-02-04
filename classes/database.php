@@ -402,6 +402,17 @@ class database
     
   }
 
+  public function advanceSelectDistinct($table, $rows = '*', $where = '')
+  {
+    if ($where == '') {
+      $sql = "SELECT DISTINCT $rows FROM $table";
+      return $this->mysqli->query($sql);
+    } else if($where != '') {
+      $sql = "SELECT DISTINCT $rows FROM $table WHERE $where";
+      return $this->mysqli->query($sql);
+    }
+  }
+
 
   public function advanceSelect($table, $rows = '*', $where = '')
   {

@@ -17,9 +17,6 @@ $student_org_id = User::returnValueSession('student-org-id');
 
 User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
-if(!isset($_SESSION['school-year'])){
-  header("location: ../logout.php?logout=student-org");
-}
 
 if (isset($_GET['archive'])){
   if(isset($_GET['id'])) {
@@ -117,7 +114,7 @@ if (isset($_GET['archive'])){
                 <?php
                 $name_of_org = User::returnValueSession('name_of_org');
 
-                $accomplishment_reports = $student_org->advanceSelect('accomplishment_reports', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted')");
+                $accomplishment_reports = $student_org->advanceSelect('accomplishment_reports', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted') ORDER BY id DESC");
 
                 if ($accomplishment_reports->num_rows == 0 ) {
                   echo '

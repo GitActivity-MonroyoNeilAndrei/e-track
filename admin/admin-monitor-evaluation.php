@@ -14,6 +14,7 @@ $admin_id = User::returnValueSession('admin-id');
 
 User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id' => $admin_id]), '../logout.php?logout=admin');
 
+
 if (!isset($_GET['activeStudentOrg'])) {
   $result = $admin->selectDistinct('student_org', 'name_of_org');
 
@@ -27,6 +28,8 @@ $activity = $admin->select('evaluation_of_activities', '*', ['name_of_org'=>User
 while ($row = mysqli_fetch_assoc($activity)) {
   $name_of_activity = $row['name_of_activity'];
 }
+
+$student_org = User::returnValueGet('activeStudentOrg');
 
 
 ?>
@@ -86,7 +89,10 @@ while ($row = mysqli_fetch_assoc($activity)) {
 
 
           <?php
-          $evaluation_reports = $admin->selectDistinct('evaluation_of_activities', 'name_of_activity', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+          // $evaluation_reports = $admin->selectDistinct('evaluation_of_activities', 'name_of_activity', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'deployed', 'status'=>'evaluated', 'draft'=>'']);
+
+
+          $evaluation_reports = $admin->advanceSelectDistinct('evaluation_of_activities', 'name_of_activity', " name_of_org = '$student_org' AND (status = 'deployed' OR status = 'evaluated') AND draft = ''");
 
           while ($row = mysqli_fetch_assoc($evaluation_reports)) {
           ?>
@@ -107,9 +113,13 @@ while ($row = mysqli_fetch_assoc($activity)) {
               </thead>
               <tbody>
                 <?php
-                  $evaluation_questions = $admin->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'name_of_activity'=>$row['name_of_activity']]);
+                  // $evaluation_questions = $admin->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'name_of_activity'=>$row['name_of_activity'], 'status'=>'deployed', 'status'=>'evaluated', 'draft'=>'']);
+
+
+                  $evaluation_questions = $admin->advanceSelect('evaluation_of_activities', '*', " name_of_org = '$student_org' AND name_of_activity = '$row[name_of_activity]' AND (status = 'deployed' OR status = 'evaluated') AND draft = ''");
 
                   while ($row = mysqli_fetch_assoc($evaluation_questions)) {
+                    
                 ?>
                 <tr>
                   <td><?php echo $row['questionnaire']; ?></td>
@@ -125,7 +135,24 @@ while ($row = mysqli_fetch_assoc($activity)) {
             </table>
           </div>
 
-          <?php } ?>
+          <?php }
+          
+          
+          if ($evaluation_reports->num_rows >= 1 ) {
+
+          ?>
+
+          <div class="text-center">
+            <a class="btn btn-primary" href="admin-print-evaluation.php?activeStudentOrg=<?php User::printGet("activeStudentOrg");?>&printEvaluation" target="_blank"><i class="fa-solid fa-print"></i> Print</a>
+          </div>
+
+          <?php
+          }
+          
+          ?>
+
+
+
 
           
 
@@ -148,6 +175,11 @@ while ($row = mysqli_fetch_assoc($activity)) {
     var activeNav = document.getElementById('monitor-evaluation')
     activeNav.classList.add('bg-dark-gray2');
 
+
+      window.addEventListener("focus", function() {
+      location.reload();
+    });
+  
 
 
   </script>

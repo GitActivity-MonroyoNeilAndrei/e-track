@@ -47,6 +47,12 @@ if (!isset($_GET['activeStudentOrg'])) {
   <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
   <script src="https://kit.fontawesome.com/ba2dc1cde9.js" crossorigin="anonymous"></script>
   <script src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap JS and Popper.js (required for Bootstrap JS) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <style>
     .table-responsive {
       max-width: 35rem;
@@ -273,7 +279,11 @@ if (!isset($_GET['activeStudentOrg'])) {
             <?php } ?>
 
             <div class="text-center">
-              <a target="_blank" class="btn btn-success" href="../election-winners.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>"> <i class="fa-solid fa-arrow-up"></i> Release & Print</a>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Release & Print
+              </button>
+
+
               <a class="btn btn-secondary" href="admin-deploy-ballot.php?orgName=<?php User::printGet('activeStudentOrg'); ?>">Extend Election</a>
             </div>
             
@@ -290,6 +300,31 @@ if (!isset($_GET['activeStudentOrg'])) {
     </div>
 
   </div>
+
+    <div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Release & Print</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal Body -->
+            <div class="modal-body">
+              <p>Are you Sure you want to Release this Ballot?</p>
+            </div>
+      
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <a target="_blank" class="btn btn-success" href="../election-winners.php?studentOrg=<?php  User::printGet('activeStudentOrg'); ?>&activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>"> <i class="fa-solid fa-arrow-up"></i> Release & Print</a>
+            </div>
+            
+          </div>
+        </div>
+      </div>
 
   <?php
     require 'admin-footer.php';
@@ -375,6 +410,14 @@ if (!isset($_GET['activeStudentOrg'])) {
     window.addEventListener("focus", function() {
       location.reload();
     });
+  </script>
+
+  <script>
+    // Open the modal
+    $('#myModal').modal('show');
+  
+    // Close the modal
+    $('#myModal').modal('hide');
   </script>
 </body>
 

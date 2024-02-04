@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2023 at 12:13 PM
+-- Generation Time: Feb 04, 2024 at 02:11 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -43,18 +43,17 @@ CREATE TABLE `accomplishment_reports` (
   `name_of_org` varchar(50) NOT NULL,
   `date_submitted` varchar(50) DEFAULT NULL,
   `school_year` varchar(50) DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'draft'
+  `remark` varchar(100) NOT NULL DEFAULT '',
+  `status` varchar(50) NOT NULL DEFAULT 'draft',
+  `evaluated` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `accomplishment_reports`
 --
 
-INSERT INTO `accomplishment_reports` (`id`, `planned_activity`, `purpose`, `date_accomplished`, `budget`, `liquidations`, `remarks`, `venue`, `sponsors`, `nature_of_activity`, `beneficiaries`, `target_output`, `name_of_org`, `date_submitted`, `school_year`, `status`) VALUES
-(27, 'intrams', 'to improve physical health', '2023-11-30', '10000', 'IMG-655331045a3886.31511328.pdf', 'goods naman', NULL, NULL, NULL, NULL, NULL, 'SICSSO', '2023-11-14', '2023-2024', 'accomplished'),
-(29, '', '12', '2023-11-30', '12', 'IMG-6555f30fee6048.92757446.pdf', '12', NULL, NULL, NULL, NULL, NULL, 'SICSSO', '2023-11-16', '2023-2024', 'accomplished'),
-(31, 'CICS week', 'for students to enjoy', '2024-02-23', '434343', 'IMG-6555f8051f1838.21955132.pdf', '3434', NULL, NULL, NULL, NULL, NULL, 'SICSSO', '2023-11-16', '2023-2024', 'accomplished'),
-(32, 'a', 'a', '2023-11-30', '1', 'IMG-6555f8956405a8.35953925.pdf', 'a', 'a', 'a', 'a', 'a', 'a', 'SICSSO', '2023-11-16', '2023-2024', 'accomplished');
+INSERT INTO `accomplishment_reports` (`id`, `planned_activity`, `purpose`, `date_accomplished`, `budget`, `liquidations`, `remarks`, `venue`, `sponsors`, `nature_of_activity`, `beneficiaries`, `target_output`, `name_of_org`, `date_submitted`, `school_year`, `remark`, `status`, `evaluated`) VALUES
+(78, 'HYDRO FEST', 'To give the awards for winners in intrams', '2024-02-01', '1000', 'IMG-65b8b10c0b2f09.88322758.pdf', '111', 'GRANDSTAND', 'SICSO Faculty', 'for Entertainment', 'Students, faculty members, others.', 'Successful and fun night', 'SICSSO', '2024-01-30', '2024-2025', '', 'draft', '');
 
 -- --------------------------------------------------------
 
@@ -71,6 +70,7 @@ CREATE TABLE `admin` (
   `contact_no` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'activated',
+  `current_school_year` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -78,11 +78,9 @@ CREATE TABLE `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `first_name`, `last_name`, `address`, `contact_no`, `email`, `status`, `password`) VALUES
-(9, 'admin', 'main', 'admin', 'Tanza, Boac, Marinduque', '11111111111', 'admin@gmail.com', 'activated', '0cc175b9c0f1b6a831c399e269772661'),
-(10, 'a', 'a', 'a', 'a', '1', 'a@gmail.com', 'deactivated', '0cc175b9c0f1b6a831c399e269772661'),
-(11, '1', '1', '1', '1', '1', '1@gmail.com', 'activated', 'c4ca4238a0b923820dcc509a6f75849b'),
-(12, 'reynano', 'reynan', 'yap', 'masiga, gasan, marinduque', '0998123721', 'reynan@gmail.com', 'activated', '0cc175b9c0f1b6a831c399e269772661');
+INSERT INTO `admin` (`id`, `username`, `first_name`, `last_name`, `address`, `contact_no`, `email`, `status`, `current_school_year`, `password`) VALUES
+(9, 'admin', 'main', 'admin', 'Tanza, Boac, Marinduque', '09641784151', 'admin@gmail.com', 'activated', '2023-2024', 'fdb925312f05f3a4c4495ef8d2fb465a'),
+(22, 'Neil Andrei', 'Neil Andrei', 'Monroyo', 'Bunganay, Boac, Marinduque', '09641784151', 'andreimonroyo@gmail.com', 'activated', '2023-2024', 'fdb925312f05f3a4c4495ef8d2fb465a');
 
 -- --------------------------------------------------------
 
@@ -102,9 +100,28 @@ CREATE TABLE `candidate` (
   `school_year` varchar(100) DEFAULT NULL,
   `introduce_yourself` longtext DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
+  `max_winners` int(100) NOT NULL DEFAULT 1,
   `number_of_votes` int(100) DEFAULT 0,
   `exp_date` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `candidate`
+--
+
+INSERT INTO `candidate` (`id`, `position`, `first_name`, `last_name`, `year`, `photo_url`, `partylist`, `org_name`, `school_year`, `introduce_yourself`, `status`, `max_winners`, `number_of_votes`, `exp_date`) VALUES
+(548, 'President', 'a', 'a', 'first', 'IMG-659b8eef10b929.59856874.jpg', 'a', 'SENGSO', '2024-2025', ' a', 'deployed', 1, 23, '2024-01-08T15:59'),
+(549, 'President', 'b', 'b', 'first', 'IMG-659b8ef9178516.03990964.jpg', 'b', 'SENGSO', '2024-2025', ' b', 'deployed', 1, 43, '2024-01-08T15:59'),
+(550, 'President', 'Jospher', 'Luha', 'second', 'IMG-659f75e5707ec6.89279450.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', 'winner', 1, 43, NULL),
+(551, 'Vice President', 'John David', 'Nepomuceno', 'second', 'IMG-659f75fd8711c9.40337993.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', 'winner', 1, 23, NULL),
+(552, 'Secretary', 'Trishia', 'Natolla', 'second', 'IMG-659f760a812b14.87495599.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality. ', 'winner', 1, 32, NULL),
+(553, 'Treasurer', 'Jannelle', 'Atienza', 'second', 'IMG-659f7623b6d857.59556821.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', 'winner', 1, 35, NULL),
+(554, 'Auditor', 'Carl Angel', 'Urtal', 'second', 'IMG-659f777bdd3680.80022866.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', 'winner', 1, 63, NULL),
+(555, 'President', 'Kilbert', 'Villanueva', 'second', 'IMG-659f77d6e145b6.84383866.jpg', 'Mandin', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality. ', NULL, 1, 43, NULL),
+(556, 'Vice President', 'John Raven', 'Mabutot', 'second', 'IMG-659f77fa560877.40057863.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', 'winner', 1, 42, NULL),
+(557, 'Secretary', 'Jallien Mae ', 'Resaba', 'second', 'IMG-659f7811e38369.97574731.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', NULL, 1, 13, NULL),
+(558, 'Auditor', 'Jamie', 'Solina', 'second', 'IMG-659f782182b328.02286730.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', NULL, 1, 13, NULL),
+(559, 'Auditor', 'Lynsey Miles', 'de Mesa', 'second', 'IMG-659f78405ab510.44972782.jpg', 'Sulong', 'SICSSO', '2024-2025', ' I\'m Jospher Luha from Tanza, Boac, Marinduque.\r\nI\'m a former Secretary of SICSSO.\r\nI envision SICSSO as a [briefly describe your vision for the organization]. Together, we can [mention a positive change or improvement you want to bring about]. I am not just asking for your vote; I am asking for your collaboration and support in turning this vision into reality.', NULL, 1, 63, NULL);
 
 -- --------------------------------------------------------
 
@@ -127,7 +144,43 @@ INSERT INTO `courses` (`id`, `course`) VALUES
 (19, 'Computer Engineering'),
 (20, 'Mechanical Engineering'),
 (22, 'BSI/T'),
-(23, 'Computer Science');
+(23, 'Computer Science'),
+(24, 'educ major in art'),
+(25, 'a'),
+(26, 'b'),
+(27, 'c'),
+(28, 'd'),
+(29, 'f');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `evaluation_of_activities`
+--
+
+CREATE TABLE `evaluation_of_activities` (
+  `id` int(11) NOT NULL,
+  `name_of_org` varchar(100) NOT NULL,
+  `name_of_activity` varchar(150) NOT NULL,
+  `questionnaire` varchar(250) NOT NULL,
+  `five` int(11) NOT NULL,
+  `four` int(11) NOT NULL,
+  `three` int(11) NOT NULL,
+  `two` int(11) NOT NULL,
+  `one` int(11) NOT NULL,
+  `comment` varchar(200) NOT NULL DEFAULT '',
+  `status` varchar(100) NOT NULL,
+  `draft` varchar(100) NOT NULL,
+  `exp_date` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `evaluation_of_activities`
+--
+
+INSERT INTO `evaluation_of_activities` (`id`, `name_of_org`, `name_of_activity`, `questionnaire`, `five`, `four`, `three`, `two`, `one`, `comment`, `status`, `draft`, `exp_date`) VALUES
+(108, 'SICSSO', '', 'does the event happen on the set schedule?', 0, 0, 0, 0, 0, '', '', 'draft', NULL),
+(109, 'SICSSO', '', 'does the event happen smoothly with no intervene?', 0, 0, 0, 0, 0, '', '', 'draft', NULL);
 
 -- --------------------------------------------------------
 
@@ -153,8 +206,14 @@ CREATE TABLE `officers` (
 --
 
 INSERT INTO `officers` (`id`, `position`, `first_name`, `last_name`, `year`, `photo_url`, `partylist`, `org_name`, `school_year`, `status`) VALUES
-(216, 'Vice President', 'Reynan', 'Yap', 'fourth', 'IMG-65532be6a489e2.82862633.jpg', 'Mandin', 'SICSSO', '2023-2024', NULL),
-(217, 'President', 'Denver', 'Balagwis', 'fourth', 'IMG-65532c03dfa7f9.09100884.jpg', 'Sulong', 'SICSSO', '2023-2024', NULL);
+(334, 'President', 'Jaspher', 'Luha', 'fourth', 'IMG-659b6c6396a747.89065032.jpg', 'Mandin', 'SICSSO', '2024-2025', NULL),
+(335, 'Vice President', 'John Raven', 'Mabutot', 'fourth', 'IMG-659b6c8a8b2870.58663769.jpg', 'Mandin', 'SICSSO', '2024-2025', NULL),
+(336, 'Secretary', 'Jallien Mae', 'Resaba', 'fourth', 'IMG-659b6c9faac132.36908001.jpg', 'Mandin', 'SICSSO', '2024-2025', NULL),
+(337, 'Treasurer', 'Jamie', 'Solina', 'fourth', 'IMG-659b6cae717369.52878082.jpg', 'Mandin', 'SICSSO', '2024-2025', NULL),
+(338, 'Auditor', 'Lynsey Miles', 'De Mesa', 'fourth', 'IMG-659b6ccb2bbd95.71354656.jpg', 'Mandin', 'SICSSO', '2024-2025', NULL),
+(339, 'Sargeant at Arms', 'Reynan', 'Yap', 'fourth', 'IMG-659b8ae69cdcb5.80901182.jpg', 'Mandin', 'SICSSO', '2024-2025', NULL),
+(340, 'Muse', 'Lee-Ann', 'Monterey', 'fourth', 'IMG-659b8bca550143.50718560.jpg', 'Mandin', 'SICSSO', '2024-2025', NULL),
+(341, 'Peace Officer', 'Neil Andrei', 'Monroyo', 'fourth', 'IMG-659b8c1489c506.66240350.jpg', 'Sulong', 'SICSSO', '2024-2025', NULL);
 
 -- --------------------------------------------------------
 
@@ -164,6 +223,7 @@ INSERT INTO `officers` (`id`, `position`, `first_name`, `last_name`, `year`, `ph
 
 CREATE TABLE `plan_of_activities` (
   `id` int(11) NOT NULL,
+  `activity_code` varchar(100) NOT NULL,
   `name_of_activity` varchar(50) NOT NULL,
   `date` varchar(50) NOT NULL,
   `venue` varchar(50) NOT NULL,
@@ -172,21 +232,23 @@ CREATE TABLE `plan_of_activities` (
   `purpose` varchar(50) NOT NULL,
   `beneficiaries` varchar(50) NOT NULL,
   `target_output` varchar(50) NOT NULL,
+  `budget` varchar(10) NOT NULL,
   `name_of_org` varchar(50) NOT NULL,
   `can_monitor` varchar(100) DEFAULT NULL,
   `date_submitted` varchar(50) DEFAULT NULL,
   `school_year` varchar(50) DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'draft'
+  `remark` varchar(100) NOT NULL DEFAULT '',
+  `status` varchar(50) NOT NULL DEFAULT 'draft',
+  `evaluated` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `plan_of_activities`
 --
 
-INSERT INTO `plan_of_activities` (`id`, `name_of_activity`, `date`, `venue`, `sponsors`, `nature_of_activity`, `purpose`, `beneficiaries`, `target_output`, `name_of_org`, `can_monitor`, `date_submitted`, `school_year`, `status`) VALUES
-(41, 'CICS week', '2024-02-23', 'CICS building', 'art magcamit', 'for entertainment', 'for students to enjoy', 'students', 'set winners', 'SICSSO', 'BSIS,BSI/T', '2023-11-14', '2023-2024', 'accomplished'),
-(42, 'a', '2023-11-30', 'a', 'a', 'a', 'a', 'a', 'a', 'SICSSO', NULL, '2023-11-16', '2023-2024', 'accomplished'),
-(43, '12', '2023-11-30', '12', '12', '12', '12', '12', '12', 'SICSSO', NULL, '2023-11-16', '2023-2024', 'ongoing');
+INSERT INTO `plan_of_activities` (`id`, `activity_code`, `name_of_activity`, `date`, `venue`, `sponsors`, `nature_of_activity`, `purpose`, `beneficiaries`, `target_output`, `budget`, `name_of_org`, `can_monitor`, `date_submitted`, `school_year`, `remark`, `status`, `evaluated`) VALUES
+(106, '001', 'HYDRO FEST', '2024-02-01', 'GRANDSTAND', 'SICSO Faculty', 'for Entertainment', 'To give the awards for winners in intrams', 'Students, faculty members, others.', 'Successful and fun night', '1000', 'SICSSO', 'BSIS,BSI/T', '2024-01-30', '2024-2025', '', 'accomplished', ''),
+(107, '002', 'Ball night', '2024-02-08', 'Gymnasium ', 'asdf', 'asdf', 'To reunite every students ', 'Students, faculty members, others.', 'Improve mental and physical capability of each pla', '1000', 'SICSSO', 'BSIS,BSI/T', '2024-01-30', '2024-2025', '', 'returned', 'evaluated');
 
 -- --------------------------------------------------------
 
@@ -196,19 +258,21 @@ INSERT INTO `plan_of_activities` (`id`, `name_of_activity`, `date`, `venue`, `sp
 
 CREATE TABLE `student` (
   `id` int(11) NOT NULL,
-  `username` varchar(100) DEFAULT NULL,
   `first_name` varchar(100) DEFAULT NULL,
   `last_name` varchar(100) DEFAULT NULL,
-  `address` varchar(100) DEFAULT NULL,
   `student_id` varchar(100) DEFAULT NULL,
   `course` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
   `year_and_section` varchar(100) DEFAULT NULL,
   `contact_no` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `username` varchar(100) DEFAULT NULL,
   `can_vote` varchar(100) DEFAULT ' ',
+  `voted` varchar(50) NOT NULL DEFAULT '',
   `can_monitor` varchar(100) DEFAULT ' ',
   `can_see_result` varchar(100) DEFAULT ' ',
   `can_monitor_plan_of_activity` varchar(100) DEFAULT NULL,
+  `can_evaluate` varchar(100) NOT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'activated',
   `password` varchar(100) DEFAULT NULL,
   `if_voted` varchar(50) DEFAULT NULL
@@ -218,20 +282,13 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`id`, `username`, `first_name`, `last_name`, `address`, `student_id`, `course`, `year_and_section`, `contact_no`, `email`, `can_vote`, `can_monitor`, `can_see_result`, `can_monitor_plan_of_activity`, `status`, `password`, `if_voted`) VALUES
-(9, 'Neil Andrei', 'Neil Andrei', 'Monroyo', 'Bunganay, Boac, Marinduque', '20B0795', 'BSI/T', 'fourth', '09079610360', 'andreimonroyo0@gmail.com', '', 'SICSSO', 'SICSSO', NULL, 'activated', '0cc175b9c0f1b6a831c399e269772661', NULL),
-(10, 'a', 'a', 'a', 'a', '1', 'a', 'first', '1', 'a@gmail.com', 'ETSO', ' ', ' ', NULL, 'activated', '0cc175b9c0f1b6a831c399e269772661', NULL),
-(11, 'mang kanor', 'nailllll', 'monnnrooooyoo', 'bangbang', '111', 'di ko alam', '', '1', 'a@gmail.com', ' ', ' ', ' ', NULL, 'activated', NULL, NULL),
-(12, 'q', 'q', 'q', 'q', 'q', 'q', 'q', '1', 'q@gmail.com', ' ', ' ', ' ', NULL, 'activated', NULL, NULL),
-(13, 'andrei', 'andrei', 'monroyo', 'bunganay, boac, marinduque', 'a', 'a', 'a', '1', 'a@gmail.com', '', '', 'ETSO', NULL, 'activated', NULL, NULL),
-(14, 'a', 'a', 'a', 'a', 'a', 'a', 'a', '1', 'a@gmail.com', '', '', 'ETSO', NULL, 'activated', '0cc175b9c0f1b6a831c399e269772661', NULL),
-(15, 'marky', 'mark', 'manaog', 'bunganay, boac, marinduque', '20B0263', 'BSIT-Automotive', '4th', '01238721', 'mark@gmail.com', ' ', ' ', ' ', NULL, 'deactivated', NULL, NULL),
-(16, '2', '2', '2', '2', '2', '2', '2', '2', '2@gmail.com', ' ', '', ' ', NULL, 'deactivated', 'c81e728d9d4c2f636f067f89cc14862c', NULL),
-(17, '3', '3', '3', '3', '3', '3', 'first', '3', '3@gmail.com', ' ', '', ' ', NULL, 'activated', 'eccbc87e4b5ce2fe28308fd9f2a7baf3', NULL),
-(18, 'r', 'r', 'r', 'r', 'r', 'BSI/T', 'r', '1', 't@gmail.com', 'SICSSO', '', 'SICSSO', NULL, 'activated', '4b43b0aee35624cd95b910189b3dc231', NULL),
-(19, '1', '1', '12', '2', '2', 'BSI/T', '1', '2', '2@gmail.com', 'SICSSO', ' ', ' ', NULL, 'activated', '0cc175b9c0f1b6a831c399e269772661', NULL),
-(20, 'neil', 'neil andrei', 'monroyo', 'bunganay, boac, marinduque', '11111', 'BSI/T', 'first', '09079610360', 'andrei@gmail.com', 'SICSSO', '', 'SICSSO', NULL, 'activated', '0cc175b9c0f1b6a831c399e269772661', NULL),
-(21, 'Lee Ann', 'Lee Ann', 'Monterey', 'Masagisi, Sta Cruz, Marinduque', '2139847', 'BSI/T', '4D', '09234324234', 'leeannmonmon@gmail.com', 'SICSSO', ' ', ' ', NULL, 'activated', '0cc175b9c0f1b6a831c399e269772661', NULL);
+INSERT INTO `student` (`id`, `first_name`, `last_name`, `student_id`, `course`, `address`, `year_and_section`, `contact_no`, `email`, `username`, `can_vote`, `voted`, `can_monitor`, `can_see_result`, `can_monitor_plan_of_activity`, `can_evaluate`, `status`, `password`, `if_voted`) VALUES
+(123, 'Neil', 'Monroyo', '20B079', 'BSIS', 'Bunganay, Boac, Marinduque', '1st', '09079610360', 'andreimonroyo0@gmail.com', NULL, ' ', '', ' ', ' ', NULL, '', 'activated', 'fdb925312f05f3a4c4495ef8d2fb465a', NULL),
+(130, 'mark', 'manaog', '202020', 'automotive', 'bunganay, boac', '4th', '9641784151', 'mark@gmail.com', NULL, ' ', '', ' ', ' ', NULL, '', 'activated', 'cd41287b93a9317b6b2d1da8bec1def1', NULL),
+(131, 'raffy', 'lamonte', '212121', 'automotive', 'bunganay, boac', '3rd', '9174344151', 'raffy@gmail.com', NULL, ' ', '', ' ', ' ', NULL, '', 'activated', 'cd41287b93a9317b6b2d1da8bec1def1', NULL),
+(132, 'austin', 'espiritu', '222222', 'electrical', 'amoingon, boac', '1st', '9178344151', 'austin@gmail.com', NULL, ' ', '', ' ', ' ', NULL, '', 'activated', 'cd41287b93a9317b6b2d1da8bec1def1', NULL),
+(133, 'daniel', 'janda', '232323', 'liad', 'masiga, gasan', '2nd', '9178344151', 'daniel@gmail.com', NULL, ' ', '', ' ', ' ', NULL, '', 'activated', 'cd41287b93a9317b6b2d1da8bec1def1', NULL),
+(134, 'bryan', 'hizole', '221111', 'bsit', 'laylay, boac', '3rd', '9079610360', 'bryanjay@gmail.com', NULL, ' ', '', ' ', ' ', NULL, '', 'activated', 'cd41287b93a9317b6b2d1da8bec1def1', NULL);
 
 -- --------------------------------------------------------
 
@@ -242,10 +299,12 @@ INSERT INTO `student` (`id`, `username`, `first_name`, `last_name`, `address`, `
 CREATE TABLE `student_org` (
   `id` int(11) NOT NULL,
   `name_of_org` varchar(100) NOT NULL,
+  `full_name_of_org` varchar(200) NOT NULL,
   `college_of` varchar(100) NOT NULL,
   `adviser` varchar(100) NOT NULL,
   `contact_no` varchar(100) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `course_covered` varchar(100) DEFAULT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'activated',
   `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -254,10 +313,9 @@ CREATE TABLE `student_org` (
 -- Dumping data for table `student_org`
 --
 
-INSERT INTO `student_org` (`id`, `name_of_org`, `college_of`, `adviser`, `contact_no`, `email`, `status`, `password`) VALUES
-(14, 'SICSSO', 'CISC', 'Doreena magdangal', '09079610360', 'andreimonroyo@gmail.com', 'activated', '0cc175b9c0f1b6a831c399e269772661'),
-(18, 'ENGSO', 'Engineering', 'kierven villuarell', '324293', 'kierven@gmail.com', 'activated', '0cc175b9c0f1b6a831c399e269772661'),
-(19, 'ITSO', 'Industrial Technology', 'Denver Balagwis Jr', '0971342234', 'denver@gmail.com', 'activated', '0cc175b9c0f1b6a831c399e269772661');
+INSERT INTO `student_org` (`id`, `name_of_org`, `full_name_of_org`, `college_of`, `adviser`, `contact_no`, `email`, `course_covered`, `status`, `password`) VALUES
+(33, 'SICSSO', 'School of Information and Computing Sciences Student Organization', 'Information and Computing Sciences', 'Mrs. Doreena Joy Borja', '09641784151', 'sics.msc@gmail.com', 'BSIS,BSI/T', 'activated', 'fdb925312f05f3a4c4495ef8d2fb465a'),
+(34, 'SENGSO', 'School of Engineering Student Organization', 'Engineering', 'Mr. Nilo Buenaventura', '09641784151', 'sengso.msc@gmail.com', 'Civil Engineering,Computer Engineering,Mechanical Engineering', 'activated', 'fdb925312f05f3a4c4495ef8d2fb465a');
 
 --
 -- Indexes for dumped tables
@@ -285,6 +343,12 @@ ALTER TABLE `candidate`
 -- Indexes for table `courses`
 --
 ALTER TABLE `courses`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `evaluation_of_activities`
+--
+ALTER TABLE `evaluation_of_activities`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -319,49 +383,55 @@ ALTER TABLE `student_org`
 -- AUTO_INCREMENT for table `accomplishment_reports`
 --
 ALTER TABLE `accomplishment_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `candidate`
 --
 ALTER TABLE `candidate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=322;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=560;
 
 --
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `evaluation_of_activities`
+--
+ALTER TABLE `evaluation_of_activities`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `officers`
 --
 ALTER TABLE `officers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=218;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=342;
 
 --
 -- AUTO_INCREMENT for table `plan_of_activities`
 --
 ALTER TABLE `plan_of_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT for table `student_org`
 --
 ALTER TABLE `student_org`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

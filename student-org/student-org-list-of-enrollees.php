@@ -238,9 +238,12 @@ if(isset($_POST['add-student'])) {
                   <td><?php echo $row['last_name'] ?></td>
                   <td><?php echo $row['year_and_section'] ?></td>
                   <td><?php echo $row['course'] ?></td>
-                  <td>
-                    <a class="btn btn-secondary" href="edit-students.php?id=<?php echo $row['id']; ?>">Edit</a>
-                    <a class="btn btn-danger" href="delete-students.php?id=<?php echo $row['id']; ?>">Delete</a>
+                  <td class="d-flex flex-column justify-content-center align-items-center">
+                    <a class="btn btn-secondary mb-2" href="edit-students.php?id=<?php echo $row['id']; ?>">Edit</a>
+                    <!-- <a class="btn btn-danger" href="delete-students.php?id=<?php // echo $row['id']; ?>">Delete</a> -->
+
+                    <a class="btn btn-success <?php if($row['status'] == 'activated') {echo 'd-none';} ?>" href="student-org-change-status.php?id=<?php echo $row['id'] ?>&status=<?php echo 'activated'; ?>">Activate</a>
+                      <a class="btn btn-danger <?php if($row['status'] == 'deactivated') {echo 'd-none';} ?>" href="student-org-change-status.php?id=<?php echo $row['id'] ?>&status=<?php echo 'deactivated'; ?>">Deactivate</a>
                   </td>
                 </tr>
                 

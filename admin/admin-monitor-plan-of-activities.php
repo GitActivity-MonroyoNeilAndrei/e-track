@@ -128,9 +128,9 @@ $nameOfAct = returnNameOfAct();
             </ul>
           </nav>
 
-          <div class="text-center">
-            <a class="text-primary" href="admin-who-can-monitor-activities.php?studentOrg=<?php User::printGet('activeStudentOrg'); ?>">Who can Monitor this Plan of Activity?</a>
-          </div>
+          <!-- <div class="text-center">
+            <a class="text-primary" href="admin-who-can-monitor-activities.php?studentOrg=<?php // User::printGet('activeStudentOrg'); ?>">Who can Monitor this Plan of Activity?</a>
+          </div> -->
 
           <div class="calendar-container mx-auto">
             <header class="calendar-header">
@@ -146,7 +146,20 @@ $nameOfAct = returnNameOfAct();
                 </span>
               </div>
             </header>
+            <div class="calendar-legend">
+              <div class="current-date">
+                <div class="current-date-color">
 
+                </div>
+                <div>Current Date</div>
+              </div>
+              <div class="activities">
+                <div class="activities-color">
+
+                </div>
+                <div>Activities</div>
+              </div>
+            </div>
             <div class="calendar-body">
               <ul class="calendar-weekdays mx-2 mb-0">
                 <li>Sun</li>

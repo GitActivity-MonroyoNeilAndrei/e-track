@@ -5,6 +5,7 @@
   font-family: Poppins, sans-serif;
   padding: 0;
   margin: 0;
+  font-size: .95rem;
 }
 
 a {
@@ -287,6 +288,7 @@ button.dropbtn {
   border-radius: 0.7rem;
   position: sticky;
   top: 0px;
+  background-color: #20A29A;
 }
 
 .candidate-position-border {
@@ -311,6 +313,7 @@ button.dropbtn {
   align-items: center;
   justify-content: start;
   width: 40%;
+
 }
 
 @media (max-width: 700px) {
@@ -335,7 +338,9 @@ button.dropbtn {
   text-align: center;
   border-radius: 0.4rem;
   margin-top: 1rem;
-  background-color: #3788ff;
+
+  background-color: 
+  #4AB1AB;
   max-width: 15rem;
   padding: 0.5rem 1rem;
   font-size: 1.3rem;
@@ -347,7 +352,8 @@ button.dropbtn {
   text-align: center;
   border-radius: 0.4rem;
   margin-top: 1rem;
-  background-color: #38b7ff;
+  background-color: 
+  #578A87;
   max-width: 15rem;
   padding: 0.5rem 1rem;
 }
@@ -356,7 +362,8 @@ button.dropbtn {
   border-radius: 0.5rem;
   padding: 1.4rem;
   /* background-color: #3fc200; */
-  background-color: #8dc8ff;
+  background-color: 
+  #98C3C0;
 
   width: 60%;
 }
@@ -413,4 +420,15 @@ button.dropbtn {
   color: white;
   font-size: .8em;
   border-top: 2px solid rgba(35, 35, 35, 0.583);
+}
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }

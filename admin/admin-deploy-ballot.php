@@ -41,6 +41,7 @@
       
       foreach($list_of_voters as $course) {
         $activeStudentOrg = User::returnValueGet('orgName');
+        
         $admin->advanceUpdateData('student', ['can_vote'=>User::returnValueGet('orgName')], " course = '$course' AND voted != '$activeStudentOrg'");
         // $admin->updateData('student', ['can_vote'=>User::returnValueGet('orgName')], ['course'=>$course]);
       }

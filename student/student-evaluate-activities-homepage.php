@@ -18,13 +18,18 @@ $student_id = User::returnValueSession('id');
 
 User::ifDeactivatedReturnTo($student->select('student', 'status', ['id' => $student_id]), '../logout.php?logout=student');
 
+$student_org = User::returnValueGet('can_evaluate');
 
 if (isset($_POST['submit'])) {
 
-  $questionnaires = $student->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('can_evaluate')]);
+
+
+  // $questionnaires = $student->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('can_evaluate')]);
+
+  $questionnaires = $student->advanceSelect('evaluation_of_activities', '*', " name_of_org = '$student_org' AND status = 'deployed' AND draft = '' ");
 
   while ($row = mysqli_fetch_assoc($questionnaires)) {
-    $student->updateData('evaluation_of_activities', ['comment'=>$_POST['commentid']], ['id'=>$row['id']]);
+
     if (isset($_POST["$row[id]"])) {
 
 
@@ -112,7 +117,6 @@ while ($row = mysqli_fetch_assoc($activity)) {
                 <th>3</th>
                 <th>4</th>
                 <th>5</th>
-                <th>Comment</th>
                 
               </tr>
             </thead>
@@ -120,18 +124,19 @@ while ($row = mysqli_fetch_assoc($activity)) {
             <tbody>
 
           <?php
-            $questionnaires = $student->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('can_evaluate')]);
+              $questionnaires = $student->advanceSelect('evaluation_of_activities', '*', " name_of_org = '$student_org' AND status = 'deployed' AND draft = '' ");
+
 
             while ($row = mysqli_fetch_assoc($questionnaires)) {
           ?>
             <tr>
               <td><?php echo $row['questionnaire']; ?></td>
-              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="1"></td>
-              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="2"></td>
-              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="3"></td>
-              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="4"></td>
               <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="5"></td>
-              <td><input class="form-control" type="text" name="<?php echo 'comment'.$row['id']; ?>"></td>
+              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="4"></td>
+              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="3"></td>
+              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="2"></td>
+              <td><input class="form-check-input" type="radio" name="<?php echo $row['id']; ?>" value="1"></td>
+              
             </tr>
           
 
@@ -152,7 +157,12 @@ while ($row = mysqli_fetch_assoc($activity)) {
 
 
 
-
+<script>
+      window.addEventListener("focus", function() {
+      location.reload();
+    });
+  
+</script>
 
 </div>
 </body>

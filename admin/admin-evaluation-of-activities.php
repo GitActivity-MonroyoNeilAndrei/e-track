@@ -35,7 +35,7 @@ if (isset($_POST['add-questionnaire'])) {
   if ($admin->isExisted('evaluation_of_activities', ['questionnaire'=>$questionnaire])) {
     $unsuccessfully_added = "Questionnaire Already Exist";
   } else {
-    $admin->insertData('evaluation_of_activities', ['questionnaire'=>$questionnaire, 'name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+    $admin->insertData('evaluation_of_activities', ['questionnaire'=>$questionnaire, 'draft'=>'draft', 'name_of_org'=>User::returnValueGet('activeStudentOrg')]);
 
     $successfully_added = "Questionnaire Successfully Added";
   }
@@ -159,9 +159,14 @@ if (isset($_POST['add-questionnaire'])) {
               </thead>
               <tbody>
                 <?php
-                  $evaluation_questions = $admin->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+                  $evaluation_questions = $admin->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'draft'=>'draft']);
 
                   while ($row = mysqli_fetch_assoc($evaluation_questions)) {
+                    if($row['exp_date'] > $date_time_now) {
+                      $disable_deploy_button = true;
+                    }else {
+                      $admin->updateData('evaluation_of_activities', ['status'=>'evaluated'], ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'deployed', 'draft'=>'']);
+                    }
                 ?>
                 <tr>
                   <td><?php echo $row['questionnaire']; ?></td>
@@ -176,7 +181,7 @@ if (isset($_POST['add-questionnaire'])) {
           </div>
 
           <div class="d-flex justify-content-center">
-            <a class="btn btn-outline-primary my-4" href="admin-deploy-evaluation.php?activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Deploy Evaluation Form</a>
+            <a class="btn btn-outline-primary my-4 <?php if ($disable_deploy_button) {echo ' disabled';} ?>" href="admin-deploy-evaluation.php?activeStudentOrg=<?php User::printGet('activeStudentOrg'); ?>">Deploy Evaluation Form</a>
           </div>
 
         </div>
@@ -198,6 +203,11 @@ if (isset($_POST['add-questionnaire'])) {
     var activeNav = document.getElementById('evaluation-of-activities')
     activeNav.classList.add('bg-dark-gray2');
 
+
+    window.addEventListener("focus", function() {
+      location.reload();
+    });
+  
 
 
   </script>

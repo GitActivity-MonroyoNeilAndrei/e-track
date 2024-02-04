@@ -39,6 +39,7 @@ if(isset($_POST['submit'])) {
       $can_monitor .= ','.$course;
     }
   }
+  
   $admin->updateData('plan_of_activities', ['can_monitor'=>$can_monitor], ['name_of_org'=>$studentOrg]);
   header("location: admin-monitor-plan-of-activities.php?activeStudentOrg=$studentOrg");
   }

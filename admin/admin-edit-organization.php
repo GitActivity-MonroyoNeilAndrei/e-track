@@ -137,7 +137,7 @@ if (isset($_POST['add-edit-adviser'])) {
           $adviser = $admin->selectDistinct('officers', '*', ['org_name'=>$studentOrg, 'position'=>'Adviser']);
           $row2= mysqli_fetch_assoc($adviser);
         ?>
-          <input class="form-control" type="text" name="adviser" value="<?php echo $row2['first_name']; ?>" required>
+          <input class="form-control" type="text" name="adviser" value="<?php if (isset($row2['first_name'])) {echo $row2['first_name'];}  ?>" required>
           <input style="width: 9.3rem;" class="form-control" type="file" name="adviser-image">
         </div>
         

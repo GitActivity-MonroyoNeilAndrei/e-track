@@ -154,8 +154,10 @@ if(isset($_POST['submit'])) {
           ?>
           <div class="d-flex flex-column  mt-4">
             <!-- <a class="btn btn-primary mx-auto mb-3" href="../generate-report/plan-of-activity-report.php">Plan of Acitivity</a> -->
-            <a class="btn btn-primary mx-auto mb-3" href="../generate-report/accomplishment-report.php?activeStudentOrg=<?php User::printGet('activeStudentOrg') ?>&schoolYear=<?php echo $school_year2; ?>">Accomplishment Report</a>
             <a class="btn btn-primary mx-auto mb-3" href="../generate-report/plan-of-activity-report.php?activeStudentOrg=<?php User::printGet('activeStudentOrg') ?>&schoolYear=<?php echo $school_year2; ?>">Plan of Activity</a>
+
+            <a class="btn btn-primary mx-auto mb-3" href="../generate-report/accomplishment-report.php?activeStudentOrg=<?php User::printGet('activeStudentOrg') ?>&schoolYear=<?php echo $school_year2; ?>">Accomplishment Report</a>
+
           </div>
 
         </div>

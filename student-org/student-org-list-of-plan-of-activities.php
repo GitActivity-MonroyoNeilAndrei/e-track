@@ -118,6 +118,7 @@ if(isset($_POST['search_submit'])) {
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
+                  <th>Activity Code</th>
                   <th>Name of Activity</th>
                   <th>Date</th>
                   <th>Venue</th>
@@ -126,6 +127,7 @@ if(isset($_POST['search_submit'])) {
                   <th>Purpose</th>
                   <th>Beneficiaries</th>
                   <th>Target Output</th>
+                  <th>Budget</th>
                 </tr>
               </thead>
               <tbody>
@@ -133,10 +135,10 @@ if(isset($_POST['search_submit'])) {
                   $school_year2 = User::returnValueGet('schoolYear');
 
                   if(!isset($_GET['search'])) {
-                    $plan_of_activity = $student_org->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'status'=>'ongoing', 'status'=>'accomplished', 'school_year'=>$school_year2]);
+                    $plan_of_activity = $student_org->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'status'=>'ongoing', 'status'=>'accomplished', 'status'=>'accomplished', 'school_year'=>$school_year2]);
                   } else if (isset($_GET['search'])) {
                     if($_GET['search'] == "") {
-                      $plan_of_activity = $student_org->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'status'=>'ongoing', 'status'=>'accomplished', 'school_year'=>$school_year2]);
+                      $plan_of_activity = $student_org->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueSession('name_of_org'), 'status'=>'ongoing', 'status'=>'accomplished', 'status'=>'accomplished', 'school_year'=>$school_year2]);
                     }
                   }
 
@@ -156,6 +158,7 @@ if(isset($_POST['search_submit'])) {
 
                 ?>
                 <tr>
+                  <td><?php echo $row['activity_code']; ?></td>
                   <td><?php echo $row['name_of_activity']; ?></td>
                   <td><?php echo $row['date']; ?></td>
                   <td><?php echo $row['venue']; ?></td>
@@ -164,6 +167,7 @@ if(isset($_POST['search_submit'])) {
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['beneficiaries']; ?></td>
                   <td><?php echo $row['target_output']; ?></td>
+                  <td><?php echo $row['budget']; ?></td>
 
                 </tr>
                 <?php } ?>

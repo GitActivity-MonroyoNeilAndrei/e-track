@@ -24,6 +24,7 @@ if (!isset($_GET['activeStudentOrg'])) {
   header("location: admin-list-of-plan-of-activities.php?activeStudentOrg=$row[name_of_org]");
 }
 
+
 $school_year2 = User::returnValueGet('schoolYear');
 
 
@@ -63,6 +64,8 @@ if(isset($_POST['search_submit'])) {
 
 
 }
+
+$activeStudentOrg = User::returnValueGet('activeStudentOrg');
 ?>
 
 
@@ -141,6 +144,7 @@ if(isset($_POST['search_submit'])) {
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
+                  <th>Activity Code</th>
                   <th>Name of Activity</th>
                   <th>Date</th>
                   <th>Venue</th>
@@ -149,17 +153,25 @@ if(isset($_POST['search_submit'])) {
                   <th>Purpose</th>
                   <th>Beneficiaries</th>
                   <th>Target Output</th>
+                  <th>Budget</th>
                 </tr>
               </thead>
               <tbody>
                 <?php 
                   $school_year2 = User::returnValueGet('schoolYear');
 
+                  
+
                   if(!isset($_GET['search'])) {
-                    $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                    // $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'status'=>'accomplished', 'school_year'=>$school_year2]);
+
+                    $plan_of_activity = $admin->advanceSelect("plan_of_activities", '*', "name_of_org = '$activeStudentOrg' AND (status = 'ongoing' OR status = 'accomplished') AND school_year = '$school_year2'");
                   } else if (isset($_GET['search'])) {
                     if($_GET['search'] == "") {
-                      $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'school_year'=>$school_year2]);
+                      // $plan_of_activity = $admin->select('plan_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'ongoing', 'status'=>'accomplished', 'school_year'=>$school_year2]);
+
+
+                      $plan_of_activity = $admin->advanceSelect("plan_of_activities", '*', "name_of_org = '$activeStudentOrg' AND (status = 'ongoing' OR status = 'accomplished') AND school_year = '$school_year2'");
                     }
                   }
 
@@ -170,7 +182,7 @@ if(isset($_POST['search_submit'])) {
 
                       
 
-                      $plan_of_activity = $admin->modifiedSearch('plan_of_activities', "name_of_org = '$name_of_org' AND status = 'ongoing' AND school_year = '$school_year2'", "name_of_activity", $search);
+                      $plan_of_activity = $admin->modifiedSearch('plan_of_activities', "name_of_org = '$name_of_org' AND status = 'ongoing' OR status = 'accomplished' AND school_year = '$school_year2'", "name_of_activity", $search);
                     }
                   }
                     
@@ -179,6 +191,7 @@ if(isset($_POST['search_submit'])) {
 
                 ?>
                 <tr>
+                  <td><?php echo $row['activity_code']; ?></td>
                   <td><?php echo $row['name_of_activity']; ?></td>
                   <td><?php echo $row['date']; ?></td>
                   <td><?php echo $row['venue']; ?></td>
@@ -187,6 +200,7 @@ if(isset($_POST['search_submit'])) {
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['beneficiaries']; ?></td>
                   <td><?php echo $row['target_output']; ?></td>
+                  <td><?php echo $row['budget']; ?></td>
 
                 </tr>
                 <?php } ?>

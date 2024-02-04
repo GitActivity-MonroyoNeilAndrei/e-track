@@ -18,10 +18,10 @@ if(isset($_POST['yes'])) {
     header("location: admin-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&returnedAll");
   } else if (isset($_GET['acceptReport'])) {
     $admin->updateData('accomplishment_reports', ['status'=>'ongoing'], ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
-    header("location: admin-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&acceptAll");
+    header("location: admin-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&acceptAll");
   } else if (isset($_GET['rejectReport'])) {
     $admin->updateData('accomplishment_reports', ['status'=>'returned'], ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'status'=>'submitted']);
-    header("location: admin-plan-of-activities.php?activeStudentOrg=$activeStudentOrg&returnedAll");
+    header("location: admin-accomplishment-report.php?activeStudentOrg=$activeStudentOrg&returnedAll");
   }
 
 }else if (isset($_POST['no'])) {

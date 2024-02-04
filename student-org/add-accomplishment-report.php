@@ -30,7 +30,6 @@ if(isset($_POST['submit'])) {
     $error_file = "Upload PDF file only";
   } else {
     $plan_of_activity_id = $_POST['planned_of_activity'];
-    $budget = $_POST['budget'];
     $remarks = $_POST['remarks'];
 
     $name_of_acitvity = "";
@@ -53,6 +52,7 @@ if(isset($_POST['submit'])) {
       $target_output = $row['target_output'];
       $purpose = $row['purpose'];
       $date_accomplished = $row['date'];
+      $budget = $row['budget'];
     }
     
 
@@ -144,9 +144,6 @@ if(isset($_POST['submit'])) {
               ?>
             </select>
 
-
-            <label class="form-label" for="budget">Budget: </label>
-            <input class="form-control" type="number" name="budget" required>
             <label class="form-label" for="liquidation">Reports & Liquidation</label>
             <input class="form-control" type="file" name="liquidation" required>
             <label class="form-label" for="remarks">Remarks: </label>

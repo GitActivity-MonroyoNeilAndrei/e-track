@@ -21,6 +21,7 @@ User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=
 
 $student_org_school_year = User::returnValueSession('school-year');
 
+
 $error_time;
 
 if(isset($_POST['submit'])) {
@@ -32,26 +33,33 @@ if(isset($_POST['submit'])) {
   $purpose = mysqli_escape_string($student_org->mysqli, $_POST['purpose']);
   $beneficiaries = mysqli_escape_string($student_org->mysqli, $_POST['beneficiaries']);
   $target_output = mysqli_escape_string($student_org->mysqli, $_POST['target-output']);
+  $budget = mysqli_escape_string($student_org->mysqli, $_POST['budget']);
+  $activity_code = mysqli_escape_string($student_org->mysqli, $_POST['activity-code']);
 
+
+
+  $student_covered = mysqli_fetch_assoc($student_org->select("student_org", "course_covered", ['id'=>$student_org_id]))['course_covered'];
 
   if ($date_time_now > $date) {
     $error_time = "Expiry Date Must be Greater than the Date Now";
-  } else if($student_org->isExisted('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org')])) {
+  } else if($student_org->isExisted('plan_of_activities', ['activity_code'=>$activity_code, 'name_of_org'=>User::returnValueSession('name_of_org')])) {
 
     $plan_of_activity_exist = 'Plan of Activity already Exist';
 
   } else {
 
-    $student_org->insertData('plan_of_activities', ['name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'name_of_org'=>User::returnValueSession('name_of_org'), 'school_year'=>$student_org_school_year]);
+    $student_org->insertData('plan_of_activities', ['activity_code'=>$activity_code, 'name_of_activity'=>$name_of_activity, 'date'=>$date, 'venue'=>$venue, 'sponsors'=>$sponsors, 'nature_of_activity'=>$nature_of_activity, 'purpose'=>$purpose, 'beneficiaries'=>$beneficiaries, 'target_output'=>$target_output, 'budget'=>$budget, 'name_of_org'=>User::returnValueSession('name_of_org'), 'can_monitor'=>$student_covered, 'school_year'=>$student_org_school_year]);
 
     header('location: student-org-plan-of-activities.php?success');
 
   }
-
-
-
 }
 
+$activity_code_query = $student_org->advanceSelect('plan_of_activities', 'activity_code', " id != 0 ORDER BY id DESC");
+
+$row = mysqli_fetch_assoc($activity_code_query);
+
+$activity_code1 = $row['activity_code'] + 1;
 
 ?>
 
@@ -112,6 +120,8 @@ if(isset($_POST['submit'])) {
                 </div>';
               }
             ?>
+            <label class="form-label" for="">Activity Code: </label>
+            <input style="pointer-events: none; background-color: #e2e2e2;" class="form-control" type="text" name="activity-code" value="<?php echo sprintf("%03d", $activity_code1); ?>">
             <label class="form-label" for="name-of-activity">Name of Activity: </label>
             <input class="form-control" type="text" name="name-of-activity" required>
             <label class="form-label" for="date">Date: </label>
@@ -128,6 +138,8 @@ if(isset($_POST['submit'])) {
             <input class="form-control" type="text" name="beneficiaries" required>
             <label class="form-label" for="target-output">Target Output: </label>
             <input class="form-control" type="text" name="target-output" required>
+            <label class="form-label" for="budget">Budget: </label>
+            <input class="form-control" type="number" name="budget" required>
             <div class="d-flex justify-content-center align-items-center mt-3">
               <input class="btn btn-primary shadow me-2" type="submit" name="submit">
               <a class="btn btn-danger shadow" href="student-org-plan-of-activities.php">Cancel</a>

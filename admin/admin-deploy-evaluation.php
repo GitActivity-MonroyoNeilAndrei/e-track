@@ -24,18 +24,44 @@ $admin_id = User::returnValueSession('admin-id');
 
 User::ifDeactivatedReturnTo($admin->select('admin', 'status', ['id' => $admin_id]), '../logout.php?logout=admin');
 
+$list_of_evaluators = array();
+
+$voters = $admin->select('student_org', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
+
+while ($row = mysqli_fetch_assoc($voters)) {
+  $array_of_voters = explode(",", $row['course_covered']);
+
+  foreach ($array_of_voters as $voters1) {
+    if (!in_array($voters1, $list_of_evaluators)) {
+      array_push($list_of_evaluators, $voters1);
+    }
+  }
+
+  
+}
+
+
 if(isset($_POST['deploy'])) {
   $exp_date = mysqli_escape_string($admin->mysqli, $_POST['exp-date']);
-  $courses = $_POST['can-vote'];
   $name_of_activity = mysqli_escape_string($admin->mysqli, $_POST['activity']);
 
   if ($date_time_now > $exp_date) {
     $error_time = "Expiry Date Must be Greater than the Date Now";
   } else {
-    $admin->updateData('evaluation_of_activities', ['status'=>'deployed', 'exp_date'=>$exp_date, 'name_of_activity'=>$name_of_activity], ['name_of_org'=>User::returnValueGet('activeStudentOrg')]);
-    
-    $admin->updateData('accomplishment_reports', ['evaluated'=>'evaluated'], ['planned_activity'=>$name_of_activity]);
-    foreach($courses as $course) {
+
+    $evaluations = $admin->select('evaluation_of_activities', '*', ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'draft'=>'draft']);
+
+    while ($row = mysqli_fetch_assoc($evaluations)) {
+      $admin->insertData('evaluation_of_activities', ['status'=>'deployed', 'exp_date'=>$exp_date, 'name_of_activity'=>$name_of_activity, 'name_of_org'=>User::returnValueGet('activeStudentOrg'), 'questionnaire'=>$row['questionnaire']]);
+    }
+
+    $admin->updateData('evaluation_of_activities', ['status'=>'deployed', 'exp_date'=>$exp_date, 'name_of_activity'=>$name_of_activity], ['name_of_org'=>User::returnValueGet('activeStudentOrg'), 'draft'=>'draft']);
+
+
+
+    $admin->updateData('plan_of_activities', ['evaluated'=>'evaluated'], ['name_of_activity'=>$name_of_activity]);
+
+    foreach($list_of_evaluators as $course) {
       $admin->updateData('student', ['can_evaluate'=>User::returnValueGet('activeStudentOrg')], ['course'=>$course]);
     }
 
@@ -110,14 +136,14 @@ if(isset($_POST['deploy'])) {
 
             <div style="width: 100%;">
               <label for="activity">Name of Activity:</label>
-              <select class="form-select" name="activity"> 
+              <select class="form-select" name="activity" required>
                 <?php 
-                  $activity = $admin->select('accomplishment_reports', '*', ['evaluated'=>""]);
+                  $activity = $admin->select('plan_of_activities', '*', ['evaluated'=>"", 'name_of_org'=>User::returnValueGet('activeStudentOrg')]);
 
                   while ($row = mysqli_fetch_assoc($activity)) {
                 ?>
 
-                <option value="<?php echo $row['planned_activity']; ?>"><?php echo $row['planned_activity']; ?></option>
+                <option value="<?php echo $row['name_of_activity']; ?>"><?php echo  $row['name_of_activity']; ?></option>
 
               <?php } ?>
               </select>
@@ -127,18 +153,13 @@ if(isset($_POST['deploy'])) {
           <label class="form-label" for="exp-date">End of Evaluation:</label>
           <input class="form-control" type="datetime-local" name="exp-date" required>
 
-          <label class="form-label" for="can-vote">Who can Vote?:</label>
-          <select class="form-select" name="can-vote[]" multiple="multiple">
-            <?php 
-              $courses = $admin->select('courses', 'course');
+          <label class="form-label">Courses that can Evaluate: </label>
 
-              while ($row = mysqli_fetch_assoc($courses)) {
-            ?>
-              <option value="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></option>
-            <?php
-              }
-            ?>
-          </select>
+          <?php 
+            foreach($list_of_evaluators as $voters1) {
+          ?>
+            <h6 class="ms-3"><?php echo $voters1; ?></h6>
+          <?php } ?>
 
           <!-- <input class="form-control d-none" type="text" name="can-vote" required> -->
 

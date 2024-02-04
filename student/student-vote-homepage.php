@@ -154,7 +154,7 @@ if (isset($_POST['submit'])) {
     ?>
 
     <div class="candidate-container">
-      <div class="candidate-position bg-primary">
+      <div class="candidate-position">
         <?php echo $position; ?>
       </div>
 

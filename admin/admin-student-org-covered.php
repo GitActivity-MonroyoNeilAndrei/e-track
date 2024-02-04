@@ -44,6 +44,12 @@ if(isset($_POST['submit'])) {
 }
 
 
+
+$courses = mysqli_fetch_assoc($admin->select('student_org', '*', ['name_of_org'=>User::returnValueGet('studentOrg')]));
+
+$list_covered = explode(",", $courses['course_covered']);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -89,15 +95,16 @@ if(isset($_POST['submit'])) {
 
           <form method="post" role="group" aria-label="Basic checkbox toggle button group">
 
-          <div  class="d-flex justify-content-center mt-4" style="padding: 0 4vw; flex-wrap: wrap;" >
+
+          <div  class="d-flex justify-content-center flex-column mx-auto mt-5 pt-3" style="padding: 0 4vw; overflow-y: scroll; height:400px; width: 23rem;" >
             <?php 
               $course = $admin->select('courses', '*');
 
               while ($row = mysqli_fetch_assoc($course)) {
             ?>
 
-              <input type="checkbox" class="btn-check" id="<?php echo $row['course']; ?>" name="course[]" value="<?php echo $row['course']; ?>" autocomplete="off">
-              <label class="btn btn-outline-primary mx-2" for="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></label>
+              <input type="checkbox" class="btn-check" id="<?php echo $row['course']; ?>" name="course[]" value="<?php echo $row['course']; ?>" autocomplete="off" <?php if (in_array($row['course'], $list_covered)) {echo 'checked';} ?>>
+              <label class="btn btn-outline-primary mb-2 mx-2" for="<?php echo $row['course']; ?>"><?php echo $row['course']; ?></label>
 
             <?php } ?>
 

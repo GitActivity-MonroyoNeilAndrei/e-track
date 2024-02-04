@@ -17,9 +17,7 @@ $student_org_id = User::returnValueSession('student-org-id');
 
 User::ifDeactivatedReturnTo($student_org->select('student_org', 'status', ['id'=>$student_org_id]), '../logout.php?logout=student-org');
 
-if(!isset($_SESSION['school-year'])){
-  header("location: ../logout.php?logout=student-org");
-}
+
 
 if (isset($_GET['archive'])){
   if(isset($_GET['id'])) {
@@ -102,6 +100,7 @@ if (isset($_GET['archive'])){
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
+                  <th>Activity Code</th>
                   <th>Name of Activity</th>
                   <th>Date</th>
                   <th>Venue</th>
@@ -110,6 +109,7 @@ if (isset($_GET['archive'])){
                   <th>Purpose</th>
                   <th>Beneficiaries</th>
                   <th>Target Output</th>
+                  <th>Budget</th>
                   <th>Status</th>
                   <th>Remark</th>
                   <th>Action</th>
@@ -119,7 +119,7 @@ if (isset($_GET['archive'])){
                 <?php
                 $name_of_org = User::returnValueSession('name_of_org');
 
-                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', "name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted')");
+                $plan_of_activities = $student_org->advanceSelect('plan_of_activities', '*', " name_of_org = '$name_of_org' AND (status = 'draft' OR status = 'returned' OR status = 'submitted') ORDER BY id DESC");
 
                 if ($plan_of_activities->num_rows == 0 ) {
                   echo '
@@ -135,6 +135,7 @@ if (isset($_GET['archive'])){
                  while ($row = mysqli_fetch_assoc($plan_of_activities)) {
                 ?>
                 <tr>
+                  <td><?php echo $row['activity_code']; ?></td>
                   <td><?php echo $row['name_of_activity']; ?></td>
                   <td><?php echo $row['date']; ?></td>
                   <td><?php echo $row['venue']; ?></td>
@@ -143,6 +144,7 @@ if (isset($_GET['archive'])){
                   <td><?php echo $row['purpose']; ?></td>
                   <td><?php echo $row['beneficiaries']; ?></td>
                   <td><?php echo $row['target_output']; ?></td>
+                  <td><?php echo $row['budget']; ?></td>
                   <td><?php echo $row['status']; ?></td>
                   <td><?php echo $row['remark']; ?></td>
                   <td>
