@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Poppins&display=swap");
 
 * {
   box-sizing: border-box;
   font-family: Poppins, sans-serif;
   padding: 0;
   margin: 0;
-  font-size: .95rem;
+  font-size: 0.95rem;
 }
 
 a {
@@ -102,7 +102,7 @@ a {
 
 .nav-links nav ul li {
   text-align: left;
-  padding: .3rem 1rem .3rem 1rem;
+  padding: 0.3rem 1rem 0.3rem 1rem;
   margin: 0;
 }
 
@@ -126,10 +126,10 @@ li span:nth-child(2) {
 
   div.nav-links nav ul li {
     text-align: center;
-    padding: .3rem 0;
+    padding: 0.3rem 0;
     margin: 0;
   }
-  
+
   li span:nth-child(2) {
     display: inline-block;
     width: 18vw;
@@ -277,6 +277,14 @@ button.dropbtn {
   position: relative;
 }
 
+.candidate-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  align-content: start;
+  grid-auto-flow: dense;
+}
+
 .candidate-position {
   display: flex;
   justify-content: center;
@@ -288,7 +296,7 @@ button.dropbtn {
   border-radius: 0.7rem;
   position: sticky;
   top: 0px;
-  background-color: #20A29A;
+  background-color: #20a29a;
 }
 
 .candidate-position-border {
@@ -302,6 +310,13 @@ button.dropbtn {
   padding: 0.9rem;
 }
 
+.candidate1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 700px) {
   .candidate {
     flex-direction: column;
@@ -313,7 +328,6 @@ button.dropbtn {
   align-items: center;
   justify-content: start;
   width: 40%;
-
 }
 
 @media (max-width: 700px) {
@@ -339,8 +353,7 @@ button.dropbtn {
   border-radius: 0.4rem;
   margin-top: 1rem;
 
-  background-color: 
-  #4AB1AB;
+  background-color: #4ab1ab;
   max-width: 15rem;
   padding: 0.5rem 1rem;
   font-size: 1.3rem;
@@ -352,8 +365,7 @@ button.dropbtn {
   text-align: center;
   border-radius: 0.4rem;
   margin-top: 1rem;
-  background-color: 
-  #578A87;
+  background-color: #578a87;
   max-width: 15rem;
   padding: 0.5rem 1rem;
 }
@@ -362,8 +374,7 @@ button.dropbtn {
   border-radius: 0.5rem;
   padding: 1.4rem;
   /* background-color: #3fc200; */
-  background-color: 
-  #98C3C0;
+  background-color: #98c3c0;
 
   width: 60%;
 }
@@ -381,17 +392,10 @@ button.dropbtn {
 }
 
 .vote-section {
-  border-radius: 0.4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  font-size: 1.8rem;
-  width: 100%;
-  background-color: #5f5f5f;
-  position: sticky;
-  bottom: 0px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
 }
 
 .vote-section label {
@@ -415,20 +419,19 @@ button.dropbtn {
 }
 
 .footer {
-  padding: .1rem 2rem;
+  padding: 0.1rem 2rem;
   background-color: #364150;
   color: white;
-  font-size: .8em;
+  font-size: 0.8em;
   border-top: 2px solid rgba(35, 35, 35, 0.583);
 }
 
-
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }

@@ -37,8 +37,6 @@ while ($row = mysqli_fetch_assoc($result)) {
   $k++;
 }
 
-
-
 $result = $student->selectDistinct('candidate', 'position, max_winners', ['org_name' => User::returnValueGet('can_vote')]);
 $i = 0;
 while ($row = mysqli_fetch_assoc($result)) {
@@ -155,7 +153,6 @@ if (isset($_POST['submit'])) {
     </div>
     <form class="page-content d-flex flex-column p-3" method="post">
 
-
       <div style="  display: grid; grid-template-columns: repeat(<?php echo count($partylists); ?>, 1fr); grid-template-rows: auto;">
         <?php
         foreach ($partylists as $partylist) {
@@ -164,7 +161,10 @@ if (isset($_POST['submit'])) {
 
         <?php } ?>
       </div>
+
       <?php
+
+
       foreach ($positions as $position) {
       ?>
 
@@ -173,69 +173,34 @@ if (isset($_POST['submit'])) {
             <?php echo $position; ?>
           </div>
 
-          <div class="candidate-section" id="candidate-section">
 
+          <div id="<?php echo $position; ?>" class="vote-section">
             <?php
-            $result = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
-            while ($row = mysqli_fetch_assoc($result)) {
+            $candidate = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
+            while ($row = mysqli_fetch_assoc($candidate)) {
+              $num += 1;
             ?>
 
-
-              <div id="candidate" class="candidate" style="grid-column: <?php
-                                                                        for ($i = 0; $i < count($partylists); $i++) {
-                                                                          if ($partylists[$i] == $row['partylist']) {
-                                                                            echo $i + 1;
-                                                                          }
-                                                                        }
-                                                                        ?>">
+              <div class="candidate1">
                 <div class="candidate-details">
                   <div class="candidate-details-image shadow-lg">
                     <div><img class="candidate-details-image" src="../uploads/<?php echo $row['photo_url']; ?>" alt=""></div>
                   </div>
                   <div class="candidate-details-name"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></div>
                   <div class="candidate-details-partylist"><?php echo $row['partylist'] . ' Partylist'; ?></div>
-                </div>
-                <div class="candidate-description shadow">
 
-                  <p><?php echo $row['introduce_yourself']; ?></p>
+                  <input name="<?php echo str_replace(" ", "_", "$position"); ?>[]" type="checkbox" class="btn-check" id="<?php echo $num; ?>" value="<?php echo $row['id']; ?>" autocomplete="off">
+                  <label class="btn btn-outline-danger m-2" for="<?php echo $num; ?>"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></label>
                 </div>
               </div>
 
 
 
+            <?php } ?>
 
 
-            <?php }  ?>
+
           </div>
-
-          <div id="vote-section" class="d-none">
-            <div id="<?php echo $position; ?>" class="vote-section">
-              <?php
-              $candidate = $student->select('candidate', '*', ['position' => $position, 'org_name' => User::returnValueGet('can_vote')]);
-              while ($row = mysqli_fetch_assoc($candidate)) {
-                $num += 1;
-              ?>
-
-                <div id="candidate1" class="candidate1">
-                  <div class="candidate-details">
-                    <div class="candidate-details-image shadow-lg">
-                      <div><img class="candidate-details-image" src="../uploads/<?php echo $row['photo_url']; ?>" alt=""></div>
-                    </div>
-                    <div class="candidate-details-name"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></div>
-                    <div class="candidate-details-partylist"><?php echo $row['partylist'] . ' Partylist'; ?></div>
-                  </div>
-                </div>
-
-                <input name="<?php echo str_replace(" ", "_", "$position"); ?>[]" type="checkbox" class="btn-check" id="<?php echo $num; ?>" value="<?php echo $row['id']; ?>" autocomplete="off">
-                <label class="btn btn-outline-danger m-2" for="<?php echo $num; ?>"><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></label>
-
-              <?php } ?>
-
-
-
-            </div>
-          </div>
-
           <script>
             onlyTwoCheckBox("<?php echo $position ?>");
           </script>
@@ -244,9 +209,8 @@ if (isset($_POST['submit'])) {
         </div>
       <?php } ?>
 
+      <input class="btn btn-primary mx-auto mt-1" type="submit" name="submit" value="Submit">
 
-      <a class="btn btn-primary mx-auto m-1" href="student-final-vote-homepage.php?can_vote=<?php User::printGet("can_vote"); ?>">Vote</a>
-      <!-- <input class="btn btn-primary mx-auto mt-1 d-none" type="submit" name="submit" value="Submit"> -->
 
 
     </form>
@@ -256,7 +220,6 @@ if (isset($_POST['submit'])) {
       margin: 0 !important;
     }
   </style>
-
 
 
 
